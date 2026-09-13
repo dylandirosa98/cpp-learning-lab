@@ -32,31 +32,26 @@ void printHeading(std::string_view heading)
 
 void printPerson(int number, std::string_view name, int age)
 {
-    // TODO: Print the exact numbered person line from supplied values.
-    std::cout << number << name << age << '\n';
+    std::cout << "Person " << number << ": " << name << " (age " << age << ")\n";
 }
 
 void printOlderPerson(std::string_view name, int age)
 {
-    // TODO: Print the exact older-person line from supplied values.
-    std::cout << name << age << '\n';
+    std::cout << "Older person: " << name << " (age " << age << ")\n";
 }
 
 void printAgeDifference(int difference)
 {
-    // TODO: Print the exact age-difference line from the calculated value.
-    std::cout << difference << '\n';
+    std::cout << "Age difference: " << difference << " years\n";
 }
 
 void printFirstOlderCheck(std::string_view name)
 {
-    // TODO: Print the first-argument-older check from the supplied name.
-    std::cout << name << '\n';
+    std::cout << "First-argument older check: " << name << '\n';
 }
 
 void printTieResult(std::string_view name)
 {
     std::cout << "Tie rule: first person wins\n";
-    // TODO: Print "Tie selected: " followed by the selected supplied view.
-    std::cout << name << '\n';
+    std::cout << "Tie selected: " << name << '\n';
 }

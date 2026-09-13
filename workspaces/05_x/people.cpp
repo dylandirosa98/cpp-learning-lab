@@ -25,22 +25,23 @@ Run from project root: ./course check 5.x
 
 std::string composeFullName(std::string_view firstName, std::string_view lastName)
 {
-    // TODO: Create an owning full name with exactly one space between its parts.
     std::string fullName{ firstName };
+    fullName += ' ';
     fullName += lastName;
     return fullName;
 }
 
 int ageDifference(int firstAge, int secondAge)
 {
-    // TODO: Return the larger age minus the smaller age.
-    return firstAge + secondAge;
+    if (firstAge >= secondAge)
+        return firstAge - secondAge;
+
+    return secondAge - firstAge;
 }
 
 std::string_view selectOlderName(std::string_view firstName, int firstAge, std::string_view secondName, int secondAge)
 {
-    // TODO: Return a supplied view; choose the first name when ages are equal.
-    if (firstAge < secondAge)
+    if (firstAge >= secondAge)
         return firstName;
 
     return secondName;

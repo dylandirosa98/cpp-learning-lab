@@ -44,13 +44,12 @@ int main()
     constexpr std::string_view charlesLastName{ "Babbage" };
     constexpr int charlesAge{ 79 };
 
-    // TODO: Compose both owning names before selecting any views into them.
-    const std::string adaName{ adaFirstName };
-    const std::string charlesName{ charlesFirstName };
-    const int difference{};
-    const std::string_view olderName{ adaName };
-    const std::string_view firstOlderName{ adaName };
-    const std::string_view tieName{ charlesName };
+    const std::string adaName{ composeFullName(adaFirstName, adaLastName) };
+    const std::string charlesName{ composeFullName(charlesFirstName, charlesLastName) };
+    const int difference{ ageDifference(adaAge, charlesAge) };
+    const std::string_view olderName{ selectOlderName(adaName, adaAge, charlesName, charlesAge) };
+    const std::string_view firstOlderName{ selectOlderName(charlesName, charlesAge, adaName, adaAge) };
+    const std::string_view tieName{ selectOlderName(adaName, adaAge, charlesName, adaAge) };
 
     printHeading(heading);
     printPerson(1, adaName, adaAge);
