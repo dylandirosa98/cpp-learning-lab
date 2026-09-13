@@ -1,0 +1,59 @@
+{
+  "order": 31,
+  "id": "4.6",
+  "title": "Fixed-width integers and size_t",
+  "url": "https://www.learncpp.com/cpp-tutorial/fixed-width-integers-and-size-t/",
+  "estimatedMinutes": 22,
+  "recap": [
+    "The <cstdint> header provides fixed-width aliases such as std::int32_t when the implementation supports an integer of exactly that width. Use a fixed-width type when a guaranteed range or representation width is part of the requirement.",
+    "sizeof returns std::size_t, an implementation-defined unsigned integral type used for object byte sizes and lengths. Include <cstddef> when naming std::size_t explicitly, and avoid the often character-like 8-bit fixed-width aliases for ordinary numeric output."
+  ],
+  "objectives": [
+    "Use std::int32_t for signed values requiring an exact 32-bit width.",
+    "Include <cstdint> for fixed-width integer aliases.",
+    "Store a sizeof result in std::size_t with <cstddef> included.",
+    "Calculate a byte count from a field size and field count."
+  ],
+  "warnings": [
+    "Fixed-width aliases are available only when the implementation has an exactly matching type.",
+    "std::int8_t and std::uint8_t commonly stream like character types.",
+    "std::size_t is unsigned and should not be mixed casually with signed arithmetic.",
+    "Do not assume the width of plain int when an exact 32-bit requirement is stated."
+  ],
+  "challenge": "Repair a fixed packet summary. Exactly 48,000 packets were received and 49,200 were sent, so the signed packet delta is received minus sent. A payload contains 3 fields, each with the byte size of std::int32_t; calculate payloadBytes by multiplying fieldBytes by fieldCount rather than adding them. Report the field count and whether the payload calculation is correct instead of assuming a platform-specific byte count. Preserve the std::int32_t and std::size_t roles, use no input, and derive all output from the fixed objects.",
+  "expectedOutput": [
+    "Packet delta: -1200",
+    "Field count: 3",
+    "Payload size correct: true"
+  ],
+  "hints": [
+    "The sign of a delta depends on operand order: received minus sent is negative here.",
+    "Store sizeof(std::int32_t) in std::size_t, but do not assume how many bits the implementation places in one C++ byte.",
+    "A total for equally sized fields is fieldBytes multiplied by fieldCount."
+  ],
+  "sources": [
+    "main.cpp"
+  ],
+  "sourceChecks": [
+    {
+      "file": "main.cpp",
+      "contains": [
+        "#include <cstddef>",
+        "#include <cstdint>",
+        "std::int32_t received",
+        "std::int32_t sent",
+        "std::int32_t packetDelta",
+        "std::size_t fieldBytes{ sizeof(std::int32_t) }",
+        "std::size_t payloadBytes",
+        "std::boolalpha"
+      ],
+      "notContains": [
+        "Packet delta: -1200",
+        "Field count: 3",
+        "Payload size correct: true",
+        "std::cin",
+        "using namespace std"
+      ]
+    }
+  ]
+}

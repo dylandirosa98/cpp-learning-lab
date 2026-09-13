@@ -1,0 +1,53 @@
+{
+  "order": 4,
+  "id": "2.4",
+  "title": "Introduction to function parameters and arguments",
+  "url": "https://www.learncpp.com/cpp-tutorial/introduction-to-function-parameters-and-arguments/",
+  "estimatedMinutes": 12,
+  "recap": [
+    "Parameters are local names in a function definition that receive values supplied by a call. The expressions at the call site are arguments, and their resulting values are copied into the matching value parameters.",
+    "Combining parameters with a return value turns a fixed calculation into a reusable operation. Returned results can also become arguments to later calls, allowing small transformations to be connected."
+  ],
+  "objectives": [
+    "Declare typed parameters and pass matching arguments at a call site.",
+    "Explain the difference between a parameter and an argument.",
+    "Return a result calculated from multiple value parameters.",
+    "Pass one function's result into another stage of a calculation."
+  ],
+  "warnings": [
+    "The number of supplied arguments must match the function's required parameters.",
+    "A calculation that returns an integer should not be declared void.",
+    "Changing a value parameter changes only the function's local copy.",
+    "Unused named parameters can produce compiler warnings."
+  ],
+  "challenge": "Complete the three functions in this order. 1. In panelLoad(int panelCount, int kilogramsPerPanel), return panelCount multiplied by kilogramsPerPanel. 2. In addToolLoad(int materialLoad, int toolLoad), return materialLoad plus toolLoad. 3. In main(), keep the call panelLoad(12, 18) stored in materialLoad, pass that variable and 24 to addToolLoad(), store the second result in loadedTotal, print both labeled results exactly as shown, and return 0. The displayed numbers must come from the stored function results, not hard-coded output text. Keep both signatures unchanged, use std::cout rather than an unqualified cout, and do not add `using namespace std;`.",
+  "expectedOutput": [
+    "Material load: 216 kg",
+    "Loaded system total: 240 kg"
+  ],
+  "hints": [
+    "First complete panelLoad(): replace its placeholder result with a calculation that uses both parameter names, with panelCount as the quantity and kilogramsPerPanel as the weight of one panel.",
+    "Language-neutral pseudocode: PANEL_LOAD(panel count, kilograms per panel): RETURN panel count multiplied by kilograms per panel; ADD_TOOL_LOAD(material load, tool load): RETURN material load plus tool load; MAIN: STORE PANEL_LOAD(12, 18), STORE ADD_TOOL_LOAD(the first result, 24), OUTPUT both required labels with their stored results and `kg`, RETURN success.",
+    "Near-C++ structure: `int panelLoad(int panelCount, int kilogramsPerPanel) { return <product using both parameters>; }` and `int addToolLoad(int materialLoad, int toolLoad) { return <sum using both parameters>; }`. In `int main()`, keep `int materialLoad{panelLoad(<count>, <weight>)};`, pass that variable into the second call, and keep the existing `std::cout` structure."
+  ],
+  "sources": [
+    "main.cpp"
+  ],
+  "sourceChecks": [
+    {
+      "file": "main.cpp",
+      "contains": [
+        "int panelLoad(int panelCount, int kilogramsPerPanel)",
+        "int addToolLoad(int materialLoad, int toolLoad)",
+        "panelLoad(12, 18)",
+        "addToolLoad(materialLoad, 24)"
+      ],
+      "notContains": [
+        "Material load: 216",
+        "Loaded system total: 240",
+        "void panelLoad",
+        "void addToolLoad"
+      ]
+    }
+  ]
+}

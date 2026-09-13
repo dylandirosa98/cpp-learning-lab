@@ -1,0 +1,165 @@
+{
+  "order": 38,
+  "id": "4.x",
+  "title": "Chapter 4 summary and quiz",
+  "url": "https://www.learncpp.com/cpp-tutorial/chapter-4-summary-and-quiz/",
+  "estimatedMinutes": 50,
+  "recap": [
+    "Fundamental types model different kinds of values. Integers represent whole numbers, double provides fractional arithmetic, bool records true-or-false state, and char stores a character value that can select behavior such as a calculator operation.",
+    "Conversions and branches deserve deliberate handling. Explicit conversion documents an intentional change of type, while ordered if statements can keep invalid operations out of arithmetic paths and clamp physical calculations at meaningful boundaries."
+  ],
+  "objectives": [
+    "Use double, int, char, and bool values for roles that match their domains.",
+    "Dispatch all four basic calculator operations from a char value.",
+    "Reject division by zero and unsupported operations before calculating.",
+    "Use an explicit conversion when an integer time enters floating-point physics.",
+    "Clamp a falling object's calculated height at ground level.",
+    "Preserve calculation, presentation, and coordination boundaries across files."
+  ],
+  "warnings": [
+    "Do not compare or calculate a quotient after a zero divisor has been identified.",
+    "A char such as '4' is a character code, not the integer value 4.",
+    "Integer arithmetic can discard fractions before a result is assigned to double.",
+    "Do not print negative height after the ball reaches the ground.",
+    "Keep exact formatting in the reporting module and all arithmetic out of it."
+  ],
+  "challenge": "Complete a deterministic multi-file calculator and falling-ball lab without console input. The calculation module must recognize +, -, *, and / chars, identify division by zero, calculate valid double results, and compute height as initialHeight - gravity * timeSquared / 2 using gravity 9.8. Explicitly convert the int seconds value to double before the physics arithmetic and clamp every negative height to 0.0. Main must run fixed cases for all four operators, division by zero, an unsupported '?' operation, and an unsupported operation with a zero right operand. Use bool state and if to call calculate() only for valid cases. Then report a ball dropped from 100.0 meters at whole seconds 0 through 5. The report module owns fixed two-decimal formatting and exact success/error text; no file may read stdin.",
+  "expectedOutput": [
+    "Calculator checks:",
+    "8.00 + 2.00 = 10.00",
+    "8.00 - 2.00 = 6.00",
+    "8.00 * 2.50 = 20.00",
+    "9.00 / 4.00 = 2.25",
+    "5.00 / 0.00 -> error: division by zero",
+    "3.00 ? 2.00 -> error: unsupported operation",
+    "3.00 ? 0.00 -> error: unsupported operation",
+    "Falling ball from 100.00 meters:",
+    "At 0 seconds: 100.00 meters",
+    "At 1 seconds: 95.10 meters",
+    "At 2 seconds: 80.40 meters",
+    "At 3 seconds: 55.90 meters",
+    "At 4 seconds: 21.60 meters",
+    "At 5 seconds: 0.00 meters"
+  ],
+  "hints": [
+    "Assign each type one job: double for operands and heights, char for the requested operator, bool for validation state, and int for whole elapsed seconds.",
+    "Determine supported and division-by-zero state before calculating. In calculate(), use an if chain for +, -, *, and /; in the physics function, convert seconds with static_cast<double> before squaring it.",
+    "Main should initialize a result to 0.0 and replace it only when supported is true and divisionByZero is false. Reporting checks the error states before printing a result, and heightAfterSeconds returns 0.0 whenever its formula would go below ground."
+  ],
+  "sources": [
+    "main.cpp",
+    "calculations.cpp",
+    "report.cpp"
+  ],
+  "sourceChecks": [
+    {
+      "file": "calculations.h",
+      "contains": [
+        "#ifndef CPP_LEARNING_LAB_CHAPTER4_CALCULATIONS_H",
+        "#define CPP_LEARNING_LAB_CHAPTER4_CALCULATIONS_H",
+        "bool isSupportedOperation(char operation);",
+        "bool isDivisionByZero(char operation, double rightOperand);",
+        "double calculate(double leftOperand, char operation, double rightOperand);",
+        "double heightAfterSeconds(double initialHeight, int seconds);",
+        "#endif"
+      ],
+      "notContains": [
+        "#pragma once",
+        "std::cout",
+        "std::cin"
+      ]
+    },
+    {
+      "file": "report.h",
+      "contains": [
+        "#ifndef CPP_LEARNING_LAB_CHAPTER4_REPORT_H",
+        "#define CPP_LEARNING_LAB_CHAPTER4_REPORT_H",
+        "void printCalculatorHeading();",
+        "void printCalculation(double leftOperand, char operation, double rightOperand, bool supported, bool divisionByZero, double result);",
+        "void printBallHeading(double initialHeight);",
+        "void printBallHeight(int seconds, double height);",
+        "#endif"
+      ],
+      "notContains": [
+        "#pragma once",
+        "std::cout",
+        "std::cin"
+      ]
+    },
+    {
+      "file": "calculations.cpp",
+      "contains": [
+        "#include \"calculations.h\"",
+        "bool isSupportedOperation(char operation)",
+        "operation == '+'",
+        "operation == '-'",
+        "operation == '*'",
+        "operation == '/'",
+        "bool isDivisionByZero(char operation, double rightOperand)",
+        "return operation == '/' && rightOperand == 0.0;",
+        "double calculate(double leftOperand, char operation, double rightOperand)",
+        "return leftOperand + rightOperand;",
+        "return leftOperand - rightOperand;",
+        "return leftOperand * rightOperand;",
+        "return leftOperand / rightOperand;",
+        "double heightAfterSeconds(double initialHeight, int seconds)",
+        "static_cast<double>(seconds)",
+        "constexpr double gravity{ 9.8 }",
+        "initialHeight - gravity * time * time / 2.0",
+        "if (height < 0.0)",
+        "return 0.0;"
+      ],
+      "notContains": [
+        "std::cout",
+        "std::cin",
+        "using namespace std"
+      ]
+    },
+    {
+      "file": "report.cpp",
+      "contains": [
+        "#include \"report.h\"",
+        "#include <iomanip>",
+        "#include <iostream>",
+        "std::fixed",
+        "std::setprecision(2)",
+        "if (!supported)",
+        "if (divisionByZero)",
+        "error: unsupported operation",
+        "error: division by zero"
+      ],
+      "notContains": [
+        "std::cin",
+        "using namespace std"
+      ]
+    },
+    {
+      "file": "main.cpp",
+      "contains": [
+        "#include \"calculations.h\"",
+        "#include \"report.h\"",
+        "bool supported{ isSupportedOperation(operation) }",
+        "bool divisionByZero{ isDivisionByZero(operation, rightOperand) }",
+        "if (supported && !divisionByZero)",
+        "calculate(leftOperand, operation, rightOperand)",
+        "runCalculation(8.0, '+', 2.0)",
+        "runCalculation(8.0, '-', 2.0)",
+        "runCalculation(8.0, '*', 2.5)",
+        "runCalculation(9.0, '/', 4.0)",
+        "runCalculation(5.0, '/', 0.0)",
+        "runCalculation(3.0, '?', 2.0)",
+        "runCalculation(3.0, '?', 0.0)",
+        "heightAfterSeconds(initialHeight, seconds)",
+        "printBallHeight(seconds, height)"
+      ],
+      "notContains": [
+        "std::cout",
+        "std::cin",
+        "std::cerr",
+        "using namespace std",
+        "#include \"calculations.cpp\"",
+        "#include \"report.cpp\""
+      ]
+    }
+  ]
+}

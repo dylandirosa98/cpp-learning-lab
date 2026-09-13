@@ -1,0 +1,50 @@
+{
+  "order": 55,
+  "id": "6.7",
+  "title": "Relational operators and floating point comparisons",
+  "url": "https://www.learncpp.com/cpp-tutorial/relational-operators-and-floating-point-comparisons/",
+  "estimatedMinutes": 35,
+  "recap": [
+    "Relational operators compare operands and produce bool values. Direct equality is appropriate for many exact values, but rounding error makes == and != unreliable for calculated floating-point values.",
+    "A robust approximate comparison can combine an absolute tolerance near zero with a relative tolerance that scales to the larger magnitude. The comparison should use the absolute difference and accept it when it is no larger than the greater tolerance."
+  ],
+  "objectives": [
+    "Observe why direct equality can reject a calculated floating-point value.",
+    "Implement a combined relative and absolute approximate comparison.",
+    "Use std::abs and std::max to compare magnitudes.",
+    "Reject values outside the selected tolerance."
+  ],
+  "warnings": [
+    "A single fixed epsilon is not suitable across every magnitude.",
+    "Do not compare only one signed subtraction; use the absolute difference.",
+    "Tolerance values should reflect the precision required by the problem domain."
+  ],
+  "challenge": "Implement approximatelyEqualRelAbs(). It should compare the absolute difference with the greater of an absolute epsilon and a relative epsilon scaled by the larger operand magnitude. Demonstrate that 0.1 + 0.2 is not exactly equal to 0.3, is approximately equal, and is not approximately equal to 0.31.",
+  "expectedOutput": [
+    "Exactly equal: false",
+    "Approximately equal: true",
+    "Clearly separated: false"
+  ],
+  "hints": [
+    "Compute difference with std::abs(a - b).",
+    "Compute the larger magnitude with std::max(std::abs(a), std::abs(b)).",
+    "Return difference <= std::max(absEpsilon, relEpsilon * largestMagnitude)."
+  ],
+  "sources": ["main.cpp"],
+  "sourceChecks": [
+    {
+      "file": "main.cpp",
+      "contains": [
+        "#include <algorithm>",
+        "#include <cmath>",
+        "bool approximatelyEqualRelAbs(double a, double b, double relEpsilon, double absEpsilon)",
+        "std::abs(a - b)",
+        "std::max(std::abs(a), std::abs(b))",
+        "difference <= std::max(absEpsilon, relEpsilon * largestMagnitude)",
+        "sum == target",
+        "approximatelyEqualRelAbs(sum, target, relEpsilon, absEpsilon)"
+      ],
+      "notContains": ["std::cin", "using namespace std", "return true;", "Approximately equal: true"]
+    }
+  ]
+}

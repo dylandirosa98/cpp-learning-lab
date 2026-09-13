@@ -1,0 +1,62 @@
+{
+  "order": 47,
+  "id": "5.9",
+  "title": "std::string_view (part 2)",
+  "url": "https://www.learncpp.com/cpp-tutorial/stdstring_view-part-2/",
+  "estimatedMinutes": 30,
+  "recap": [
+    "A std::string owns its data, while std::string_view only observes data owned elsewhere. A view becomes dangling when its source is destroyed and is commonly invalidated when an owning std::string is modified.",
+    "remove_prefix() and remove_suffix() narrow a view without changing the underlying string. Returning a view into a caller-owned argument is safe when the caller keeps that owner alive and unchanged for every later use of the returned view."
+  ],
+  "objectives": [
+    "Keep an owning std::string alive while a view and returned slice refer to it.",
+    "Return a std::string_view parameter rather than a view into a local string.",
+    "Slice without allocation using remove_prefix() and remove_suffix().",
+    "Avoid modifying the owner while derived views are in use."
+  ],
+  "warnings": [
+    "A std::string_view does not extend the lifetime of the string it views.",
+    "Returning a view into a local std::string or storing a view of a temporary std::string creates a dangling view.",
+    "Modifying an owning std::string can invalidate every view into its character storage."
+  ],
+  "challenge": "Keep trimBrackets() taking and returning std::string_view, and narrow its local view by one character on each side with remove_prefix() and remove_suffix(). Preserve the supplied named std::string owner so source and slice both refer to live, unchanged storage while they are printed. A direct view of a string literal would also be lifetime-safe because literals have static storage duration, but this exercise practices the caller-owned string case.",
+  "expectedOutput": [
+    "Source: [stable slice]",
+    "Slice: stable slice"
+  ],
+  "hints": [
+    "A view is not an owner; the supplied named std::string owns [stable slice] for the full duration of both output statements.",
+    "Keep source initialized from owner, then pass source to trimBrackets so the returned view still refers into the live owner.",
+    "Inside trimBrackets, call text.remove_prefix(1) and text.remove_suffix(1) before returning text; do not modify owner afterward."
+  ],
+  "sources": [
+    "main.cpp"
+  ],
+  "sourceChecks": [
+    {
+      "file": "main.cpp",
+      "contains": [
+        "#include <string>",
+        "#include <string_view>",
+        "std::string_view trimBrackets(std::string_view text)",
+        "text.remove_prefix(1);",
+        "text.remove_suffix(1);",
+        "return text;",
+        "std::string owner{ \"[stable slice]\" };",
+        "std::string_view source{ owner };",
+        "std::string_view slice{ trimBrackets(source) };",
+        "<< source <<",
+        "<< slice <<"
+      ],
+      "notContains": [
+        "std::cin",
+        "using namespace std",
+        "std::string_view source{ \"[stable slice]\" }",
+        "return std::string",
+        "owner =",
+        "Source: [stable slice]",
+        "Slice: stable slice"
+      ]
+    }
+  ]
+}

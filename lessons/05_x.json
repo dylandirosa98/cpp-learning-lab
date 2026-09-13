@@ -1,0 +1,177 @@
+{
+  "order": 48,
+  "id": "5.x",
+  "title": "Chapter 5 summary and quiz",
+  "url": "https://www.learncpp.com/cpp-tutorial/chapter-5-summary-and-quiz/",
+  "estimatedMinutes": 45,
+  "recap": [
+    "Named constexpr constants give important fixed values meaningful names and make accidental changes impossible. std::string owns modifiable text, while std::string_view cheaply provides read-only access to text owned by a caller or to a string literal.",
+    "A string view remains valid only while the viewed characters remain alive and unmodified. Returning a view selected from caller-owned names is safe when those names outlive the view; returning a view into a temporary or a destroyed local std::string would dangle."
+  ],
+  "objectives": [
+    "Compose each full name into an owning std::string.",
+    "Use std::string_view for read-only parameters and views into caller-owned names and string literals.",
+    "Replace fixed ages and text inputs with named constexpr constants.",
+    "Calculate the absolute age difference instead of hard-coding it.",
+    "Select and report the older person, with a deterministic first-person-wins tie rule.",
+    "Separate text and age logic, reporting, and coordination across source files."
+  ],
+  "warnings": [
+    "Do not return a std::string_view into a local std::string or a temporary composed name.",
+    "Do not modify an owning std::string while a view into it is still in use.",
+    "Do not copy read-only string parameters into new std::string values without a reason.",
+    "Do not hard-code full names, the age difference, or the selected older person in output code.",
+    "Keep stream output in report.cpp and perform no console input."
+  ],
+  "challenge": "Build a deterministic multi-file people comparison without stdin. In the people module, compose first and last names into owning std::string values, calculate the non-negative age difference, and return a std::string_view selecting the older caller-owned name. Define ties to select the first person. In main, use named constexpr constants for Ada Lovelace's name parts and age 36, Charles Babbage's name parts and age 79, and the report heading. Keep both owning names alive and unchanged while selected views are used. Report both people, Charles as older, the calculated 43-year difference, a reversed-argument check where the first person is older, and a tie check that selects Ada under the first-person-wins rule. The report module must only format supplied values, and output must match exactly.",
+  "expectedOutput": [
+    "Age comparison",
+    "Person 1: Ada Lovelace (age 36)",
+    "Person 2: Charles Babbage (age 79)",
+    "Older person: Charles Babbage (age 79)",
+    "Age difference: 43 years",
+    "First-argument older check: Charles Babbage",
+    "Tie rule: first person wins",
+    "Tie selected: Ada Lovelace"
+  ],
+  "hints": [
+    "Let composeFullName construct and return std::string, but take each name part as std::string_view. The returned string owns its characters independently of the input views.",
+    "For ageDifference, subtract smaller from larger. For selectOlderName, compare ages and return firstName when firstAge is greater than or equal to secondAge so ties are deterministic.",
+    "Create both const std::string full names before creating selected std::string_view values. Pass those views and calculated integers into report functions; never alter the owning names afterward."
+  ],
+  "sources": [
+    "main.cpp",
+    "people.cpp",
+    "report.cpp"
+  ],
+  "sourceChecks": [
+    {
+      "file": "people.h",
+      "contains": [
+        "#ifndef CPP_LEARNING_LAB_CHAPTER5_PEOPLE_H",
+        "#define CPP_LEARNING_LAB_CHAPTER5_PEOPLE_H",
+        "#include <string>",
+        "#include <string_view>",
+        "std::string composeFullName(std::string_view firstName, std::string_view lastName);",
+        "int ageDifference(int firstAge, int secondAge);",
+        "std::string_view selectOlderName(std::string_view firstName, int firstAge, std::string_view secondName, int secondAge);",
+        "#endif"
+      ],
+      "notContains": [
+        "#pragma once",
+        "std::cout",
+        "std::cin",
+        "using namespace std"
+      ]
+    },
+    {
+      "file": "report.h",
+      "contains": [
+        "#ifndef CPP_LEARNING_LAB_CHAPTER5_REPORT_H",
+        "#define CPP_LEARNING_LAB_CHAPTER5_REPORT_H",
+        "#include <string_view>",
+        "void printHeading(std::string_view heading);",
+        "void printPerson(int number, std::string_view name, int age);",
+        "void printOlderPerson(std::string_view name, int age);",
+        "void printAgeDifference(int difference);",
+        "void printFirstOlderCheck(std::string_view name);",
+        "void printTieResult(std::string_view name);",
+        "#endif"
+      ],
+      "notContains": [
+        "#pragma once",
+        "std::string ",
+        "std::cout",
+        "std::cin",
+        "using namespace std"
+      ]
+    },
+    {
+      "file": "people.cpp",
+      "contains": [
+        "#include \"people.h\"",
+        "std::string composeFullName(std::string_view firstName, std::string_view lastName)",
+        "std::string fullName{ firstName };",
+        "fullName += ' ';",
+        "fullName += lastName;",
+        "return fullName;",
+        "int ageDifference(int firstAge, int secondAge)",
+        "if (firstAge >= secondAge)",
+        "return firstAge - secondAge;",
+        "return secondAge - firstAge;",
+        "std::string_view selectOlderName(std::string_view firstName, int firstAge, std::string_view secondName, int secondAge)",
+        "return firstName;",
+        "return secondName;"
+      ],
+      "notContains": [
+        "std::cout",
+        "std::cin",
+        "using namespace std",
+        "Ada Lovelace",
+        "Charles Babbage",
+        "return std::string_view{ composeFullName"
+      ]
+    },
+    {
+      "file": "report.cpp",
+      "contains": [
+        "#include \"report.h\"",
+        "#include <iostream>",
+        "std::cout << heading << '\\n';",
+        "std::cout << \"Person \" << number << \": \" << name << \" (age \" << age << \")\\n\";",
+        "std::cout << \"Older person: \" << name << \" (age \" << age << \")\\n\";",
+        "std::cout << \"Age difference: \" << difference << \" years\\n\";",
+        "std::cout << \"First-argument older check: \" << name << '\\n';",
+        "std::cout << \"Tie selected: \" << name << '\\n';"
+      ],
+      "notContains": [
+        "std::cin",
+        "using namespace std",
+        "Ada",
+        "Lovelace",
+        "Charles",
+        "Babbage",
+        "36",
+        "79",
+        "43",
+        "ageDifference(",
+        "selectOlderName("
+      ]
+    },
+    {
+      "file": "main.cpp",
+      "contains": [
+        "#include \"people.h\"",
+        "#include \"report.h\"",
+        "constexpr std::string_view heading{ \"Age comparison\" };",
+        "constexpr std::string_view adaFirstName{ \"Ada\" };",
+        "constexpr std::string_view adaLastName{ \"Lovelace\" };",
+        "constexpr int adaAge{ 36 };",
+        "constexpr std::string_view charlesFirstName{ \"Charles\" };",
+        "constexpr std::string_view charlesLastName{ \"Babbage\" };",
+        "constexpr int charlesAge{ 79 };",
+        "const std::string adaName{ composeFullName(adaFirstName, adaLastName) };",
+        "const std::string charlesName{ composeFullName(charlesFirstName, charlesLastName) };",
+        "const int difference{ ageDifference(adaAge, charlesAge) };",
+        "const std::string_view olderName{ selectOlderName(adaName, adaAge, charlesName, charlesAge) };",
+        "const std::string_view firstOlderName{ selectOlderName(charlesName, charlesAge, adaName, adaAge) };",
+        "const std::string_view tieName{ selectOlderName(adaName, adaAge, charlesName, adaAge) };",
+        "printOlderPerson(olderName, charlesAge);",
+        "printAgeDifference(difference);",
+        "printFirstOlderCheck(firstOlderName);",
+        "printTieResult(tieName);"
+      ],
+      "notContains": [
+        "std::cout",
+        "std::cin",
+        "std::cerr",
+        "using namespace std",
+        "Ada Lovelace",
+        "Charles Babbage",
+        "constexpr int ageDifference",
+        "#include \"people.cpp\"",
+        "#include \"report.cpp\""
+      ]
+    }
+  ]
+}

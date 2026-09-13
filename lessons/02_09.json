@@ -1,0 +1,48 @@
+{
+  "order": 9,
+  "id": "2.9",
+  "title": "Naming collisions and an introduction to namespaces",
+  "url": "https://www.learncpp.com/cpp-tutorial/naming-collisions-and-an-introduction-to-namespaces/",
+  "estimatedMinutes": 10,
+  "recap": [
+    "Identifiers that cannot be distinguished in the same scope cause naming collisions. Separate scope regions allow identical simple names to represent different entities.",
+    "Standard-library names live in the std namespace. Explicit qualification with the scope-resolution operator identifies the intended name and avoids importing a large collection of possible conflicts."
+  ],
+  "objectives": [
+    "Recognize collisions in one file and across linked files.",
+    "Explain how scope regions separate identifiers.",
+    "Use a qualified standard-library name with the scope-resolution operator.",
+    "Avoid broad using-directives at global scope."
+  ],
+  "warnings": [
+    "Two indistinguishable global definitions can fail during compilation or linking.",
+    "A global using namespace std directive can make otherwise harmless names ambiguous.",
+    "Executable statements cannot appear directly at namespace scope.",
+    "Mutable global variables increase coupling and should not be introduced casually."
+  ],
+  "challenge": "Create a global function named cout that returns 27. Use the standard output stream with explicit qualification to print the returned number without a naming conflict.",
+  "expectedOutput": [
+    "Open roof sections: 27"
+  ],
+  "hints": [
+    "First, change the output expression so its stream is selected explicitly from the std namespace; leave the global cout function unchanged.",
+    "Pseudocode: DEFINE global FUNCTION cout: RETURN 27. MAIN: select the cout output stream from the standard namespace; OUTPUT the open-sections label, the result of calling the global cout function, and a newline; return success.",
+    "Near-C++ structure: int cout() { return /* required section count */; } int main() { std::cout << /* label */ << cout() << /* newline */; /* return success */ }"
+  ],
+  "sources": [
+    "main.cpp"
+  ],
+  "sourceChecks": [
+    {
+      "file": "main.cpp",
+      "contains": [
+        "int cout()",
+        "std::cout",
+        "cout()"
+      ],
+      "notContains": [
+        "using namespace std"
+      ]
+    }
+  ]
+}

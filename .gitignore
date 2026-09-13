@@ -1,0 +1,17 @@
+.course/*
+!.course/progress.json
+.idea/
+.ai/
+**/__pycache__/
+build/
+cmake-build-*/
+/out/
+/compile_commands.json
+workspaces/**/.cache/
+workspaces/**/out/
+workspaces/**/cmake-build-*/
+workspaces/**/compile_commands.json
+workspaces/**/main
+workspaces/**/lesson_*
+*.o
+/testlesson

@@ -1,0 +1,48 @@
+{
+  "order": 50,
+  "id": "6.2",
+  "title": "Arithmetic operators",
+  "url": "https://www.learncpp.com/cpp-tutorial/arithmetic-operators/",
+  "estimatedMinutes": 25,
+  "recap": [
+    "C++ provides unary plus and minus and the binary addition, subtraction, multiplication, and division operators. Unary minus produces the negation of its operand; it does not modify a named operand by itself.",
+    "Integer division discards any fractional part. If a fractional result is required, at least one operand must be floating-point, which can be made explicit with static_cast<double>."
+  ],
+  "objectives": [
+    "Combine addition, subtraction, and multiplication in a practical calculation.",
+    "Compare integer division with floating-point division.",
+    "Use static_cast<double> to request a fractional quotient.",
+    "Apply unary minus to reverse a signed adjustment."
+  ],
+  "warnings": [
+    "Dividing two int values performs integer division even when the result initializes a double.",
+    "Do not use a final numeric literal in place of the arithmetic expression.",
+    "This exercise does not need input or formatted decimal output."
+  ],
+  "challenge": "Produce a session report from 155 total minutes split among 4 sessions. Calculate whole minutes per session with integer division and exact minutes per session by converting totalMinutes to double before division. Separately calculate a 3-point net score from five 2-point gains and a 7-point penalty, then negate that score to show unary minus.",
+  "expectedOutput": [
+    "Whole minutes per session: 38",
+    "Exact minutes per session: 38.75",
+    "Net score: 3",
+    "Reversed score: -3"
+  ],
+  "hints": [
+    "totalMinutes / sessions uses integer division because both operands are int.",
+    "Use static_cast<double>(totalMinutes) / sessions for the exact quotient.",
+    "Calculate netScore as gains * pointsPerGain - penalty, then initialize reversedScore with -netScore."
+  ],
+  "sources": ["main.cpp"],
+  "sourceChecks": [
+    {
+      "file": "main.cpp",
+      "contains": [
+        "totalMinutes / sessions",
+        "static_cast<double>(totalMinutes) / sessions",
+        "gains * pointsPerGain - penalty",
+        "const int reversedScore{ -netScore };",
+        "<< exactMinutes <<"
+      ],
+      "notContains": ["std::cin", "using namespace std", "38.75", "Net score: 3"]
+    }
+  ]
+}

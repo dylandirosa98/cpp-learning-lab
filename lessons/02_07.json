@@ -1,0 +1,48 @@
+{
+  "order": 7,
+  "id": "2.7",
+  "title": "Forward declarations and definitions",
+  "url": "https://www.learncpp.com/cpp-tutorial/forward-declarations/",
+  "estimatedMinutes": 15,
+  "recap": [
+    "A compiler processes declarations in the order it encounters them. A function prototype supplies enough type information to validate a call before the function body appears.",
+    "A declaration announces an identifier, while a definition provides its implementation or storage. A called function needs one matching definition in the finished program or linking will fail."
+  ],
+  "objectives": [
+    "Write a function prototype before its first use.",
+    "Keep declaration and definition signatures consistent.",
+    "Distinguish compilation errors from missing-definition linker errors.",
+    "Apply the one-definition rule to functions and variables."
+  ],
+  "warnings": [
+    "A function prototype ends with a semicolon and has no body.",
+    "Changing a parameter or return type can make the declaration describe a different function.",
+    "Declaring and calling a function without defining it produces a linker failure.",
+    "Fix the first reported diagnostic before investigating later messages."
+  ],
+  "challenge": "In main.cpp, declare roofLoad before main, call it with 12 panels weighing 12 kilograms each, and define it after main. Print the calculated load using the exact output shown.",
+  "expectedOutput": [
+    "Calculated roof load: 144 kg"
+  ],
+  "hints": [
+    "First, add a prototype for roofLoad above main with the same return type and parameter types as its later definition.",
+    "Pseudocode: DECLARE FUNCTION roofLoad(panels: integer, kilogramsPerPanel: integer) RETURNS integer. MAIN: load = roofLoad(12, 12); OUTPUT the calculated-load label, load, and kg suffix; return success. DEFINE FUNCTION roofLoad(panels, kilogramsPerPanel): RETURN panels * kilogramsPerPanel.",
+    "Near-C++ structure: int roofLoad(int panels, int kilogramsPerPanel) /* finish as a prototype */ int main() { std::cout << /* label */ << roofLoad(/* required arguments */) << /* suffix and newline */; /* return success */ } int roofLoad(int panels, int kilogramsPerPanel) { return /* product of both parameters */; }"
+  ],
+  "sources": [
+    "main.cpp"
+  ],
+  "sourceChecks": [
+    {
+      "file": "main.cpp",
+      "contains": [
+        "int roofLoad(int panels, int kilogramsPerPanel);",
+        "roofLoad(12, 12)",
+        "int roofLoad(int panels, int kilogramsPerPanel)"
+      ],
+      "notContains": [
+        "using namespace std"
+      ]
+    }
+  ]
+}

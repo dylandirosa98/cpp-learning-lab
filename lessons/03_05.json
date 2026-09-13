@@ -1,0 +1,97 @@
+{
+  "order": 19,
+  "id": "3.5",
+  "title": "More debugging tactics",
+  "url": "https://www.learncpp.com/cpp-tutorial/more-debugging-tactics/",
+  "estimatedMinutes": 25,
+  "recap": [
+    "Conditional compilation can retain reusable diagnostics while excluding them from a normal build. A shared header provides one place to enable or disable the facility across source files.",
+    "Logging separates diagnostic events from user-facing output. std::clog targets the standard error stream by default; larger programs commonly use a dedicated logging library for filtering, formatting, and file destinations."
+  ],
+  "objectives": [
+    "Use existing conditionally compiled log statements to inspect runtime state.",
+    "Distinguish normal stdout from diagnostic std::clog output.",
+    "Repair the first logged disagreement with the function contract.",
+    "Disable diagnostics centrally without deleting reusable instrumentation."
+  ],
+  "warnings": [
+    "A misspelled conditional symbol can silently leave some diagnostic code disabled.",
+    "Every source file using a shared diagnostic macro must include the header that defines it.",
+    "std::clog does not create a log file automatically and writes to standard error by default.",
+    "Diagnostic mode must not alter calculations or required stdout."
+  ],
+  "challenge": "Diagnose the alert response window with the starter's reusable diagnostics enabled. Two water events contribute three alert points each, one electrical event contributes five alert points, and each alert point allows four response minutes. Run the untouched program and distinguish its two-line stdout report from LAB_LOG messages on std::clog. Confirm each logged stage in order and identify the first input or result that disagrees with the stated behavior. Repair the production calculation, then disable diagnostics only by removing or commenting out the single ENABLE_DIAGNOSTICS definition in diagnostics.h. Keep all LAB_LOG calls available for future use and verify that normal output is exactly the two expected lines.",
+  "expectedOutput": [
+    "System alert score: 11",
+    "Response window: 44 minutes"
+  ],
+  "hints": [
+    "Confirm the alert-score checkpoint first. If it is 11, everything used to produce that value can be excluded from the remaining search.",
+    "At entry to calculateResponseMinutes(), compare minutesPerPoint with the required value 4, then inspect the call site if they differ.",
+    "The response calculation should receive alertScore and a second argument of 4; afterward, disable only the central diagnostic definition."
+  ],
+  "sources": [
+    "main.cpp",
+    "inspection_alert.cpp"
+  ],
+  "sourceChecks": [
+    {
+      "file": "diagnostics.h",
+      "contains": [
+        "#ifndef CPP_LEARNING_LAB_DIAGNOSTICS_H",
+        "#define CPP_LEARNING_LAB_DIAGNOSTICS_H",
+        "#ifdef ENABLE_DIAGNOSTICS",
+        "#define LAB_LOG(message)",
+        "std::clog",
+        "#else",
+        "#endif"
+      ],
+      "notContains": [
+        "#define ENABLE_DIAGNOSTICS"
+      ]
+    },
+    {
+      "file": "inspection_alert.h",
+      "contains": [
+        "#ifndef CPP_LEARNING_LAB_INSPECTION_ALERT_H",
+        "#define CPP_LEARNING_LAB_INSPECTION_ALERT_H",
+        "int calculateAlertScore(int waterEvents, int electricalEvents);",
+        "int calculateResponseMinutes(int alertScore, int minutesPerPoint);",
+        "#endif"
+      ],
+      "notContains": [
+        "{",
+        "#include \"inspection_alert.cpp\""
+      ]
+    },
+    {
+      "file": "inspection_alert.cpp",
+      "contains": [
+        "#include \"inspection_alert.h\"",
+        "#include \"diagnostics.h\"",
+        "int calculateAlertScore(int waterEvents, int electricalEvents)",
+        "int calculateResponseMinutes(int alertScore, int minutesPerPoint)",
+        "LAB_LOG("
+      ],
+      "notContains": [
+        "#define ENABLE_DIAGNOSTICS",
+        "using namespace std"
+      ]
+    },
+    {
+      "file": "main.cpp",
+      "contains": [
+        "#include \"inspection_alert.h\"",
+        "calculateAlertScore(2, 1)",
+        "calculateResponseMinutes(alertScore, 4)"
+      ],
+      "notContains": [
+        "#define ENABLE_DIAGNOSTICS",
+        "System alert score: 11",
+        "Response window: 44",
+        "using namespace std",
+        "#include \"inspection_alert.cpp\""
+      ]
+    }
+  ]
+}

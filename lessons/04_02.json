@@ -1,0 +1,52 @@
+{
+  "order": 27,
+  "id": "4.2",
+  "title": "Void",
+  "url": "https://www.learncpp.com/cpp-tutorial/void/",
+  "estimatedMinutes": 15,
+  "recap": [
+    "The incomplete type void represents the absence of a type. Objects cannot have type void because the compiler cannot determine storage for such an object.",
+    "A void return type declares that a function returns no value. In C++, a function taking no parameters should use an empty parameter list rather than the deprecated C-style (void) parameter list."
+  ],
+  "objectives": [
+    "Use void for functions whose job is an observable action rather than producing a value.",
+    "Call a void function as a statement without assigning or streaming a result.",
+    "Use an empty parameter list for a function that accepts no arguments.",
+    "Keep report coordination separate from report presentation."
+  ],
+  "warnings": [
+    "A void function cannot return a value to its caller.",
+    "A variable cannot be declared with type void.",
+    "Do not use (void) to spell an empty parameter list in modern C++.",
+    "Do not duplicate the expected report directly in main()."
+  ],
+  "challenge": "Repair the dispatch report while preserving its two void functions. printDispatchStatus() receives 18 packed orders and 24 total orders but currently presents those roles in the wrong order. runReport() should remain a no-argument coordinator written with an empty parameter list, and main() should call it as a statement. Use no input and print exactly one line.",
+  "expectedOutput": [
+    "Packed orders: 18 of 24"
+  ],
+  "hints": [
+    "A void function performs its work directly and does not need its result inserted into std::cout.",
+    "Match each parameter name to the position where its value belongs in the sentence.",
+    "The preferred no-argument declaration is runReport(), not runReport(void)."
+  ],
+  "sources": [
+    "main.cpp"
+  ],
+  "sourceChecks": [
+    {
+      "file": "main.cpp",
+      "contains": [
+        "void printDispatchStatus(int packed, int total)",
+        "void runReport()",
+        "printDispatchStatus(18, 24)",
+        "runReport();"
+      ],
+      "notContains": [
+        "Packed orders: 18 of 24",
+        "runReport(void)",
+        "std::cin",
+        "using namespace std"
+      ]
+    }
+  ]
+}

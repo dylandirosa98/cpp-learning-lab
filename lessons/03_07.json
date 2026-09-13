@@ -1,0 +1,51 @@
+{
+  "order": 21,
+  "id": "3.7",
+  "title": "Using an integrated debugger: Running and breakpoints",
+  "url": "https://www.learncpp.com/cpp-tutorial/using-an-integrated-debugger-running-and-breakpoints/",
+  "estimatedMinutes": 20,
+  "recap": [
+    "Run to Cursor provides a one-time destination, while a persistent breakpoint pauses every time its statement is reached. Start begins a new debug run and Continue resumes execution until another stop or program termination.",
+    "Breakpoints make repeated code paths practical to inspect. Set Next Statement is different from reverse execution because it moves the execution point without restoring prior variable state."
+  ],
+  "objectives": [
+    "Set persistent breakpoints in a repeatedly called function.",
+    "Use Start and Continue to compare successive breakpoint hits.",
+    "Use Run to Cursor to reach a later update efficiently.",
+    "Repair normal source code rather than manipulating the execution point."
+  ],
+  "warnings": [
+    "A breakpoint on a statement outside the executed path will never be reached.",
+    "Run to Cursor does not remain active after reaching its destination.",
+    "Set Next Statement does not restore values changed by earlier statements.",
+    "Jumping execution into another function can produce invalid behavior and must not be used here."
+  ],
+  "challenge": "Repair a loading timeline that should accumulate stages lasting 14, 9, and 7 minutes. In CLion's Debug configuration, place breakpoints on the return statement in recordStage() and on the final output statement in main(). Start debugging and Continue through all three recordStage() hits, recording the originating call and next statement after each return. Restart once and use Run to Cursor on the third update. Make the source correct without using Set Next Statement as the repair.",
+  "expectedOutput": [
+    "Loading timeline: 30 minutes"
+  ],
+  "hints": [
+    "Count three stops in recordStage() and associate each one with its stage duration.",
+    "Before each call, inspect what the first argument represents relative to the previously returned elapsed value.",
+    "The final update should continue from accumulated state rather than introducing a separate starting value."
+  ],
+  "sources": [
+    "main.cpp"
+  ],
+  "sourceChecks": [
+    {
+      "file": "main.cpp",
+      "contains": [
+        "int recordStage(int elapsed, int stageMinutes)",
+        "recordStage(elapsed, 14)",
+        "recordStage(elapsed, 9)",
+        "recordStage(elapsed, 7)"
+      ],
+      "notContains": [
+        "std::cerr",
+        "using namespace std",
+        "Loading timeline: 30 minutes"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,61 @@
+{
+  "order": 46,
+  "id": "5.8",
+  "title": "Introduction to std::string_view",
+  "url": "https://www.learncpp.com/cpp-tutorial/introduction-to-stdstring_view/",
+  "estimatedMinutes": 25,
+  "recap": [
+    "std::string_view, provided by <string_view>, gives inexpensive read-only access to existing character data without owning or copying that data. This makes it a strong default for read-only string parameters.",
+    "A std::string_view parameter can accept a C-style string literal, a std::string, or another std::string_view. Passing the view by value is cheap and the function must not use it to modify the underlying text."
+  ],
+  "objectives": [
+    "Define a cheap read-only std::string_view function parameter.",
+    "Call one function with a string literal, std::string, and std::string_view.",
+    "Avoid a std::string copy in a read-only reporting function.",
+    "Include the correct headers for both string types."
+  ],
+  "warnings": [
+    "Passing std::string by value creates an unnecessary owning copy.",
+    "A std::string_view provides read-only access and does not extend an argument's lifetime.",
+    "std::string_view does not implicitly convert to std::string, so a by-value std::string parameter cannot accept every required call."
+  ],
+  "challenge": "Repair printLabel() to accept one inexpensive read-only std::string_view parameter. Keep the three calls that pass a string literal, an owned std::string, and another std::string_view, producing the exact deterministic report without input or string copies in the function parameter.",
+  "expectedOutput": [
+    "Label: literal",
+    "Label: owned string",
+    "Label: existing view"
+  ],
+  "hints": [
+    "The current std::string by-value parameter owns a new copy and cannot directly accept the final view argument.",
+    "Include <string_view> and change only printLabel's parameter type to std::string_view.",
+    "Leave all three calls in place; each argument type can initialize the same read-only view parameter."
+  ],
+  "sources": [
+    "main.cpp"
+  ],
+  "sourceChecks": [
+    {
+      "file": "main.cpp",
+      "contains": [
+        "#include <string>",
+        "#include <string_view>",
+        "void printLabel(std::string_view label)",
+        "std::string owned{ \"owned string\" };",
+        "std::string_view viewed{ \"existing view\" };",
+        "printLabel(\"literal\");",
+        "printLabel(owned);",
+        "printLabel(viewed);",
+        "<< label <<"
+      ],
+      "notContains": [
+        "std::cin",
+        "using namespace std",
+        "void printLabel(std::string label)",
+        "const std::string&",
+        "Label: literal",
+        "Label: owned string",
+        "Label: existing view"
+      ]
+    }
+  ]
+}

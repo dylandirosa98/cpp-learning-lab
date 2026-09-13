@@ -1,0 +1,53 @@
+{
+  "order": 2,
+  "id": "2.2",
+  "title": "Function return values (value-returning functions)",
+  "url": "https://www.learncpp.com/cpp-tutorial/function-return-values-value-returning-functions/",
+  "estimatedMinutes": 12,
+  "recap": [
+    "A non-void return type promises the caller a value of that type. A return statement evaluates its expression, transfers the resulting value to the caller, and ends the current function call.",
+    "The caller chooses whether to store, combine, print, or discard a returned value. Keeping a shared calculation in one function avoids inconsistent copies and gives the result a clear meaning."
+  ],
+  "objectives": [
+    "Declare an integer-returning function and return an integer expression.",
+    "Use function results to initialize variables and form another calculation.",
+    "Recognize that printing and returning are separate operations.",
+    "Centralize a repeated calculation in a reusable function."
+  ],
+  "warnings": [
+    "Every execution path through a non-void function must produce a value.",
+    "Calling a value-returning function by itself discards its result.",
+    "Statements after an unconditional return in the same block cannot execute.",
+    "main() must have an int return type."
+  ],
+  "challenge": "Complete the four functions in this order. 1. In countLiftedShingles(), replace the placeholder result with the recorded count 7. 2. In countLooseFasteners(), replace the placeholder result with the recorded count 4. 3. In countTotalDefects(), return the sum of a call to countLiftedShingles() and a call to countLooseFasteners(); do not repeat the numbers 7 and 4 there. 4. In main(), keep the three function results stored in lifted, loose, and total, print the three labels and values exactly as shown, and return 0. Keep every return type and signature unchanged, use std::cout rather than an unqualified cout, and do not add `using namespace std;`.",
+  "expectedOutput": [
+    "Lifted shingles: 7",
+    "Loose fasteners: 4",
+    "Total defects: 11"
+  ],
+  "hints": [
+    "First complete countLiftedShingles(): replace only its placeholder return value with the recorded lifted-shingle count, then check that the function still returns int.",
+    "Language-neutral pseudocode: COUNT_LIFTED_SHINGLES: RETURN 7; COUNT_LOOSE_FASTENERS: RETURN 4; COUNT_TOTAL_DEFECTS: CALL both counting functions and RETURN the sum of their results; MAIN: STORE each of the three returned results, OUTPUT each required label with its stored value, RETURN success.",
+    "Near-C++ structure: `int countLiftedShingles() { return <lifted count>; }`, `int countLooseFasteners() { return <loose count>; }`, and `int countTotalDefects() { return <first function call> + <second function call>; }`. In `int main()`, keep the three call-based initializers and the existing `std::cout` report structure."
+  ],
+  "sources": [
+    "main.cpp"
+  ],
+  "sourceChecks": [
+    {
+      "file": "main.cpp",
+      "contains": [
+        "int countLiftedShingles()",
+        "int countLooseFasteners()",
+        "int countTotalDefects()",
+        "return countLiftedShingles() + countLooseFasteners();"
+      ],
+      "notContains": [
+        "void countLiftedShingles",
+        "void countLooseFasteners",
+        "void countTotalDefects"
+      ]
+    }
+  ]
+}

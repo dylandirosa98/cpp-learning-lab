@@ -1,0 +1,55 @@
+{
+  "order": 6,
+  "id": "2.6",
+  "title": "Why functions are useful, and how to use them effectively",
+  "url": "https://www.learncpp.com/cpp-tutorial/why-functions-are-useful-and-how-to-use-them-effectively/",
+  "estimatedMinutes": 15,
+  "recap": [
+    "Functions reduce a larger program into named operations that can be understood, reused, and checked independently. A well-defined interface lets callers rely on an operation without needing to follow every implementation detail.",
+    "Prefer functions with one clear responsibility and explicit inputs and outputs. Calculation and presentation are different jobs: return computed data first, then let separate reporting code decide how to display it."
+  ],
+  "objectives": [
+    "Separate a workflow into small functions with distinct responsibilities.",
+    "Keep reusable calculations independent of console presentation.",
+    "Connect function outputs to later function inputs.",
+    "Use main() to coordinate operations rather than implement every detail."
+  ],
+  "warnings": [
+    "Keeping all behavior in main() makes growing programs harder to navigate and test.",
+    "Copying a calculation creates multiple places that can drift or contain different mistakes.",
+    "A function that calculates and prints has two responsibilities and is less reusable.",
+    "Long or unfocused functions should be divided along meaningful task boundaries."
+  ],
+  "challenge": "Implement calculateRoofArea(int length, int width), calculateRunoffUnits(int area, int rainfallUnits), and printDrainageReport(int area, int runoffUnits). Use length 12, width 8, and rainfall factor 3 in main(). Calculate the area, use that result to calculate runoff, and call the reporting function once. The two calculation functions must only return computed values; all console output belongs in printDrainageReport().",
+  "expectedOutput": [
+    "Roof area: 96 square units",
+    "Runoff load: 288 units"
+  ],
+  "hints": [
+    "First, implement calculateRoofArea by returning the product of its two parameters without printing anything.",
+    "Pseudocode: FUNCTION calculateRoofArea(length, width): RETURN length * width. FUNCTION calculateRunoffUnits(area, rainfallUnits): RETURN area * rainfallUnits. FUNCTION printDrainageReport(area, runoffUnits): OUTPUT the roof-area label, area, and unit text; OUTPUT the runoff-load label, runoffUnits, and unit text. MAIN: area = calculateRoofArea(12, 8); runoffUnits = calculateRunoffUnits(area, 3); call printDrainageReport(area, runoffUnits); return success.",
+    "Near-C++ structure: int calculateRoofArea(int length, int width) { return /* product of the dimensions */; } int calculateRunoffUnits(int area, int rainfallUnits) { return /* area scaled by rainfallUnits */; } void printDrainageReport(int area, int runoffUnits) { std::cout << /* area report pieces */; std::cout << /* runoff report pieces */; } int main() { int area{/* required area call */}; int runoffUnits{/* required runoff call */}; /* call the report function, then return success */ }"
+  ],
+  "sources": [
+    "main.cpp"
+  ],
+  "sourceChecks": [
+    {
+      "file": "main.cpp",
+      "contains": [
+        "int calculateRoofArea(int length, int width)",
+        "int calculateRunoffUnits(int area, int rainfallUnits)",
+        "void printDrainageReport(int area, int runoffUnits)",
+        "calculateRoofArea(12, 8)",
+        "calculateRunoffUnits(area, 3)",
+        "printDrainageReport(area, runoffUnits);"
+      ],
+      "notContains": [
+        "Roof area: 96",
+        "Runoff load: 288",
+        "void calculateRoofArea",
+        "void calculateRunoffUnits"
+      ]
+    }
+  ]
+}

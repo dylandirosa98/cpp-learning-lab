@@ -1,0 +1,48 @@
+{
+  "order": 56,
+  "id": "6.8",
+  "title": "Logical operators",
+  "url": "https://www.learncpp.com/cpp-tutorial/logical-operators/",
+  "estimatedMinutes": 25,
+  "recap": [
+    "Logical NOT ! inverts a boolean value, logical AND && is true only when both operands are true, and logical OR || is true when either operand is true. Parentheses make mixed logical requirements easier to verify.",
+    "The && and || operators short-circuit from left to right: they do not evaluate the right operand when the left operand already determines the result. Keep side effects out of conditions unless that sequencing is deliberate and clear."
+  ],
+  "objectives": [
+    "Combine required and alternative access conditions with && and ||.",
+    "Use ! to reject a suspended account.",
+    "Group mixed logical operators to communicate the policy.",
+    "Test the policy with several deterministic scenarios."
+  ],
+  "warnings": [
+    "Bitwise &, |, and ~ are not substitutes for logical &&, ||, and !.",
+    "Do not depend on precedence when parentheses make a mixed condition clearer.",
+    "Avoid mutating state inside a condition merely to exploit short-circuiting."
+  ],
+  "challenge": "Implement canEnter(). Entry requires a badge, requires either staff status or an appointment, and rejects suspended people. Print results for an appointed visitor, a staff member without a badge, and a suspended staff member.",
+  "expectedOutput": [
+    "Appointed visitor: true",
+    "Staff without badge: false",
+    "Suspended staff: false"
+  ],
+  "hints": [
+    "The badge requirement belongs on the left side of &&.",
+    "Group isStaff || hasAppointment because either one satisfies the role requirement.",
+    "Complete the expression with && !isSuspended, then print booleans with std::boolalpha."
+  ],
+  "sources": ["main.cpp"],
+  "sourceChecks": [
+    {
+      "file": "main.cpp",
+      "contains": [
+        "bool canEnter(bool hasBadge, bool isStaff, bool hasAppointment, bool isSuspended)",
+        "hasBadge && (isStaff || hasAppointment) && !isSuspended",
+        "canEnter(true, false, true, false)",
+        "canEnter(false, true, false, false)",
+        "canEnter(true, true, false, true)",
+        "std::boolalpha"
+      ],
+      "notContains": ["std::cin", "using namespace std", "return false;", "Appointed visitor: true"]
+    }
+  ]
+}

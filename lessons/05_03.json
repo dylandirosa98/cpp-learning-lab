@@ -1,0 +1,55 @@
+{
+  "order": 41,
+  "id": "5.3",
+  "title": "Numeral systems (decimal, binary, hexadecimal, and octal)",
+  "url": "https://www.learncpp.com/cpp-tutorial/numeral-systems-decimal-binary-hexadecimal-and-octal/",
+  "estimatedMinutes": 25,
+  "recap": [
+    "C++ binary literals use a 0b prefix and hexadecimal literals use 0x. Apostrophes can separate digits for readability without changing a literal's value.",
+    "std::bitset provides fixed-width binary output. Stream base manipulators such as std::hex are sticky, so later integer output remains hexadecimal until std::dec resets the stream."
+  ],
+  "objectives": [
+    "Represent an eight-bit value with a grouped binary literal.",
+    "Represent a nibble mask with a hexadecimal literal.",
+    "Render fixed-width binary using std::bitset.",
+    "Reset a sticky hexadecimal stream state before decimal output."
+  ],
+  "warnings": [
+    "std::cout has no std::bin manipulator; use std::bitset for binary output.",
+    "std::hex affects subsequent integral insertions until another base manipulator is applied.",
+    "The binary, hexadecimal, and decimal spellings in this exercise represent values, not strings to print directly."
+  ],
+  "challenge": "Write status as the grouped binary literal 0b1010'1100 and lowNibbleMask as the unsigned hexadecimal literal 0x0Fu. Keep std::bitset<8> for the binary display, then explicitly reset the sticky std::hex formatting with std::dec so status is finally shown as decimal 172.",
+  "expectedOutput": [
+    "Status binary: 10101100",
+    "Low nibble mask hex: f",
+    "Status decimal: 172"
+  ],
+  "hints": [
+    "Change the status initializer to a 0b-prefixed literal and group its two nibbles with an apostrophe.",
+    "The unsigned hexadecimal spelling of decimal 15 is 0x0Fu; std::hex controls how its value is displayed.",
+    "Insert std::dec into the stream before status on the final line because std::hex remains active."
+  ],
+  "sources": [
+    "main.cpp"
+  ],
+  "sourceChecks": [
+    {
+      "file": "main.cpp",
+      "contains": [
+        "const unsigned int status{ 0b1010'1100 };",
+        "const unsigned int lowNibbleMask{ 0x0Fu };",
+        "std::bitset<8>{ status }",
+        "std::hex << lowNibbleMask",
+        "std::dec << status"
+      ],
+      "notContains": [
+        "std::cin",
+        "using namespace std",
+        "Status binary: 10101100",
+        "Low nibble mask hex: f",
+        "Status decimal: 172"
+      ]
+    }
+  ]
+}

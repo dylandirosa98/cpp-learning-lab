@@ -1,0 +1,55 @@
+{
+  "order": 37,
+  "id": "4.12",
+  "title": "Introduction to type conversion and static_cast",
+  "url": "https://www.learncpp.com/cpp-tutorial/introduction-to-type-conversion-and-static_cast/",
+  "estimatedMinutes": 25,
+  "recap": [
+    "A type conversion creates a value of another type without changing the source object. Implicit conversions happen automatically, while explicit conversions state the programmer's intent.",
+    "static_cast<target_type>(expression) performs an explicit conversion. Casting a floating-point value to int discards its fractional part, while casting an integer operand to double before division preserves a fractional quotient."
+  ],
+  "objectives": [
+    "Use static_cast<int> for an intentional truncating conversion.",
+    "Place static_cast<double> before division to avoid integer division.",
+    "Recognize that converting after integer division cannot restore a lost fraction.",
+    "Format the floating result with stable fixed precision."
+  ],
+  "warnings": [
+    "Converting a double to int discards the fractional component rather than rounding.",
+    "Integer division loses the remainder before a later conversion can occur.",
+    "Do not use C-style casts or turn the expected results into constants."
+  ],
+  "challenge": "Keep the intentional conversion of 7.75 crates to 7 whole crates. Repair averagePerTeam() so seven items divided among two teams produces 3.5 by explicitly converting an operand to double before division. Retain both static_cast forms, fixed one-decimal formatting for the average, and the deterministic no-input report.",
+  "expectedOutput": [
+    "Whole crates: 7",
+    "Average per team: 3.5"
+  ],
+  "hints": [
+    "static_cast<int>(7.75) intentionally removes .75 and already gives the required whole-crate count.",
+    "Both operands are currently int when division occurs, so their remainder is discarded.",
+    "Convert items to double inside the division expression, before the / operator is evaluated."
+  ],
+  "sources": [
+    "main.cpp"
+  ],
+  "sourceChecks": [
+    {
+      "file": "main.cpp",
+      "contains": [
+        "double averagePerTeam(int items, int teams)",
+        "static_cast<int>(crates)",
+        "return static_cast<double>(items) / teams;",
+        "averagePerTeam(7, 2)",
+        "std::fixed",
+        "std::setprecision(1)"
+      ],
+      "notContains": [
+        "std::cin",
+        "using namespace std",
+        "(int)",
+        "Whole crates: 7",
+        "Average per team: 3.5"
+      ]
+    }
+  ]
+}

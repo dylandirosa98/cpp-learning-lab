@@ -1,0 +1,57 @@
+{
+  "order": 24,
+  "id": "3.10",
+  "title": "Finding issues before they become problems",
+  "url": "https://www.learncpp.com/cpp-tutorial/finding-issues-before-they-become-problems/",
+  "estimatedMinutes": 20,
+  "recap": [
+    "Frequent warning-clean builds and small deterministic checks expose defects close to the change that introduced them. Compiler diagnostics are a readily available form of static analysis and should be treated as actionable failures.",
+    "Short single-purpose functions, defensive thinking, and separate calculation and presentation responsibilities make code easier to verify. Structural refactoring and behavioral repair should be performed and retested as separate steps."
+  ],
+  "objectives": [
+    "Resolve a compiler warning before investigating runtime behavior.",
+    "Use deterministic function checks to expose a semantic error.",
+    "Keep calculation, self-check presentation, and production presentation separate.",
+    "Retest zero and nonzero cases after the repair."
+  ],
+  "warnings": [
+    "Do not ignore warnings merely because an executable was produced.",
+    "Avoid changing structure and behavior in one untested edit.",
+    "One successful input does not establish that a calculation is generally correct.",
+    "Do not hard-code the three expected results or remove the supplied self-checks."
+  ],
+  "challenge": "Make a shipment seal calculator warning-free and correct. Each container needs the same number of seals. In CLion, select the Debug profile and build lesson_03_10; inspect the first compiler diagnostic before attempting to run. Remove that warning without changing behavior, rebuild, then run the two supplied checks and production case. If runtime inspection is needed, place a breakpoint on the first calculateSealCount() call in runSelfChecks(), Step Into it, and compare its parameters with its returned value. Keep the stages separate and rerun all cases after the behavioral repair.",
+  "expectedOutput": [
+    "Self-check 2 x 5: 10",
+    "Self-check 0 x 6: 0",
+    "Shipment seals: 28"
+  ],
+  "hints": [
+    "Build first and remove the unused local reported by the compiler before evaluating output.",
+    "Compare the parameter values and returned result for both supplied self-check calls.",
+    "Choose the arithmetic relationship that models an equal quantity repeated for every container and naturally handles zero containers."
+  ],
+  "sources": [
+    "main.cpp"
+  ],
+  "sourceChecks": [
+    {
+      "file": "main.cpp",
+      "contains": [
+        "int calculateSealCount(int containers, int sealsPerContainer)",
+        "void runSelfChecks()",
+        "void printShipmentReport(int sealCount)",
+        "calculateSealCount(2, 5)",
+        "calculateSealCount(0, 6)",
+        "calculateSealCount(4, 7)",
+        "runSelfChecks();"
+      ],
+      "notContains": [
+        "legacyOffset",
+        "std::cerr",
+        "using namespace std",
+        "Shipment seals: 28"
+      ]
+    }
+  ]
+}

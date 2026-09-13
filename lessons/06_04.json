@@ -1,0 +1,48 @@
+{
+  "order": 52,
+  "id": "6.4",
+  "title": "Increment/decrement operators, and side effects",
+  "url": "https://www.learncpp.com/cpp-tutorial/increment-decrement-operators-and-side-effects/",
+  "estimatedMinutes": 20,
+  "recap": [
+    "Prefix increment changes its operand and yields the changed value. Postfix increment also changes its operand but yields the value from before that change; decrement has the same prefix and postfix distinction.",
+    "Increment and decrement have side effects. Prefer one mutation per statement and avoid expressions that modify and read the same object in ways whose sequencing is unclear or undefined."
+  ],
+  "objectives": [
+    "Observe the value produced by postfix increment.",
+    "Observe the value produced by prefix increment.",
+    "Apply prefix decrement as a separate statement.",
+    "Keep each side effect simple and sequenced."
+  ],
+  "warnings": [
+    "Do not assume prefix and postfix forms produce the same expression value.",
+    "Do not increment the same variable multiple times in one expression.",
+    "Use ordinary assignment when no increment/decrement behavior is being practiced."
+  ],
+  "challenge": "Start a ticket counter at 5. Capture its old value with postfix increment, then capture its new value with prefix increment, and finally decrement the counter once in a separate statement. Report both captured values and the final counter.",
+  "expectedOutput": [
+    "Postfix produced: 5",
+    "Prefix produced: 7",
+    "Final counter: 6"
+  ],
+  "hints": [
+    "Initialize postfixValue with counter++; counter changes to 6 after yielding 5.",
+    "Initialize prefixValue with ++counter; counter changes to 7 before yielding 7.",
+    "Put --counter; on its own statement before printing the final value."
+  ],
+  "sources": ["main.cpp"],
+  "sourceChecks": [
+    {
+      "file": "main.cpp",
+      "contains": [
+        "int postfixValue{ counter++ };",
+        "int prefixValue{ ++counter };",
+        "--counter;",
+        "<< postfixValue <<",
+        "<< prefixValue <<",
+        "<< counter <<"
+      ],
+      "notContains": ["std::cin", "using namespace std", "counter++ +", "++counter +", "Postfix produced: 5"]
+    }
+  ]
+}

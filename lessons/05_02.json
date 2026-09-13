@@ -1,0 +1,57 @@
+{
+  "order": 40,
+  "id": "5.2",
+  "title": "Literals",
+  "url": "https://www.learncpp.com/cpp-tutorial/literals/",
+  "estimatedMinutes": 25,
+  "recap": [
+    "Every literal has a type. Integer literals are int and floating-point literals are double by default, while suffixes such as u, LL, and f request unsigned int, long long, and float literal types.",
+    "A magic value has unclear meaning or may need coordinated changes. Giving domain values names makes calculations understandable and keeps each configurable value in one place."
+  ],
+  "objectives": [
+    "Match float, unsigned int, and long long initializers with typed literal suffixes.",
+    "Use an uppercase LL suffix and a digit separator for a large integral literal.",
+    "Replace literals in a calculation with descriptive named constants.",
+    "Format a floating-point result deterministically."
+  ],
+  "warnings": [
+    "An unsuffixed floating-point literal has type double, not float.",
+    "Lowercase l can be confused with the digit 1, so uppercase L is preferred.",
+    "Do not reintroduce cans-per-case or case-volume magic values in the output expressions."
+  ],
+  "challenge": "Give the three fixed domain values matching const types and typed literals: 1.5f liters per can, 8u cans per case, and 1'000'000LL cans of annual capacity. Compute litersPerCase from the two named per-case values and preserve fixed one-decimal output.",
+  "expectedOutput": [
+    "Case volume: 12.0 liters",
+    "Annual capacity: 1000000 cans"
+  ],
+  "hints": [
+    "Start by matching each declaration's type to its literal: float uses f, unsigned int uses u, and long long uses LL.",
+    "The apostrophe in 1'000'000 is only a visual digit separator; append LL after the final digit.",
+    "Define litersPerCase as litersPerCan * cansPerCase so neither 1.5 nor 8 is repeated in the calculation."
+  ],
+  "sources": [
+    "main.cpp"
+  ],
+  "sourceChecks": [
+    {
+      "file": "main.cpp",
+      "contains": [
+        "const float litersPerCan{ 1.5f };",
+        "const unsigned int cansPerCase{ 8u };",
+        "const long long annualCapacity{ 1'000'000LL };",
+        "const float litersPerCase{ litersPerCan * cansPerCase };",
+        "std::fixed",
+        "std::setprecision(1)",
+        "<< litersPerCase <<",
+        "<< annualCapacity <<"
+      ],
+      "notContains": [
+        "std::cin",
+        "using namespace std",
+        "litersPerCan * 8",
+        "Case volume: 12.0 liters",
+        "Annual capacity: 1000000 cans"
+      ]
+    }
+  ]
+}

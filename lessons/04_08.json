@@ -1,0 +1,52 @@
+{
+  "order": 33,
+  "id": "4.8",
+  "title": "Floating point numbers",
+  "url": "https://www.learncpp.com/cpp-tutorial/floating-point-numbers/",
+  "estimatedMinutes": 25,
+  "recap": [
+    "Floating-point types represent values with fractional components but have finite precision. Double generally provides more precision than float and is the preferred default for ordinary calculations.",
+    "std::fixed and std::setprecision control presentation. With fixed notation, the precision is the number of digits after the decimal point, making expected output stable and explicit."
+  ],
+  "objectives": [
+    "Use double literals and parameters for fractional measurements.",
+    "Correct an arithmetic grouping error in a floating-point average.",
+    "Apply fixed notation and a deliberate decimal precision.",
+    "Separate numeric calculation from output formatting."
+  ],
+  "warnings": [
+    "Floating-point values are often approximations and should not be assumed exact.",
+    "Division has higher precedence than addition unless parentheses change the grouping.",
+    "Do not hard-code the expected average or preformatted output."
+  ],
+  "challenge": "Repair averageTemperature() for fixed morning and afternoon readings of 18.5 and 24.0 degrees Celsius. It must add both readings before dividing by 2.0. Keep the calculation in the function, use double throughout, and retain controlled fixed formatting so the deterministic report contains exactly two fractional digits.",
+  "expectedOutput": [
+    "Average temperature: 21.25 C"
+  ],
+  "hints": [
+    "The mean of two values is their sum divided by the number of values.",
+    "Parentheses can make the addition happen before division.",
+    "The supplied std::fixed and std::setprecision(2) already provide the required display format."
+  ],
+  "sources": [
+    "main.cpp"
+  ],
+  "sourceChecks": [
+    {
+      "file": "main.cpp",
+      "contains": [
+        "double averageTemperature(double morning, double afternoon)",
+        "return (morning + afternoon) / 2.0;",
+        "averageTemperature(18.5, 24.0)",
+        "std::fixed",
+        "std::setprecision(2)"
+      ],
+      "notContains": [
+        "std::cin",
+        "using namespace std",
+        "return 21.25;",
+        "Average temperature: 21.25 C"
+      ]
+    }
+  ]
+}

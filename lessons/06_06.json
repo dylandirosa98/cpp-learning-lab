@@ -1,0 +1,48 @@
+{
+  "order": 54,
+  "id": "6.6",
+  "title": "The conditional operator",
+  "url": "https://www.learncpp.com/cpp-tutorial/the-conditional-operator/",
+  "estimatedMinutes": 20,
+  "recap": [
+    "The conditional operator condition ? expression1 : expression2 evaluates its condition and then exactly one of its two alternatives. It is C++'s only ternary operator and is an expression, so its result can initialize a variable.",
+    "Conditional expressions are best kept simple. Parenthesizing the entire conditional often improves readability, and an if statement is preferable when either branch needs multiple statements or significant side effects."
+  ],
+  "objectives": [
+    "Use a relational expression as a conditional operator condition.",
+    "Select both a numeric charge and a text label.",
+    "Store conditional results in appropriately typed const variables.",
+    "Rely on exactly one selected branch."
+  ],
+  "warnings": [
+    "Do not confuse the colon in the conditional operator with a statement separator.",
+    "Both alternative expressions must have compatible types for the intended result.",
+    "Do not replace a clear multi-statement decision with nested conditional operators."
+  ],
+  "challenge": "For a subtotal of 42 and a free-shipping threshold of 50, calculate whether the order qualifies. Use conditional operators to select a shipping charge of 0 or 7 and a std::string_view label of free or standard. Calculate and report the final total.",
+  "expectedOutput": [
+    "Shipping tier: standard",
+    "Shipping charge: 7",
+    "Order total: 49"
+  ],
+  "hints": [
+    "qualifiesForFreeShipping is subtotal >= freeShippingThreshold.",
+    "Initialize shippingCharge with qualifiesForFreeShipping ? 0 : 7.",
+    "Use the same condition to select string-view literals, then add shippingCharge to subtotal."
+  ],
+  "sources": ["main.cpp"],
+  "sourceChecks": [
+    {
+      "file": "main.cpp",
+      "contains": [
+        "#include <string_view>",
+        "subtotal >= freeShippingThreshold",
+        "qualifiesForFreeShipping ? 0 : 7",
+        "qualifiesForFreeShipping ? \"free\" : \"standard\"",
+        "subtotal + shippingCharge",
+        "<< shippingTier <<"
+      ],
+      "notContains": ["std::cin", "using namespace std", "Shipping tier: standard", "orderTotal{ 49 }"]
+    }
+  ]
+}

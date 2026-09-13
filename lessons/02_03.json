@@ -1,0 +1,54 @@
+{
+  "order": 3,
+  "id": "2.3",
+  "title": "Void functions (non-value returning functions)",
+  "url": "https://www.learncpp.com/cpp-tutorial/void-functions-non-value-returning-functions/",
+  "estimatedMinutes": 10,
+  "recap": [
+    "A void function performs an action without sending a data value to its caller. Reaching its closing brace is enough to resume execution in the caller, so an empty return at the end adds no useful behavior.",
+    "Call a void function as a complete statement when its behavior is what matters. It cannot stand where an expression requires a value, even when the function itself writes visible text to the console."
+  ],
+  "objectives": [
+    "Use void for functions whose purpose is an action rather than a computed result.",
+    "Invoke void functions as standalone statements.",
+    "Distinguish console output from a function return value.",
+    "Allow a void function to finish naturally at its closing brace."
+  ],
+  "warnings": [
+    "A void call cannot be inserted into an output or arithmetic expression that needs a value.",
+    "Returning a value from a void function is a compilation error.",
+    "An empty return at the end of a void function is redundant."
+  ],
+  "challenge": "Complete the four functions in this order. 1. In printTagHeader(), use std::cout to write exactly `SAFETY TAG` followed by a newline. 2. In printHarnessStatus(), use std::cout to write exactly `Harness: inspected` followed by a newline. 3. In printTagFooter(), use std::cout to write exactly `Status: ready` followed by a newline. 4. In main(), keep the calls in header, harness, footer order and return 0. Keep all three printing functions void and parameterless, do not add a return statement to them, do not write directly from main(), qualify cout with std::, and do not add `using namespace std;`.",
+  "expectedOutput": [
+    "SAFETY TAG",
+    "Harness: inspected",
+    "Status: ready"
+  ],
+  "hints": [
+    "First complete printTagHeader(): find its TODO and make that function write the exact heading with std::cout and a newline, without adding a return statement.",
+    "Language-neutral pseudocode: PRINT_TAG_HEADER: OUTPUT `SAFETY TAG`; PRINT_HARNESS_STATUS: OUTPUT `Harness: inspected`; PRINT_TAG_FOOTER: OUTPUT `Status: ready`; MAIN: CALL PRINT_TAG_HEADER, CALL PRINT_HARNESS_STATUS, CALL PRINT_TAG_FOOTER, RETURN success.",
+    "Near-C++ structure: `void printTagHeader() { <write heading> }`, `void printHarnessStatus() { <write harness status> }`, and `void printTagFooter() { <write readiness status> }`. Keep `int main()` as three standalone calls followed by its existing success return; use `std::cout` only inside the void functions."
+  ],
+  "sources": [
+    "main.cpp"
+  ],
+  "sourceChecks": [
+    {
+      "file": "main.cpp",
+      "contains": [
+        "void printTagHeader()",
+        "void printHarnessStatus()",
+        "void printTagFooter()",
+        "printTagHeader();",
+        "printHarnessStatus();",
+        "printTagFooter();"
+      ],
+      "notContains": [
+        "std::cout << print",
+        "return;",
+        "return \""
+      ]
+    }
+  ]
+}

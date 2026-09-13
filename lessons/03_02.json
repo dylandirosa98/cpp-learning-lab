@@ -1,0 +1,81 @@
+{
+  "order": 16,
+  "id": "3.2",
+  "title": "The debugging process",
+  "url": "https://www.learncpp.com/cpp-tutorial/the-debugging-process/",
+  "estimatedMinutes": 20,
+  "recap": [
+    "A visible failure is often a symptom rather than the root cause. Effective debugging locates the earliest incorrect state, explains why it occurs, selects a focused repair, and then verifies the result.",
+    "A complete repair process includes reproducing the problem, finding and understanding its cause, making the smallest appropriate change, retesting the original case, and checking that no new problem was introduced."
+  ],
+  "objectives": [
+    "Reproduce a deterministic failure before changing code.",
+    "Compare stored results and received parameters at debugger checkpoints.",
+    "Separate a root cause from the later output symptom it creates.",
+    "Repair one responsible data transfer and retest the complete program."
+  ],
+  "warnings": [
+    "Changing several suspected locations at once destroys useful evidence about which change mattered.",
+    "The function that prints a bad value may only be reporting corruption that happened earlier.",
+    "Compensating inside a correct function can hide rather than repair the root cause.",
+    "Retest all required output after the fix, not only the line that first drew attention."
+  ],
+  "challenge": "Repair the roof work estimate. Four loose-tile repairs and three cracked-tile repairs produce seven repair units, and each unit requires 15 minutes. Reproduce the failure before editing. Break in main() after the unit count is calculated and confirm that stored result, then step into estimateRepairMinutes() and inspect the parameters it actually receives. Identify the first disagreement with the stated behavior, explain how it causes the symptom, make the smallest root-cause repair, and retest both report lines. Keep calculation, reporting, and coordination responsibilities in their existing files.",
+  "expectedOutput": [
+    "Repair units: 7",
+    "Estimated repair time: 105 minutes"
+  ],
+  "hints": [
+    "First establish whether countRepairUnits(4, 3) returns 7. A correct checkpoint rules out the work before it.",
+    "At entry to estimateRepairMinutes(), compare its first parameter with the stored repairUnits value in main(). They should both be 7.",
+    "The estimator needs the combined repair-unit result as its first argument and 15 as its second argument."
+  ],
+  "sources": [
+    "main.cpp",
+    "repair_plan.cpp"
+  ],
+  "sourceChecks": [
+    {
+      "file": "repair_plan.h",
+      "contains": [
+        "#ifndef CPP_LEARNING_LAB_REPAIR_PLAN_H",
+        "#define CPP_LEARNING_LAB_REPAIR_PLAN_H",
+        "int countRepairUnits(int looseTiles, int crackedTiles);",
+        "int estimateRepairMinutes(int repairUnits, int minutesPerUnit);",
+        "void printRepairPlan(int repairUnits, int repairMinutes);",
+        "#endif"
+      ],
+      "notContains": [
+        "{",
+        "#include \"repair_plan.cpp\""
+      ]
+    },
+    {
+      "file": "repair_plan.cpp",
+      "contains": [
+        "#include \"repair_plan.h\"",
+        "int countRepairUnits(int looseTiles, int crackedTiles)",
+        "int estimateRepairMinutes(int repairUnits, int minutesPerUnit)",
+        "void printRepairPlan(int repairUnits, int repairMinutes)"
+      ],
+      "notContains": [
+        "using namespace std"
+      ]
+    },
+    {
+      "file": "main.cpp",
+      "contains": [
+        "#include \"repair_plan.h\"",
+        "countRepairUnits(looseTiles, crackedTiles)",
+        "estimateRepairMinutes(repairUnits, 15)",
+        "printRepairPlan(repairUnits, repairMinutes)"
+      ],
+      "notContains": [
+        "Repair units: 7",
+        "Estimated repair time: 105",
+        "using namespace std",
+        "#include \"repair_plan.cpp\""
+      ]
+    }
+  ]
+}

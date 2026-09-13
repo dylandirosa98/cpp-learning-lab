@@ -1,0 +1,73 @@
+{
+  "order": 11,
+  "id": "2.11",
+  "title": "Header files",
+  "url": "https://www.learncpp.com/cpp-tutorial/header-files/",
+  "estimatedMinutes": 20,
+  "recap": [
+    "A header provides a shared home for declarations needed by multiple source files. Including that header gives each translation unit consistent knowledge of the module's public functions.",
+    "Implementations normally remain in a paired source file, which should include its own header first. Each file should also include every library or project header required by the names it uses directly."
+  ],
+  "objectives": [
+    "Place related function declarations in a project header.",
+    "Pair a header and source file using the same base name.",
+    "Use quotes for project headers and angle brackets for library headers.",
+    "Include a paired header from its implementation file.",
+    "Avoid dependence on accidental transitive includes."
+  ],
+  "warnings": [
+    "Ordinary function definitions in widely included headers can violate the one-definition rule.",
+    "Header files are included by source files rather than listed as independent compiler inputs.",
+    "A .cpp implementation should be compiled, never included.",
+    "A source file should not rely on another header to include a dependency by accident."
+  ],
+  "challenge": "Declare panelArea and totalArea in roof_math.h and define them in roof_math.cpp. In main.cpp, calculate the coverage of four panels that are each 12 feet by 10 feet and print the exact result.",
+  "expectedOutput": [
+    "Roof coverage: 480 sq ft"
+  ],
+  "hints": [
+    "Start with the module boundary: roof_math.h tells callers which calculations exist, roof_math.cpp owns those calculations, and main.cpp uses the public declarations without seeing the implementations.",
+    "File flow in language-neutral pseudocode: in roof_math.h, publish panelArea(width, height) and totalArea(areaPerPanel, panelCount). In roof_math.cpp, load that interface; panelArea returns width multiplied by height, and totalArea returns areaPerPanel multiplied by panelCount. In main.cpp, load the interface and console-output support, calculate PANEL_AREA from 12 and 10, calculate COVERAGE from PANEL_AREA and 4, then print the required line.",
+    "Near-C++ structure: keep only two int-returning prototypes in the header; include that header first in roof_math.cpp and give both matching functions bodies with the appropriate multiplication expression; in main.cpp, keep the existing calls and send the final value through std::cout. Do not put either function body in the header or include a .cpp file."
+  ],
+  "sources": [
+    "main.cpp",
+    "roof_math.cpp"
+  ],
+  "sourceChecks": [
+    {
+      "file": "roof_math.h",
+      "contains": [
+        "int panelArea(int width, int height);",
+        "int totalArea(int areaPerPanel, int panelCount);"
+      ],
+      "notContains": [
+        "{",
+        "#include \"roof_math.cpp\""
+      ]
+    },
+    {
+      "file": "roof_math.cpp",
+      "contains": [
+        "#include \"roof_math.h\"",
+        "int panelArea(int width, int height)",
+        "int totalArea(int areaPerPanel, int panelCount)"
+      ],
+      "notContains": [
+        "using namespace std"
+      ]
+    },
+    {
+      "file": "main.cpp",
+      "contains": [
+        "#include \"roof_math.h\"",
+        "panelArea(12, 10)",
+        "totalArea"
+      ],
+      "notContains": [
+        "#include \"roof_math.cpp\"",
+        "using namespace std"
+      ]
+    }
+  ]
+}

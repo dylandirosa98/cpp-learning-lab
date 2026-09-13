@@ -1,0 +1,76 @@
+{
+  "order": 12,
+  "id": "2.12",
+  "title": "Header guards",
+  "url": "https://www.learncpp.com/cpp-tutorial/header-guards/",
+  "estimatedMinutes": 20,
+  "recap": [
+    "Direct and indirect includes can bring the same header into one translation unit more than once. A header guard lets the first inclusion through and suppresses later copies during that preprocessing run.",
+    "Guard state is local to a translation unit, so the header may still be included once by every source file that needs it. Guard identifiers must be unique enough to avoid accidentally suppressing an unrelated header."
+  ],
+  "objectives": [
+    "Construct a traditional header guard with conditional directives.",
+    "Trace a header reached through both direct and indirect includes.",
+    "Choose distinct project-specific guard identifiers.",
+    "Explain the per-translation-unit boundary of a guard."
+  ],
+  "warnings": [
+    "Reusing a guard identifier can silently hide the second guarded header.",
+    "Every guard needs a correctly placed closing endif.",
+    "Guards do not make ordinary function definitions safe to copy into several translation units.",
+    "Pragma once is common but is not specified by the C++ language standard."
+  ],
+  "challenge": "Guard roof_metrics.h and inspection_report.h with distinct project-specific macros. Let inspection_report.h include roof_metrics.h, then deliberately include both headers from main.cpp. Declare requiredAnchorChecks and printAnchorChecks in the headers, define them after main, and report two checks for each of six sections.",
+  "expectedOutput": [
+    "Required anchor checks: 12"
+  ],
+  "hints": [
+    "Start by tracing inclusion: main.cpp reaches roof_metrics.h directly and reaches it again through inspection_report.h, so each header must admit its contents only on the first inclusion in a translation unit.",
+    "File flow in language-neutral pseudocode: roof_metrics.h begins its CPP_LEARNING_LAB_ROOF_METRICS_H guard, publishes requiredAnchorChecks(roofSections), and ends its guard. inspection_report.h does the same with CPP_LEARNING_LAB_INSPECTION_REPORT_H, loading roof_metrics.h and publishing printAnchorChecks(checks) inside the guard. main.cpp loads both project headers and console-output support; main reports requiredAnchorChecks(6); below main, the calculation returns 2 checks for each section and the reporter prints the label, value, and newline.",
+    "Near-C++ structure: wrap each entire header with #ifndef, #define, and #endif using its required distinct macro; leave only the existing function prototype inside each interface. Keep both matching function definitions after main in main.cpp, use an arithmetic return expression for the calculation, and qualify console output as std::cout. Do not use #pragma once or using namespace std."
+  ],
+  "sources": [
+    "main.cpp"
+  ],
+  "sourceChecks": [
+    {
+      "file": "roof_metrics.h",
+      "contains": [
+        "#ifndef CPP_LEARNING_LAB_ROOF_METRICS_H",
+        "#define CPP_LEARNING_LAB_ROOF_METRICS_H",
+        "int requiredAnchorChecks(int roofSections);",
+        "#endif"
+      ],
+      "notContains": [
+        "#pragma once",
+        "{"
+      ]
+    },
+    {
+      "file": "inspection_report.h",
+      "contains": [
+        "#ifndef CPP_LEARNING_LAB_INSPECTION_REPORT_H",
+        "#define CPP_LEARNING_LAB_INSPECTION_REPORT_H",
+        "#include \"roof_metrics.h\"",
+        "void printAnchorChecks(int checks);",
+        "#endif"
+      ],
+      "notContains": [
+        "#pragma once",
+        "{"
+      ]
+    },
+    {
+      "file": "main.cpp",
+      "contains": [
+        "#include \"roof_metrics.h\"",
+        "#include \"inspection_report.h\"",
+        "requiredAnchorChecks(6)",
+        "void printAnchorChecks(int checks)"
+      ],
+      "notContains": [
+        "using namespace std"
+      ]
+    }
+  ]
+}

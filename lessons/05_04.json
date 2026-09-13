@@ -1,0 +1,60 @@
+{
+  "order": 42,
+  "id": "5.4",
+  "title": "The as-if rule and compile-time optimization",
+  "url": "https://www.learncpp.com/cpp-tutorial/the-as-if-rule-and-compile-time-optimization/",
+  "estimatedMinutes": 20,
+  "recap": [
+    "The as-if rule permits a compiler to transform a program in any way that does not change its observable behavior. Constant folding, constant propagation, and dead-code elimination are common optimization techniques.",
+    "Optimization lets programmers favor readable, maintainable expressions. Whether a particular expression is optimized is compiler- and build-dependent, so correctness tests should verify observable behavior rather than optimizer internals."
+  ],
+  "objectives": [
+    "Express a fixed total as a readable calculation from named constants.",
+    "Build a second calculation from previously named results.",
+    "Treat exact program output as the observable behavior that must be preserved.",
+    "Avoid build-mode branches or attempts to detect a specific optimization."
+  ],
+  "warnings": [
+    "The as-if rule does not guarantee that a particular optimization will occur.",
+    "Timing, assembly inspection, and optimizer-specific macros are not portable correctness tests.",
+    "Debug and release builds must not intentionally produce different observable output."
+  ],
+  "challenge": "Repair the bakery calculations using named const int values. Compute bakedMuffins as trays * rowsPerTray * muffinsPerRow, compute reservedMuffins as 2 * muffinsPerRow, and subtract that named amount to obtain packedMuffins. Keep the same observable output in every build mode; test the values, not whether the compiler folds them.",
+  "expectedOutput": [
+    "Baked muffins: 72",
+    "Packed muffins: 60"
+  ],
+  "hints": [
+    "A tray has rows and each row has muffins, so the baked total combines all three named dimensions with multiplication.",
+    "Give the two reserved rows their own value by multiplying 2 by muffinsPerRow.",
+    "Initialize packedMuffins by subtracting reservedMuffins from bakedMuffins; no build-mode condition or optimizer probe is needed."
+  ],
+  "sources": [
+    "main.cpp"
+  ],
+  "sourceChecks": [
+    {
+      "file": "main.cpp",
+      "contains": [
+        "const int trays{ 3 };",
+        "const int rowsPerTray{ 4 };",
+        "const int muffinsPerRow{ 6 };",
+        "const int bakedMuffins{ trays * rowsPerTray * muffinsPerRow };",
+        "const int reservedMuffins{ 2 * muffinsPerRow };",
+        "const int packedMuffins{ bakedMuffins - reservedMuffins };",
+        "<< bakedMuffins <<",
+        "<< packedMuffins <<"
+      ],
+      "notContains": [
+        "std::cin",
+        "using namespace std",
+        "#ifdef",
+        "NDEBUG",
+        "__OPTIMIZE__",
+        "volatile",
+        "Baked muffins: 72",
+        "Packed muffins: 60"
+      ]
+    }
+  ]
+}

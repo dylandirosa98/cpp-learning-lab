@@ -1,0 +1,58 @@
+{
+  "order": 8,
+  "id": "2.8",
+  "title": "Programs with multiple code files",
+  "url": "https://www.learncpp.com/cpp-tutorial/programs-with-multiple-code-files/",
+  "estimatedMinutes": 15,
+  "recap": [
+    "Each source file is compiled as an independent translation unit. A declaration in the calling file lets compilation proceed without exposing the implementation there.",
+    "The linker later connects calls to definitions from the other compiled source files. Every implementation file must therefore be included in the build rather than copied with an include directive."
+  ],
+  "objectives": [
+    "Split a small program across two source files.",
+    "Declare a function implemented in another translation unit.",
+    "Compile and link every relevant source file.",
+    "Keep implementation files out of include directives."
+  ],
+  "warnings": [
+    "Compiling only main.cpp leaves external function definitions unavailable to the linker.",
+    "Compilation order does not make declarations from one source file visible in another.",
+    "Including a .cpp file can create duplicate definitions and unnecessary rebuilds.",
+    "Each source file must include the library headers for the facilities it directly uses."
+  ],
+  "challenge": "Implement requiredCrewHours in crew.cpp and declare it in main.cpp. Calculate whole crew hours for eight roof sections taking 45 minutes each, then print the exact report line.",
+  "expectedOutput": [
+    "Required crew time: 6 hours"
+  ],
+  "hints": [
+    "First, open crew.cpp and replace the placeholder calculation in requiredCrewHours; keep the existing matching declaration in main.cpp.",
+    "Pseudocode: IN main.cpp, DECLARE FUNCTION requiredCrewHours(sections: integer, minutesPerSection: integer) RETURNS integer. MAIN: hours = requiredCrewHours(8, 45); OUTPUT the crew-time label, hours, and hours suffix; return success. IN crew.cpp, DEFINE requiredCrewHours: totalMinutes = sections * minutesPerSection; RETURN totalMinutes / 60 using whole-number division.",
+    "Near-C++ structure: // main.cpp: int requiredCrewHours(int sections, int minutesPerSection) /* declaration terminator */ int main() { std::cout << /* label */ << requiredCrewHours(/* required arguments */) << /* suffix and newline */; /* return success */ } // crew.cpp: int requiredCrewHours(int sections, int minutesPerSection) { return /* multiply inputs, then divide by 60 */; }"
+  ],
+  "sources": [
+    "main.cpp",
+    "crew.cpp"
+  ],
+  "sourceChecks": [
+    {
+      "file": "main.cpp",
+      "contains": [
+        "int requiredCrewHours(int sections, int minutesPerSection);",
+        "requiredCrewHours(8, 45)"
+      ],
+      "notContains": [
+        "#include \"crew.cpp\"",
+        "using namespace std"
+      ]
+    },
+    {
+      "file": "crew.cpp",
+      "contains": [
+        "int requiredCrewHours(int sections, int minutesPerSection)"
+      ],
+      "notContains": [
+        "#include \"main.cpp\""
+      ]
+    }
+  ]
+}

@@ -1,0 +1,54 @@
+{
+  "order": 5,
+  "id": "2.5",
+  "title": "Introduction to local scope",
+  "url": "https://www.learncpp.com/cpp-tutorial/introduction-to-local-scope/",
+  "estimatedMinutes": 12,
+  "recap": [
+    "A local identifier is usable from its declaration to the end of its enclosing block. Its object exists at runtime until that block finishes, while scope describes at compile time where the identifier can be named.",
+    "Parameters are local variables initialized from caller-provided values. Equal names in separate functions refer to separate objects, so changing a value parameter does not alter a same-named variable owned by the caller."
+  ],
+  "objectives": [
+    "Identify the scope and lifetime boundaries of local variables and parameters.",
+    "Use a parameter for caller-provided data and a local variable for internal data.",
+    "Demonstrate that same-named variables in different functions are independent.",
+    "Declare a local variable near the operation that first needs it."
+  ],
+  "warnings": [
+    "A local identifier cannot be used from a different function or outside its block.",
+    "Using an object after its lifetime has ended produces invalid behavior.",
+    "Assigning to a value parameter does not update the caller's argument object.",
+    "Unneeded parameters force callers to supply data the function does not use."
+  ],
+  "challenge": "Complete the two functions in this order. 1. In calibrateReading(int reading), declare a local int named offset initialized to 3, subtract offset from the function's copied reading parameter, then return that adjusted parameter. 2. In main(), keep its separate local int named reading initialized to 18, print it, pass it to calibrateReading(), store the returned value in adjusted, print adjusted, print main's reading again, and return 0. Keep the function signature and local variable names unchanged, declare offset only inside calibrateReading(), qualify cout with std::, and do not add `using namespace std;`.",
+  "expectedOutput": [
+    "Raw reading: 18",
+    "Adjusted reading: 15",
+    "Raw reading after call: 18"
+  ],
+  "hints": [
+    "First work only inside calibrateReading(): declare the local integer offset immediately before the adjustment, and initialize it with the required correction value 3.",
+    "Language-neutral pseudocode: CALIBRATE_READING(copied reading): SET local offset to 3, DECREASE copied reading by offset, RETURN copied reading; MAIN: SET its own reading to 18, OUTPUT the raw reading, STORE CALIBRATE_READING(reading) as adjusted, OUTPUT adjusted, OUTPUT main's reading again, RETURN success.",
+    "Near-C++ structure: `int calibrateReading(int reading) { int offset{<correction>}; reading -= <local offset>; return <adjusted parameter>; }`. Keep `int main()` with its separate `reading`, its call-based `adjusted` initializer, and its existing `std::cout` statements."
+  ],
+  "sources": [
+    "main.cpp"
+  ],
+  "sourceChecks": [
+    {
+      "file": "main.cpp",
+      "contains": [
+        "int calibrateReading(int reading)",
+        "int offset{3};",
+        "reading -= offset;",
+        "int reading{18};",
+        "calibrateReading(reading)"
+      ],
+      "notContains": [
+        "static int reading",
+        "int reading{15};",
+        "void calibrateReading"
+      ]
+    }
+  ]
+}

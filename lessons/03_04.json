@@ -1,0 +1,54 @@
+{
+  "order": 18,
+  "id": "3.4",
+  "title": "Basic debugging tactics",
+  "url": "https://www.learncpp.com/cpp-tutorial/basic-debugging-tactics/",
+  "estimatedMinutes": 20,
+  "recap": [
+    "Temporary function-entry messages reveal which functions execute, how often they execute, and in what order. Targeted value messages then narrow the interval where valid data first becomes incorrect.",
+    "std::cerr is useful for immediate diagnostic output kept separate from normal stdout, but manual instrumentation modifies and clutters the program, so temporary traces should be removed after the repair."
+  ],
+  "objectives": [
+    "Add temporary std::cerr function-flow traces.",
+    "Compare observed call order with a stated execution contract.",
+    "Trace only the values needed to locate the first divergence.",
+    "Remove all temporary instrumentation after repairing production code."
+  ],
+  "warnings": [
+    "Commenting out code can alter dependencies and produce a different symptom rather than useful evidence.",
+    "Temporary output mixed into stdout can invalidate normal program output and may be buffered.",
+    "Adding and removing diagnostic statements can introduce new defects.",
+    "Restore any temporarily removed behavior and remove every temporary trace before completion."
+  ],
+  "challenge": "Trace and repair the inspection photo count. A completed inspection covers six sections and requires three photos per section. The program must collect the section count once, calculate the photo count once, and print the report once. Add temporary std::cerr entry messages to collectSectionCount(), calculatePhotoCount(), and printReport(), then run and record their order. Trace sectionCount and photoCount only if the call sequence does not fully explain the symptom. Repair the production call flow, remove every std::cerr diagnostic, and verify exact stdout. Keep all three helper functions and derive the values rather than hard-coding output.",
+  "expectedOutput": [
+    "Sections inspected: 6",
+    "Photos captured: 18"
+  ],
+  "hints": [
+    "The intended helper order is collection, calculation, reporting. Function-entry traces show whether each helper runs exactly once in that order.",
+    "If collection runs twice while calculation does not run, inspect the initializer that produces photoCount in main().",
+    "photoCount should come from the calculation helper using sectionCount and a photos-per-section argument of 3."
+  ],
+  "sources": [
+    "main.cpp"
+  ],
+  "sourceChecks": [
+    {
+      "file": "main.cpp",
+      "contains": [
+        "int collectSectionCount()",
+        "int calculatePhotoCount(int sections, int photosPerSection)",
+        "void printReport(int sections, int photos)",
+        "calculatePhotoCount(sectionCount, 3)",
+        "printReport(sectionCount, photoCount)"
+      ],
+      "notContains": [
+        "std::cerr",
+        "Sections inspected: 6",
+        "Photos captured: 18",
+        "using namespace std"
+      ]
+    }
+  ]
+}

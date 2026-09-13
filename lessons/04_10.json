@@ -1,0 +1,57 @@
+{
+  "order": 35,
+  "id": "4.10",
+  "title": "Introduction to if statements",
+  "url": "https://www.learncpp.com/cpp-tutorial/introduction-to-if-statements/",
+  "estimatedMinutes": 25,
+  "recap": [
+    "An if statement executes its following statement only when its condition converts to true. An if-else chain selects the first true branch and skips the remaining branches.",
+    "Ordering and matching conditions matter. A three-way comparison can handle positive, negative, and zero values with if, else if, and a final else."
+  ],
+  "objectives": [
+    "Write mutually exclusive branches with an if-else chain.",
+    "Match negative, positive, and zero values to the correct output.",
+    "Recognize that the final else handles the remaining case.",
+    "Exercise every branch with deterministic calls."
+  ],
+  "warnings": [
+    "Only the first true branch in an if-else chain executes.",
+    "A condition and its printed label must describe the same case.",
+    "Do not replace the fixed calls with three hard-coded report lines."
+  ],
+  "challenge": "Repair printTemperatureState() so negative temperatures print below freezing, positive temperatures print above freezing, and zero prints freezing point. Use one if/else-if/else chain and keep all three supplied calls so every path executes in a deterministic no-input run.",
+  "expectedOutput": [
+    "Temperature -4: below freezing",
+    "Temperature 0: freezing point",
+    "Temperature 7: above freezing"
+  ],
+  "hints": [
+    "The first condition should identify values less than zero.",
+    "After the negative case, test values greater than zero.",
+    "If neither comparison is true, the value must be zero."
+  ],
+  "sources": [
+    "main.cpp"
+  ],
+  "sourceChecks": [
+    {
+      "file": "main.cpp",
+      "contains": [
+        "void printTemperatureState(int temperature)",
+        "if (",
+        "else if (",
+        "else",
+        "printTemperatureState(-4)",
+        "printTemperatureState(0)",
+        "printTemperatureState(7)"
+      ],
+      "notContains": [
+        "std::cin",
+        "using namespace std",
+        "Temperature -4: below freezing",
+        "Temperature 0: freezing point",
+        "Temperature 7: above freezing"
+      ]
+    }
+  ]
+}

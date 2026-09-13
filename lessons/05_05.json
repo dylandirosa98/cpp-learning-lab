@@ -1,0 +1,52 @@
+{
+  "order": 43,
+  "id": "5.5",
+  "title": "Constant expressions",
+  "url": "https://www.learncpp.com/cpp-tutorial/constant-expressions/",
+  "estimatedMinutes": 25,
+  "recap": [
+    "A constant expression is an expression whose literals, variables, operators, and function calls are all evaluatable at compile time. A non-const variable cannot be used in a constant expression even when its initializer is a literal.",
+    "A const integral variable initialized by a constant expression is usable in constant expressions. Modern code generally prefers constexpr when a value is intended to be a compile-time constant, and static_assert requires a constant-expression condition."
+  ],
+  "objectives": [
+    "Make a const int usable in a constant expression.",
+    "Initialize a constexpr int from compile-time operands.",
+    "Use static_assert to verify a calculated invariant during compilation.",
+    "Distinguish a constant initializer from a variable that is usable in constant expressions."
+  ],
+  "warnings": [
+    "A literal initializer does not make a non-const variable usable in a constant expression.",
+    "A constexpr variable must have a constant-expression initializer.",
+    "Do not replace the calculated capacity with the expected numeric result."
+  ],
+  "challenge": "Repair the declarations so rows is a const int usable in constant expressions, seatsPerRow is explicitly constexpr, and capacity is a constexpr product of those two variables. Retain the static_assert that verifies 24 seats and print the calculated capacity in a deterministic no-input run.",
+  "expectedOutput": [
+    "Capacity: 24 seats"
+  ],
+  "hints": [
+    "The literal 4 is a constant expression, but the current non-const rows variable is not usable in one.",
+    "Add const to the integral rows declaration; a const integral variable with a constant-expression initializer is usable at compile time.",
+    "Keep capacity constexpr and initialized with rows * seatsPerRow so static_assert can evaluate the product during compilation."
+  ],
+  "sources": [
+    "main.cpp"
+  ],
+  "sourceChecks": [
+    {
+      "file": "main.cpp",
+      "contains": [
+        "const int rows{ 4 };",
+        "constexpr int seatsPerRow{ 6 };",
+        "constexpr int capacity{ rows * seatsPerRow };",
+        "static_assert(capacity == 24);",
+        "<< capacity <<"
+      ],
+      "notContains": [
+        "std::cin",
+        "using namespace std",
+        "constexpr int capacity{ 24 }",
+        "Capacity: 24 seats"
+      ]
+    }
+  ]
+}

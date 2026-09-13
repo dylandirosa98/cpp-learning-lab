@@ -1,0 +1,56 @@
+{
+  "order": 45,
+  "id": "5.7",
+  "title": "Introduction to std::string",
+  "url": "https://www.learncpp.com/cpp-tutorial/introduction-to-stdstring/",
+  "estimatedMinutes": 25,
+  "recap": [
+    "std::string, provided by the <string> header, owns its character data. A mutable std::string can be initialized, assigned text of a different length, and appended to without manually managing storage.",
+    "The length() member function reports the number of char elements and excludes the null terminator. Restricting this deterministic exercise to ASCII makes the reported character count unambiguous because every displayed character occupies one char element."
+  ],
+  "objectives": [
+    "Create an owning mutable std::string.",
+    "Replace its initial contents using assignment.",
+    "Append additional text with operator+=.",
+    "Report a deterministic ASCII string length with length()."
+  ],
+  "warnings": [
+    "A const std::string cannot be reassigned or appended to.",
+    "std::string::length() counts char elements, not user-perceived Unicode characters.",
+    "Do not hard-code the final string or its length in the output expression."
+  ],
+  "challenge": "Repair the mutable owned label so it is first reassigned from C++ to C++ Lab and then appended with a space and 2026. Print the resulting label and obtain its deterministic ASCII length by calling label.length().",
+  "expectedOutput": [
+    "Label: C++ Lab 2026",
+    "ASCII length: 12"
+  ],
+  "hints": [
+    "The label must own its text and change after initialization, so it should be a non-const std::string.",
+    "Assignment replaces the old contents: use label = \"C++ Lab\" for the first change.",
+    "Use label += \" 2026\" to append, then stream label.length() rather than the number 12."
+  ],
+  "sources": [
+    "main.cpp"
+  ],
+  "sourceChecks": [
+    {
+      "file": "main.cpp",
+      "contains": [
+        "#include <string>",
+        "std::string label{ \"C++\" };",
+        "label = \"C++ Lab\";",
+        "label += \" 2026\";",
+        "<< label <<",
+        "<< label.length() <<"
+      ],
+      "notContains": [
+        "std::cin",
+        "using namespace std",
+        "const std::string label",
+        "std::string_view",
+        "Label: C++ Lab 2026",
+        "ASCII length: 12"
+      ]
+    }
+  ]
+}

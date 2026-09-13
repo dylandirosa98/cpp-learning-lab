@@ -1,0 +1,53 @@
+{
+  "order": 29,
+  "id": "4.4",
+  "title": "Signed integers",
+  "url": "https://www.learncpp.com/cpp-tutorial/signed-integers/",
+  "estimatedMinutes": 18,
+  "recap": [
+    "Signed integer types represent negative values, zero, and positive values. Plain int is signed by default, so a redundant signed prefix is normally omitted.",
+    "Division of two integers produces an integer quotient and discards the fractional portion toward zero. The remainder operator preserves the leftover signed remainder, so -13 / 5 is -2 and -13 % 5 is -3."
+  ],
+  "objectives": [
+    "Represent a negative quantity with signed int objects.",
+    "Predict integer division that truncates toward zero.",
+    "Use the remainder operator to retain the discarded portion.",
+    "Associate quotient and remainder expressions with the correct result roles."
+  ],
+  "warnings": [
+    "Integer division does not round to the nearest whole number.",
+    "The fractional portion is discarded even when the dividend is negative.",
+    "Signed overflow is undefined behavior; keep calculations within the type's range.",
+    "Do not hard-code -2 or -3 in the output statements."
+  ],
+  "challenge": "Repair the split of a total adjustment of -13 across 5 intervals. The starter calculates both the quotient and remainder but assigns them to the opposite roles. Make wholeSteps contain the truncated integer quotient and remainder contain the leftover signed amount. Preserve the fixed inputs, use no input, and derive both output values from the arithmetic expressions.",
+  "expectedOutput": [
+    "Whole steps: -2",
+    "Remainder: -3"
+  ],
+  "hints": [
+    "For two int operands, / discards the fractional part of the quotient toward zero.",
+    "The % operator gives the remainder corresponding to integer division.",
+    "Evaluate -13 / 5 and -13 % 5 separately, then match each expression to its variable name."
+  ],
+  "sources": [
+    "main.cpp"
+  ],
+  "sourceChecks": [
+    {
+      "file": "main.cpp",
+      "contains": [
+        "int totalAdjustment{ -13 }",
+        "int intervalCount{ 5 }",
+        "int wholeSteps{ totalAdjustment / intervalCount }",
+        "int remainder{ totalAdjustment % intervalCount }"
+      ],
+      "notContains": [
+        "Whole steps: -2",
+        "Remainder: -3",
+        "std::cin",
+        "using namespace std"
+      ]
+    }
+  ]
+}

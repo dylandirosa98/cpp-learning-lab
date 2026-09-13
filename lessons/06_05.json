@@ -1,0 +1,45 @@
+{
+  "order": 53,
+  "id": "6.5",
+  "title": "The comma operator",
+  "url": "https://www.learncpp.com/cpp-tutorial/the-comma-operator/",
+  "estimatedMinutes": 20,
+  "recap": [
+    "The built-in comma operator evaluates its left operand, discards that result, then evaluates and yields its right operand. Its sequencing can be useful in narrow contexts, but separate statements are usually clearer.",
+    "The comma operator has very low precedence, so parentheses are normally required when its yielded value is assigned. Commas also separate function arguments and declarations; those commas are separators, not comma operators."
+  ],
+  "objectives": [
+    "Use the built-in comma operator in an explicitly parenthesized expression.",
+    "Observe a side effect from the left operand before evaluating the right operand.",
+    "Distinguish the comma operator from punctuation that separates declarations.",
+    "Prefer clear sequencing outside the focused demonstration."
+  ],
+  "warnings": [
+    "Without parentheses, assignment binds more tightly than the comma operator.",
+    "Do not treat every comma token in C++ as the comma operator.",
+    "Avoid hiding multiple complicated side effects in a comma expression."
+  ],
+  "challenge": "Start auditCode at 4. In one clearly parenthesized comma expression, add 2 to auditCode in the left operand and calculate auditCode * 3 in the right operand. Store the yielded right-hand value in auditResult and print the final code and result.",
+  "expectedOutput": [
+    "Audit code after left operand: 6",
+    "Comma expression result: 18"
+  ],
+  "hints": [
+    "The left operand can be auditCode += 2, which both mutates auditCode and yields a value that the comma operator discards.",
+    "Use auditCode * 3 as the right operand; that is the value the full comma expression yields.",
+    "The initializer needs double parentheses around the comma expression: int auditResult{ (left, right) };."
+  ],
+  "sources": ["main.cpp"],
+  "sourceChecks": [
+    {
+      "file": "main.cpp",
+      "contains": [
+        "int auditCode{ 4 };",
+        "int auditResult{ (auditCode += 2, auditCode * 3) };",
+        "<< auditCode <<",
+        "<< auditResult <<"
+      ],
+      "notContains": ["std::cin", "using namespace std", "auditResult{ 18 }", "Comma expression result: 18"]
+    }
+  ]
+}

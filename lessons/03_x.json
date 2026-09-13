@@ -1,0 +1,129 @@
+{
+  "order": 25,
+  "id": "3.x",
+  "title": "Chapter 3 summary and quiz",
+  "url": "https://www.learncpp.com/cpp-tutorial/chapter-3-summary-and-quiz/",
+  "estimatedMinutes": 40,
+  "recap": [
+    "Effective debugging begins with reproducible behavior, narrows the root cause using controlled observations, repairs the underlying defect, and retests both failing and previously successful cases. Stepping, breakpoints, watches, and call stacks provide complementary views of execution and state.",
+    "Defect prevention complements debugging. Warning-clean compilation, focused functions, deterministic checks, clear module boundaries, and incremental changes make failures easier to detect and explain."
+  ],
+  "objectives": [
+    "Debug a deterministic program across several translation units.",
+    "Combine breakpoints, stepping, watches, and call-stack inspection.",
+    "Use isolated helper checks to distinguish local and integration failures.",
+    "Preserve calculation and presentation module boundaries.",
+    "Finish with warning-clean compilation and exact regression output."
+  ],
+  "warnings": [
+    "Reproduce and record the starter behavior before making speculative edits.",
+    "Do not repair output by hard-coding values or moving calculations into the reporting module.",
+    "A watched expression is meaningful only at the execution point and scope where it is evaluated.",
+    "Set Next Statement changes control flow without restoring state and must not be used as a source repair.",
+    "Retest both isolated checks and the integrated report after every repair."
+  ],
+  "challenge": "Diagnose and repair a multi-file courier-run program. Outbound segments take 12 and 8 minutes; return segments take 9 and 6 minutes. Travel consumes one battery unit per five mission minutes, plus two reserve units. In CLion's Debug configuration, first record the complete starter output. Place initial breakpoints on the first statement in missionMinutes() and the return statement in batteryUnitsNeeded(). In missionMinutes(), watch outbound and returning; when stepping reaches combineSegments(), inspect the complete Frames path. In batteryUnitsNeeded(), watch missionMinutes, travelUnits, and reserveUnits. Use the two printed helper checks to separate local failures from integration failures. Preserve all file responsibilities and do not add diagnostics or hard-code output.",
+  "expectedOutput": [
+    "Check combine(3, 4): 7",
+    "Check battery(10): 4",
+    "Courier run: CX-17",
+    "Outbound minutes: 20",
+    "Return minutes: 15",
+    "Total minutes: 35",
+    "Battery units: 9"
+  ],
+  "hints": [
+    "Classify each incorrect line as either an isolated helper failure or an integration-only failure before editing.",
+    "Record the watched locals and full caller path for both segment combinations performed inside missionMinutes().",
+    "Make each mission local follow its named route, and make reserve inventory increase rather than reduce the travel requirement."
+  ],
+  "sources": [
+    "main.cpp",
+    "route.cpp",
+    "report.cpp"
+  ],
+  "sourceChecks": [
+    {
+      "file": "route.h",
+      "contains": [
+        "#ifndef CPP_LEARNING_LAB_ROUTE_H",
+        "#define CPP_LEARNING_LAB_ROUTE_H",
+        "int combineSegments(int firstMinutes, int secondMinutes);",
+        "int outboundMinutes();",
+        "int returnMinutes();",
+        "int missionMinutes();",
+        "int batteryUnitsNeeded(int missionMinutes);",
+        "#endif"
+      ],
+      "notContains": [
+        "{",
+        "#pragma once",
+        "std::cout"
+      ]
+    },
+    {
+      "file": "report.h",
+      "contains": [
+        "#ifndef CPP_LEARNING_LAB_REPORT_H",
+        "#define CPP_LEARNING_LAB_REPORT_H",
+        "void printChecks(int combinedMinutes, int batteryUnits);",
+        "void printMission(int outbound, int returning, int total, int batteryUnits);",
+        "#endif"
+      ],
+      "notContains": [
+        "{",
+        "#pragma once",
+        "std::cout"
+      ]
+    },
+    {
+      "file": "route.cpp",
+      "contains": [
+        "#include \"route.h\"",
+        "int combineSegments(int firstMinutes, int secondMinutes)",
+        "int outboundMinutes()",
+        "int returnMinutes()",
+        "int missionMinutes()",
+        "int batteryUnitsNeeded(int missionMinutes)"
+      ],
+      "notContains": [
+        "std::cout",
+        "std::cerr",
+        "using namespace std"
+      ]
+    },
+    {
+      "file": "report.cpp",
+      "contains": [
+        "#include \"report.h\"",
+        "void printChecks(int combinedMinutes, int batteryUnits)",
+        "void printMission(int outbound, int returning, int total, int batteryUnits)",
+        "std::cout"
+      ],
+      "notContains": [
+        "using namespace std"
+      ]
+    },
+    {
+      "file": "main.cpp",
+      "contains": [
+        "#include \"route.h\"",
+        "#include \"report.h\"",
+        "combineSegments(3, 4)",
+        "batteryUnitsNeeded(10)",
+        "outboundMinutes()",
+        "returnMinutes()",
+        "missionMinutes()",
+        "printChecks",
+        "printMission"
+      ],
+      "notContains": [
+        "std::cout",
+        "std::cerr",
+        "using namespace std",
+        "#include \"route.cpp\"",
+        "#include \"report.cpp\""
+      ]
+    }
+  ]
+}

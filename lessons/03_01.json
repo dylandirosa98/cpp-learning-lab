@@ -1,0 +1,52 @@
+{
+  "order": 15,
+  "id": "3.1",
+  "title": "Syntax and semantic errors",
+  "url": "https://www.learncpp.com/cpp-tutorial/syntax-and-semantic-errors/",
+  "estimatedMinutes": 18,
+  "recap": [
+    "Syntax errors violate C++ grammar and prevent successful compilation. Some semantic errors are also diagnosed during compilation, including unknown names and incompatible uses of values.",
+    "Other semantic errors survive compilation but produce incorrect behavior at runtime. A clean build is therefore one checkpoint, not proof that a program satisfies its requirements."
+  ],
+  "objectives": [
+    "Distinguish syntax, compile-time semantic, and runtime semantic defects.",
+    "Work from the first useful compiler diagnostic and rebuild after each repair.",
+    "Validate calculated behavior after the program compiles cleanly.",
+    "Use a debugger checkpoint to compare function inputs with its returned value."
+  ],
+  "warnings": [
+    "One malformed statement can produce several follow-on diagnostics, so later messages may not identify independent defects.",
+    "Compiler acceptance does not establish that an operation has the intended meaning.",
+    "Warnings should be repaired rather than ignored.",
+    "Do not replace a faulty calculation with hard-coded expected output."
+  ],
+  "challenge": "Repair the intentionally broken fastener inventory. Six rows contain eight installed fasteners each, and five spare fasteners are available. Build before editing, record the first diagnostic, repair one diagnostic at a time, and rebuild after each change. Once compilation is warning-free, run the program and compare both calculated values with the expected output. If behavior is still wrong, stop in installedFasteners(), inspect its two parameters and returned value, and repair the underlying calculation. Classify each defect you encountered as syntax, compile-time semantic, or runtime semantic. Preserve the existing functions and derive all displayed numbers from their results.",
+  "expectedOutput": [
+    "Installed fasteners: 48",
+    "Fasteners available: 53"
+  ],
+  "hints": [
+    "Start with only the first compiler diagnostic. Check whether the statement immediately before the reported location is complete, then rebuild before considering later messages.",
+    "Every call argument that is meant to name an object must exactly match a declared local name. After compilation succeeds, verify that installedFasteners(6, 8) returns 48.",
+    "The installed count combines a number of equal rows with the number in each row; use the arithmetic operation that represents repeated equal groups."
+  ],
+  "sources": [
+    "main.cpp"
+  ],
+  "sourceChecks": [
+    {
+      "file": "main.cpp",
+      "contains": [
+        "int installedFasteners(int rows, int fastenersPerRow)",
+        "void printInventory(int installed, int spare)",
+        "installedFasteners(6, 8)",
+        "printInventory(installed, spare)"
+      ],
+      "notContains": [
+        "Installed fasteners: 48",
+        "Fasteners available: 53",
+        "using namespace std"
+      ]
+    }
+  ]
+}

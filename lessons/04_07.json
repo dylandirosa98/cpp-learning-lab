@@ -1,0 +1,55 @@
+{
+  "order": 32,
+  "id": "4.7",
+  "title": "Introduction to scientific notation",
+  "url": "https://www.learncpp.com/cpp-tutorial/introduction-to-scientific-notation/",
+  "estimatedMinutes": 20,
+  "recap": [
+    "Scientific notation writes a value as a significand multiplied by a power of ten. C++ floating-point literals use e or E followed by the exponent, so 1.496e8 means 1.496 times ten to the eighth power.",
+    "A positive exponent moves the decimal point right and a negative exponent moves it left. Digits in the significand are significant, including trailing zeros after a decimal point."
+  ],
+  "objectives": [
+    "Express large and small measured values with scientific-notation literals.",
+    "Correct the exponent without changing the intended significant digits.",
+    "Relate positive and negative exponents to decimal magnitude.",
+    "Produce deterministic decimal output from scientific-notation values."
+  ],
+  "warnings": [
+    "Do not confuse a negative exponent with a negative value.",
+    "Changing the significand can change both the value and its stated precision.",
+    "Do not remove fixed formatting or replace the measurements with output text."
+  ],
+  "challenge": "Correct the two scientific-notation literals in a probe report. The orbital distance is 1.496 times ten to the eighth kilometers, and the pulse duration is 2.500 times ten to the negative third seconds. Preserve the significands exactly so their stated significant digits remain visible in the source. Keep the supplied fixed formatting and print the exact two-line report without input or hard-coded decimal output strings.",
+  "expectedOutput": [
+    "Probe distance: 149600000 km",
+    "Pulse duration: 0.002500 s"
+  ],
+  "hints": [
+    "A positive exponent of 8 moves the decimal point eight places to the right.",
+    "A negative exponent of 3 moves the decimal point three places to the left.",
+    "Only the exponent digits are incorrect in each supplied literal."
+  ],
+  "sources": [
+    "main.cpp"
+  ],
+  "sourceChecks": [
+    {
+      "file": "main.cpp",
+      "contains": [
+        "double probeDistanceKm",
+        "double pulseDurationSeconds",
+        "1.496e8",
+        "2.500e-3",
+        "std::fixed",
+        "std::setprecision(0)",
+        "std::setprecision(6)"
+      ],
+      "notContains": [
+        "std::cin",
+        "using namespace std",
+        "Probe distance: 149600000 km",
+        "Pulse duration: 0.002500 s"
+      ]
+    }
+  ]
+}

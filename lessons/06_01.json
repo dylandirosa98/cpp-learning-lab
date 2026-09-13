@@ -1,0 +1,48 @@
+{
+  "order": 49,
+  "id": "6.1",
+  "title": "Operator precedence and associativity",
+  "url": "https://www.learncpp.com/cpp-tutorial/operator-precedence-and-associativity/",
+  "estimatedMinutes": 20,
+  "recap": [
+    "Operator precedence determines which operators bind to operands first when an expression mixes operators. Multiplication and division have higher precedence than addition, while parentheses make the intended grouping explicit.",
+    "Associativity resolves operators at the same precedence level. Arithmetic operators such as division associate left-to-right, but relying on a reader to remember a precedence table is less clear than grouping an important calculation deliberately."
+  ],
+  "objectives": [
+    "Predict an expression's result from operator precedence.",
+    "Use parentheses to override default grouping.",
+    "Recognize left-to-right associativity among division operators.",
+    "Keep calculations visible rather than replacing them with their results."
+  ],
+  "warnings": [
+    "Evaluation order is a different topic from precedence and associativity.",
+    "Parentheses that clarify intent are useful even when precedence already gives the desired result.",
+    "Hard-coding the three answers bypasses the expression practice."
+  ],
+  "challenge": "Calculate three deterministic scoreboard values: the default result of basePoints + bonusPoints * multiplier, a grouped result that adds before multiplying, and a left-associated division result from totalPoints / teams / rounds. Print the calculated values exactly.",
+  "expectedOutput": [
+    "Default precedence: 22",
+    "Parenthesized: 42",
+    "Left-associated division: 5"
+  ],
+  "hints": [
+    "Multiplication binds more tightly than addition, so the default expression multiplies bonusPoints first.",
+    "Wrap basePoints + bonusPoints in parentheses when that sum must be multiplied.",
+    "Operators / and / have equal precedence and associate left-to-right: (100 / 4) / 5."
+  ],
+  "sources": ["main.cpp"],
+  "sourceChecks": [
+    {
+      "file": "main.cpp",
+      "contains": [
+        "basePoints + bonusPoints * multiplier",
+        "(basePoints + bonusPoints) * multiplier",
+        "totalPoints / teams / rounds",
+        "<< defaultScore <<",
+        "<< groupedScore <<",
+        "<< pointsPerRound <<"
+      ],
+      "notContains": ["std::cin", "using namespace std", "Default precedence: 22", "Parenthesized: 42"]
+    }
+  ]
+}

@@ -1,0 +1,59 @@
+{
+  "order": 28,
+  "id": "4.3",
+  "title": "Object sizes and the sizeof operator",
+  "url": "https://www.learncpp.com/cpp-tutorial/object-sizes-and-the-sizeof-operator/",
+  "estimatedMinutes": 20,
+  "recap": [
+    "An object's type determines how many bytes it occupies, and sizeof reports that byte count. The C++ standard guarantees minimum sizes and relative ordering for fundamental integer types rather than one exact size for every implementation.",
+    "sizeof(char) is always 1 because sizeof measures C++ bytes, even on a system where a byte is not eight bits. The guaranteed ordering is sizeof(short) <= sizeof(int) <= sizeof(long) <= sizeof(long long)."
+  ],
+  "objectives": [
+    "Use sizeof with type operands.",
+    "Express only portable guarantees about fundamental object sizes.",
+    "Distinguish a C++ byte from an assumed count of bits.",
+    "Produce deterministic output without assuming common desktop type sizes."
+  ],
+  "warnings": [
+    "Do not assume int is always four bytes or long is always eight bytes.",
+    "sizeof reports bytes, not bits.",
+    "sizeof cannot be applied portably to the incomplete type void.",
+    "A strict less-than comparison is not guaranteed when adjacent integer types may have equal sizes."
+  ],
+  "challenge": "Repair the four portable size claims. Each output expression is currently the opposite of a C++ guarantee. Use sizeof on the supplied types to establish that char occupies exactly one byte and that short, int, long, and long long are ordered from no larger to no smaller. Do not substitute platform-specific numeric sizes; output must be identical on every conforming implementation that builds the program.",
+  "expectedOutput": [
+    "char is one byte: true",
+    "short no larger than int: true",
+    "int no larger than long: true",
+    "long no larger than long long: true"
+  ],
+  "hints": [
+    "The unit returned by sizeof is defined so sizeof(char) is exactly 1.",
+    "Use <= rather than < because two adjacent standard integer types may occupy the same number of bytes.",
+    "Reverse each supplied > comparison while retaining its two type operands."
+  ],
+  "sources": [
+    "main.cpp"
+  ],
+  "sourceChecks": [
+    {
+      "file": "main.cpp",
+      "contains": [
+        "sizeof(char)",
+        "sizeof(short)",
+        "sizeof(int)",
+        "sizeof(long)",
+        "sizeof(long long)",
+        "std::boolalpha"
+      ],
+      "notContains": [
+        "char is one byte: true",
+        "short no larger than int: true",
+        "int no larger than long: true",
+        "long no larger than long long: true",
+        "std::cin",
+        "using namespace std"
+      ]
+    }
+  ]
+}

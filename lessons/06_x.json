@@ -1,0 +1,121 @@
+{
+  "order": 57,
+  "id": "6.x",
+  "title": "Chapter 6 summary and quiz",
+  "url": "https://www.learncpp.com/cpp-tutorial/chapter-6-summary-and-quiz/",
+  "estimatedMinutes": 50,
+  "recap": [
+    "Chapter 6 expressions combine arithmetic, remainder, increment and decrement, conditional, relational, and logical operators. Parentheses can clarify grouping, and calculations should be sequenced so each side effect is easy to understand.",
+    "Integer division and remainder can divide inventory into full containers and leftovers. Relational and logical operators decide whether action is needed, while the conditional operator can select the singular or plural label used to report a quantity."
+  ],
+  "objectives": [
+    "Calculate remaining and projected apple inventory from named quantities.",
+    "Use relational and logical operators to decide whether restocking is required.",
+    "Combine integer division, remainder, and increment to round up a crate count.",
+    "Use the conditional operator for correct singular and plural apple labels.",
+    "Keep inventory rules, stream presentation, and program coordination in separate files.",
+    "Produce a deterministic report without stdin or hard-coded calculated results."
+  ],
+  "warnings": [
+    "Do not place stream output or report wording in the inventory module.",
+    "Do not repeat inventory arithmetic in main or the report module.",
+    "Do not hard-code the remaining count, shortage, crate count, or projected total.",
+    "Keep increment as its own statement when rounding up the crate count.",
+    "All source and header files must preserve their module boundary."
+  ],
+  "challenge": "Build a deterministic multi-file apple inventory report. Begin with 24 apples, sell 7, and lose 2 to spoilage. The inventory module calculates 15 remaining apples, determines that this non-negative count is below the target of 20, calculates a shortage of 5, rounds that shortage up to 2 crates of capacity 4 using division, remainder, and increment, and calculates a projected inventory of 23. It also supplies singular or plural apple labels with the conditional operator. The report module alone writes the heading, quantity lines, status, crate order, projected total, and a one-apple pluralization check. main only owns constants, requests calculations, and coordinates output.",
+  "expectedOutput": [
+    "Apple inventory",
+    "Started: 24 apples",
+    "Sold: 7 apples",
+    "Spoiled: 2 apples",
+    "Remaining: 15 apples",
+    "Status: restock required",
+    "Restock needed: 5 apples",
+    "Crates to order: 2",
+    "Projected inventory: 23 apples",
+    "Pluralization check: 1 apple"
+  ],
+  "hints": [
+    "In inventory.cpp, subtract sold and spoiled from starting, and define restocking as remaining >= 0 && remaining < target.",
+    "Calculate full crates with needed / crateCapacity; when needed % crateCapacity != 0, increment the crate count once on a separate line.",
+    "Have appleLabel return quantity == 1 ? \"apple\" : \"apples\". Keep every std::cout in report.cpp and pass only calculated values from main."
+  ],
+  "sources": ["main.cpp", "inventory.cpp", "report.cpp"],
+  "sourceChecks": [
+    {
+      "file": "inventory.h",
+      "contains": [
+        "#ifndef CPP_LEARNING_LAB_CHAPTER6_INVENTORY_H",
+        "#define CPP_LEARNING_LAB_CHAPTER6_INVENTORY_H",
+        "#include <string_view>",
+        "int applesRemaining(int starting, int sold, int spoiled);",
+        "bool needsRestock(int remaining, int target);",
+        "int applesToRestock(int remaining, int target);",
+        "int cratesNeeded(int applesNeeded, int crateCapacity);",
+        "std::string_view appleLabel(int quantity);",
+        "#endif"
+      ],
+      "notContains": ["#pragma once", "std::cout", "std::cin", "using namespace std"]
+    },
+    {
+      "file": "report.h",
+      "contains": [
+        "#ifndef CPP_LEARNING_LAB_CHAPTER6_REPORT_H",
+        "#define CPP_LEARNING_LAB_CHAPTER6_REPORT_H",
+        "#include <string_view>",
+        "void printHeading();",
+        "void printQuantity(std::string_view description, int quantity);",
+        "void printStatus(bool restockRequired);",
+        "void printCrates(int crates);",
+        "#endif"
+      ],
+      "notContains": ["#pragma once", "std::cout", "std::cin", "using namespace std"]
+    },
+    {
+      "file": "inventory.cpp",
+      "contains": [
+        "#include \"inventory.h\"",
+        "return starting - sold - spoiled;",
+        "return remaining >= 0 && remaining < target;",
+        "return remaining < target ? target - remaining : 0;",
+        "int crates{ applesNeeded / crateCapacity };",
+        "applesNeeded % crateCapacity != 0",
+        "++crates;",
+        "return quantity == 1 ? \"apple\" : \"apples\";"
+      ],
+      "notContains": ["std::cout", "std::cin", "using namespace std", "24", "15", "23"]
+    },
+    {
+      "file": "report.cpp",
+      "contains": [
+        "#include \"report.h\"",
+        "#include \"inventory.h\"",
+        "#include <iostream>",
+        "std::cout << description << \": \" << quantity << ' ' << appleLabel(quantity) << '\\n';",
+        "restockRequired ? \"restock required\" : \"stock level healthy\"",
+        "std::cout << \"Crates to order: \" << crates << '\\n';"
+      ],
+      "notContains": ["std::cin", "using namespace std", "starting - sold", "applesToRestock(", "cratesNeeded(", "24", "15", "23"]
+    },
+    {
+      "file": "main.cpp",
+      "contains": [
+        "#include \"inventory.h\"",
+        "#include \"report.h\"",
+        "constexpr int startingApples{ 24 };",
+        "constexpr int soldApples{ 7 };",
+        "constexpr int spoiledApples{ 2 };",
+        "constexpr int targetApples{ 20 };",
+        "constexpr int crateCapacity{ 4 };",
+        "const int remaining{ applesRemaining(startingApples, soldApples, spoiledApples) };",
+        "const bool restockRequired{ needsRestock(remaining, targetApples) };",
+        "const int needed{ applesToRestock(remaining, targetApples) };",
+        "const int crates{ cratesNeeded(needed, crateCapacity) };",
+        "const int projected{ remaining + crates * crateCapacity };",
+        "printQuantity(\"Pluralization check\", 1);"
+      ],
+      "notContains": ["std::cout", "std::cin", "std::cerr", "using namespace std", "#include \"inventory.cpp\"", "#include \"report.cpp\"", "remaining{ 15 }", "needed{ 5 }", "crates{ 2 }", "projected{ 23 }"]
+    }
+  ]
+}

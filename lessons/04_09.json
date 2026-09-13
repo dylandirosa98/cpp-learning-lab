@@ -1,0 +1,56 @@
+{
+  "order": 34,
+  "id": "4.9",
+  "title": "Boolean values",
+  "url": "https://www.learncpp.com/cpp-tutorial/boolean-values/",
+  "estimatedMinutes": 20,
+  "recap": [
+    "The bool type has the values true and false. Comparison expressions already produce bool values, so a predicate function can return its comparison directly.",
+    "By default streams print bool values as 1 or 0. The std::boolalpha manipulator instead prints the readable words true and false and remains active for later Boolean output."
+  ],
+  "objectives": [
+    "Return a Boolean comparison directly from a predicate function.",
+    "Distinguish available capacity from exact equality.",
+    "Print Boolean values using std::boolalpha.",
+    "Verify both true and false deterministic cases."
+  ],
+  "warnings": [
+    "Assignment and equality are different operations.",
+    "A predicate named isWithinCapacity must include values below the limit, not only values equal to it.",
+    "Do not replace the comparison with case-specific true and false literals."
+  ],
+  "challenge": "Repair isWithinCapacity() so it returns true whenever the package count is less than or equal to capacity and false when the count exceeds capacity. Keep the direct Boolean return, all three fixed calls, and std::boolalpha. The cases deliberately exercise spare capacity, exact capacity, and excess capacity without input.",
+  "expectedOutput": [
+    "Capacity 8 of 10: true",
+    "Capacity 10 of 10: true",
+    "Capacity 12 of 10: false"
+  ],
+  "hints": [
+    "Equality is too restrictive when unused capacity is allowed.",
+    "The <= operator evaluates to true for both smaller and equal left operands.",
+    "Return the comparison itself; an if statement is unnecessary here."
+  ],
+  "sources": [
+    "main.cpp"
+  ],
+  "sourceChecks": [
+    {
+      "file": "main.cpp",
+      "contains": [
+        "bool isWithinCapacity(int packages, int capacity)",
+        "return packages <= capacity;",
+        "isWithinCapacity(8, 10)",
+        "isWithinCapacity(10, 10)",
+        "isWithinCapacity(12, 10)",
+        "std::boolalpha"
+      ],
+      "notContains": [
+        "std::cin",
+        "using namespace std",
+        "Capacity 8 of 10: true",
+        "Capacity 10 of 10: true",
+        "Capacity 12 of 10: false"
+      ]
+    }
+  ]
+}

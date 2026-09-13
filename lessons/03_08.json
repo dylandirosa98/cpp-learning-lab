@@ -1,0 +1,51 @@
+{
+  "order": 22,
+  "id": "3.8",
+  "title": "Using an integrated debugger: Watching variables",
+  "url": "https://www.learncpp.com/cpp-tutorial/using-an-integrated-debugger-watching-variables/",
+  "estimatedMinutes": 20,
+  "recap": [
+    "A debugger can inspect variables without modifying the program. Hover evaluation is useful for a single observation, while watches continuously reevaluate selected identifiers and expressions as execution advances.",
+    "Local variables appear only while their scope is active. Watched expressions use the values at the current stop, so execution must first be paused at the relevant statement."
+  ],
+  "objectives": [
+    "Add parameters and local variables to CLion's Watches pane.",
+    "Observe when local variables enter scope and change value.",
+    "Compare intermediate program state with stated inventory behavior.",
+    "Repair the calculation without introducing diagnostic output."
+  ],
+  "warnings": [
+    "Release optimization can hide variables or display values that do not correspond cleanly to source statements.",
+    "A watched identifier can be unavailable while it is out of scope.",
+    "An expression evaluated at the wrong stop may use values from a different point in execution.",
+    "Do not replace the calculation with its expected constant result."
+  ],
+  "challenge": "Repair an equipment reserve calculation. The reserve starts with 52 units, issues 17, and receives 4 returned units. In CLion's Debug configuration, place the initial breakpoint on the first executable statement in remainingUnits(). Add watches for available, issued, returned, afterIssue, and finalCount. Step Over each calculation and record when every watched value becomes available or changes. Use those observations to repair the behavior without hard-coding the result or adding diagnostics.",
+  "expectedOutput": [
+    "Reserve remaining: 39 units"
+  ],
+  "hints": [
+    "Confirm all three parameter values at the first breakpoint before stepping over either local initialization.",
+    "Compare afterIssue with finalCount immediately after each variable is initialized.",
+    "A returned unit changes the final count in the opposite direction from an issued unit."
+  ],
+  "sources": [
+    "main.cpp"
+  ],
+  "sourceChecks": [
+    {
+      "file": "main.cpp",
+      "contains": [
+        "int remainingUnits(int available, int issued, int returned)",
+        "int afterIssue",
+        "int finalCount",
+        "remainingUnits(52, 17, 4)"
+      ],
+      "notContains": [
+        "std::cerr",
+        "using namespace std",
+        "Reserve remaining: 39 units"
+      ]
+    }
+  ]
+}

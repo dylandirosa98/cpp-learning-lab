@@ -1,0 +1,56 @@
+{
+  "order": 39,
+  "id": "5.1",
+  "title": "Constant variables (named constants)",
+  "url": "https://www.learncpp.com/cpp-tutorial/constant-variables-named-constants/",
+  "estimatedMinutes": 20,
+  "recap": [
+    "A const variable must be initialized when it is defined and cannot be assigned a new value afterward. Placing const before the type is the conventional style.",
+    "Named constants communicate what a value means, obey normal C++ scope rules, and are preferable to object-like preprocessor macros. Variables that do not need to change should generally be const."
+  ],
+  "objectives": [
+    "Declare initialized constant variables with const before the type.",
+    "Give fixed business values descriptive names.",
+    "Use named constants in a calculation instead of repeating literals.",
+    "Produce a deterministic report without input."
+  ],
+  "warnings": [
+    "A const variable must receive its value in its definition.",
+    "Do not replace typed constant variables with #define macros.",
+    "Printing the expected total directly does not demonstrate use of the named constants."
+  ],
+  "challenge": "Make cartonsPerShelf and shelfCount constant because neither value changes. Compute totalCartons from those two named constants rather than repeating the literal 6, and make the total constant as well. Preserve the deterministic three-line report.",
+  "expectedOutput": [
+    "Cartons per shelf: 6",
+    "Shelf count: 5",
+    "Total cartons: 30"
+  ],
+  "hints": [
+    "Inspect each variable and ask whether its value is ever reassigned after initialization.",
+    "Place const before int in all three declarations whose values remain fixed.",
+    "Initialize totalCartons with cartonsPerShelf * shelfCount, not with a repeated literal or the final answer."
+  ],
+  "sources": [
+    "main.cpp"
+  ],
+  "sourceChecks": [
+    {
+      "file": "main.cpp",
+      "contains": [
+        "const int cartonsPerShelf{ 6 };",
+        "const int shelfCount{ 5 };",
+        "const int totalCartons{ cartonsPerShelf * shelfCount };",
+        "<< cartonsPerShelf <<",
+        "<< shelfCount <<",
+        "<< totalCartons <<"
+      ],
+      "notContains": [
+        "std::cin",
+        "using namespace std",
+        "#define",
+        "6 * shelfCount",
+        "Total cartons: 30"
+      ]
+    }
+  ]
+}

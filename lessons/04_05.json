@@ -1,0 +1,55 @@
+{
+  "order": 30,
+  "id": "4.5",
+  "title": "Unsigned integers, and why to avoid them",
+  "url": "https://www.learncpp.com/cpp-tutorial/unsigned-integers-and-why-to-avoid-them/",
+  "estimatedMinutes": 20,
+  "recap": [
+    "Unsigned integers represent non-negative values and use modulo arithmetic when a result is outside their range. Subtracting a larger unsigned quantity from a smaller one therefore wraps instead of producing a negative result.",
+    "Mixing signed and unsigned operands can convert the signed value to an unsigned type, creating surprising arithmetic and comparisons. Prefer signed integers for quantities and ordinary mathematics even when valid inputs are expected to be non-negative."
+  ],
+  "objectives": [
+    "Identify unwanted unsigned wraparound in a quantity calculation.",
+    "Recognize a signed and unsigned operand mismatch.",
+    "Use signed int objects for inventory quantities that may produce a negative balance.",
+    "Keep arithmetic and comparisons in one appropriate signed domain."
+  ],
+  "warnings": [
+    "Unsigned subtraction cannot represent a negative mathematical result.",
+    "A mixed signed/unsigned comparison can convert the signed operand before comparing.",
+    "Do not silence conversion diagnostics with a cast that preserves the wrong model.",
+    "Unsigned types remain appropriate for bit manipulation and intentional modulo behavior, but neither is needed here."
+  ],
+  "challenge": "Repair an inventory calculation with 2 available units and 3 requested units. The available quantity is incorrectly unsigned while requested is signed, causing mixed arithmetic and comparison problems. Prefer signed quantities for both values so balance can naturally become -1 and canFulfill is false. Preserve the supplied expressions, add no casts, use no input, and finish with a warning-clean C++20 program.",
+  "expectedOutput": [
+    "Inventory balance: -1",
+    "Can fulfill: false"
+  ],
+  "hints": [
+    "A quantity being normally non-negative does not make unsigned the safest type for calculations involving subtraction.",
+    "Give available and requested the same signed type before evaluating either expression.",
+    "Once both operands are signed ints, available - requested can represent -1 without wraparound or a conversion cast."
+  ],
+  "sources": [
+    "main.cpp"
+  ],
+  "sourceChecks": [
+    {
+      "file": "main.cpp",
+      "contains": [
+        "available{ 2 }",
+        "requested{ 3 }",
+        "available - requested",
+        "available >= requested",
+        "std::boolalpha"
+      ],
+      "notContains": [
+        "Inventory balance: -1",
+        "Can fulfill: false",
+        "static_cast",
+        "std::cin",
+        "using namespace std"
+      ]
+    }
+  ]
+}

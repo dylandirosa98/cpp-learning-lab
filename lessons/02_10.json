@@ -1,0 +1,51 @@
+{
+  "order": 10,
+  "id": "2.10",
+  "title": "Introduction to the preprocessor",
+  "url": "https://www.learncpp.com/cpp-tutorial/introduction-to-the-preprocessor/",
+  "estimatedMinutes": 15,
+  "recap": [
+    "Before C++ compilation, the preprocessor handles directives and produces a translation unit. Includes insert other file content, while conditional directives decide which source text reaches the compiler.",
+    "A macro without replacement text can act as a build-time feature flag. Macro processing follows source order and is isolated to each translation unit unless a definition is introduced through an included file or compiler option."
+  ],
+  "objectives": [
+    "Describe preprocessing as a stage before compilation.",
+    "Recognize the syntax and lifetime of preprocessor directives.",
+    "Use a feature macro with conditional compilation.",
+    "Exclude an inactive code path from the translation unit."
+  ],
+  "warnings": [
+    "Preprocessor directives end at a newline rather than a semicolon.",
+    "The preprocessor does not understand C++ function or block scope.",
+    "A macro defined in one source file does not automatically affect another.",
+    "Replacement macros should not substitute for typed C++ constants or functions when safer alternatives exist."
+  ],
+  "challenge": "Define ROOF_DIAGNOSTICS without replacement text. Always print the inspection status, conditionally print the sensor-bus diagnostic when that macro is defined, and keep a LEGACY_SENSOR diagnostic out of the compiled program because that macro is not defined.",
+  "expectedOutput": [
+    "Inspection status: ready",
+    "Diagnostics: sensor bus online"
+  ],
+  "hints": [
+    "First, place the sensor-bus output inside a conditional block controlled by the already-defined ROOF_DIAGNOSTICS macro.",
+    "Pseudocode: DEFINE ROOF_DIAGNOSTICS with no replacement text. MAIN: always OUTPUT inspection status. IF ROOF_DIAGNOSTICS is defined, OUTPUT the sensor-bus diagnostic. END IF. IF LEGACY_SENSOR is defined, OUTPUT the legacy-sensor diagnostic. END IF. Return success. Do not define LEGACY_SENSOR.",
+    "Near-C++ structure: #define ROOF_DIAGNOSTICS int main() { std::cout << /* status line */; #ifdef ROOF_DIAGNOSTICS std::cout << /* sensor-bus line */; #endif #ifdef LEGACY_SENSOR std::cout << /* legacy-sensor line */; #endif /* return success */ }"
+  ],
+  "sources": [
+    "main.cpp"
+  ],
+  "sourceChecks": [
+    {
+      "file": "main.cpp",
+      "contains": [
+        "#define ROOF_DIAGNOSTICS",
+        "#ifdef ROOF_DIAGNOSTICS",
+        "#ifdef LEGACY_SENSOR",
+        "#endif"
+      ],
+      "notContains": [
+        "#define LEGACY_SENSOR",
+        "using namespace std"
+      ]
+    }
+  ]
+}

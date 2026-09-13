@@ -1,0 +1,108 @@
+{
+  "order": 14,
+  "id": "2.x",
+  "title": "Chapter 2 summary and quiz",
+  "url": "https://www.learncpp.com/cpp-tutorial/chapter-2-summary-and-quiz/",
+  "estimatedMinutes": 35,
+  "recap": [
+    "Functions divide a program into reusable operations whose parameters carry data in and whose return values carry results out. Local variables keep temporary state limited to the function that owns it.",
+    "Larger programs connect independently compiled source files through declarations, definitions, and the linker. Guarded headers publish consistent interfaces, while qualified names and disciplined includes reduce collisions and hidden dependencies."
+  ],
+  "objectives": [
+    "Design small functions with clear parameters and return values.",
+    "Separate public declarations from source-file implementations.",
+    "Build and link several translation units into one program.",
+    "Protect every project header with a unique guard.",
+    "Keep calculation and presentation responsibilities in separate modules."
+  ],
+  "warnings": [
+    "A non-void function must return a value on the exercised path.",
+    "Every called declaration needs one matching definition in the linked program.",
+    "Including implementation files can create duplicate definitions.",
+    "Headers should include their own dependencies and use distinct guards.",
+    "A global using namespace std directive weakens protection from naming collisions."
+  ],
+  "challenge": "Create a five-file roof work-order system: main.cpp, inspection.h, inspection.cpp, report.h, and report.cpp. The inspection module calculates three risk points per moisture reading plus two per damaged tile, then estimates crew hours as risk points divided by four using integer division. The report module prints the fixed inspection ID and results. Use five moisture readings and four damaged tiles; main must perform no direct output.",
+  "expectedOutput": [
+    "Roof inspection: R-204",
+    "Risk points: 23",
+    "Crew hours: 5"
+  ],
+  "hints": [
+    "Start with module responsibilities: inspection owns arithmetic, report owns presentation, each header publishes only its module's interface, and main connects the modules without printing directly.",
+    "Language-neutral file flow: inspection.h publishes CALCULATE-RISK(moisture, tiles) and ESTIMATE-HOURS(risk); inspection.cpp returns moisture times 3 plus tiles times 2, then returns risk divided by 4 as a whole-number result. report.h publishes PRINT-INSPECTION(risk, hours); report.cpp prints ID R-204 and both values. main.cpp calculates risk from 5 and 4, calculates hours from that risk, and passes both to the reporter. Both headers reject repeated inclusion with their required distinct guards.",
+    "Near-C++ structure: guard each header and leave only its existing prototype declarations there. Include each paired header first in its .cpp; use int return expressions in the two inspection definitions, and keep the three std::cout lines in the void report definition. In main, retain two int results and one printInspection call; do not include implementation files or write console output there."
+  ],
+  "sources": [
+    "main.cpp",
+    "inspection.cpp",
+    "report.cpp"
+  ],
+  "sourceChecks": [
+    {
+      "file": "inspection.h",
+      "contains": [
+        "#ifndef CPP_LEARNING_LAB_INSPECTION_H",
+        "#define CPP_LEARNING_LAB_INSPECTION_H",
+        "int calculateRiskPoints(int moistureReadings, int damagedTiles);",
+        "int estimateCrewHours(int riskPoints);",
+        "#endif"
+      ],
+      "notContains": [
+        "{",
+        "#pragma once"
+      ]
+    },
+    {
+      "file": "report.h",
+      "contains": [
+        "#ifndef CPP_LEARNING_LAB_REPORT_H",
+        "#define CPP_LEARNING_LAB_REPORT_H",
+        "void printInspection(int riskPoints, int crewHours);",
+        "#endif"
+      ],
+      "notContains": [
+        "{",
+        "#pragma once"
+      ]
+    },
+    {
+      "file": "inspection.cpp",
+      "contains": [
+        "#include \"inspection.h\"",
+        "int calculateRiskPoints(int moistureReadings, int damagedTiles)",
+        "int estimateCrewHours(int riskPoints)"
+      ],
+      "notContains": [
+        "std::cout",
+        "using namespace std"
+      ]
+    },
+    {
+      "file": "report.cpp",
+      "contains": [
+        "#include \"report.h\"",
+        "void printInspection(int riskPoints, int crewHours)",
+        "std::cout"
+      ],
+      "notContains": [
+        "using namespace std"
+      ]
+    },
+    {
+      "file": "main.cpp",
+      "contains": [
+        "#include \"inspection.h\"",
+        "#include \"report.h\"",
+        "calculateRiskPoints(5, 4)",
+        "printInspection"
+      ],
+      "notContains": [
+        "std::cout",
+        "using namespace std",
+        "#include \"inspection.cpp\"",
+        "#include \"report.cpp\""
+      ]
+    }
+  ]
+}

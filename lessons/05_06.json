@@ -1,0 +1,62 @@
+{
+  "order": 44,
+  "id": "5.6",
+  "title": "Constexpr variables",
+  "url": "https://www.learncpp.com/cpp-tutorial/constexpr-variables/",
+  "estimatedMinutes": 25,
+  "recap": [
+    "A constexpr variable is a compile-time constant and must be initialized with a constant expression. It is implicitly const, so writing both constexpr and const on an ordinary variable is redundant.",
+    "Use constexpr for constant variables whose values are known at compile time. Use const for runtime constants whose initializers are not constant expressions; detailed constexpr function rules are covered later in Chapter F."
+  ],
+  "objectives": [
+    "Declare non-integral and integral compile-time constants with constexpr.",
+    "Build one constexpr variable from other constexpr variables.",
+    "Keep a value derived from a mutable runtime variable const rather than constexpr.",
+    "Validate a constexpr calculation with static_assert without defining constexpr functions."
+  ],
+  "warnings": [
+    "A const double is not usable in a constant expression merely because it has a literal initializer.",
+    "A value initialized from a mutable variable is a runtime value and should not be declared constexpr.",
+    "Do not introduce a constexpr function; this exercise is about variable declarations."
+  ],
+  "challenge": "Declare unitCost, packageCount, and totalCost as constexpr variables so their product can be checked by static_assert. Keep currentVisitors mutable and snapshotVisitors const because that snapshot is initialized from a runtime variable. Preserve the deterministic report and do not introduce constexpr functions.",
+  "expectedOutput": [
+    "Unit cost: 2.5",
+    "Total cost: 10",
+    "Visitor snapshot: 18"
+  ],
+  "hints": [
+    "The static_assert fails because const floating-point variables are not automatically usable in constant expressions.",
+    "Replace const with constexpr on unitCost, packageCount, and totalCost; totalCost should remain their product.",
+    "Do not make snapshotVisitors constexpr: its initializer currentVisitors is mutable, so const correctly expresses a runtime snapshot that cannot later change."
+  ],
+  "sources": [
+    "main.cpp"
+  ],
+  "sourceChecks": [
+    {
+      "file": "main.cpp",
+      "contains": [
+        "constexpr double unitCost{ 2.5 };",
+        "constexpr int packageCount{ 4 };",
+        "constexpr double totalCost{ unitCost * packageCount };",
+        "static_assert(totalCost == 10.0);",
+        "int currentVisitors{ 18 };",
+        "const int snapshotVisitors{ currentVisitors };",
+        "<< totalCost <<",
+        "<< snapshotVisitors <<"
+      ],
+      "notContains": [
+        "std::cin",
+        "using namespace std",
+        "constexpr int snapshotVisitors",
+        "constexpr double totalCost{ 10.0 }",
+        "constexpr double totalCost{ 10 }",
+        "constexpr auto",
+        "Unit cost: 2.5",
+        "Total cost: 10",
+        "Visitor snapshot: 18"
+      ]
+    }
+  ]
+}

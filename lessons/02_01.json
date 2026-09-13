@@ -1,0 +1,57 @@
+{
+  "order": 1,
+  "id": "2.1",
+  "title": "Introduction to functions",
+  "url": "https://www.learncpp.com/cpp-tutorial/introduction-to-functions/",
+  "estimatedMinutes": 12,
+  "recap": [
+    "A function gives a name to a focused sequence of statements. Calling that name temporarily transfers execution into the function, and execution resumes immediately after the call when the function finishes.",
+    "Small functions make execution order visible and let one tested operation be reused. At this stage, place a function definition before any code that calls it, and keep every named function at file scope rather than inside another function."
+  ],
+  "objectives": [
+    "Define a user-written function with a return type, name, parentheses, and body.",
+    "Call a function and trace control from caller to callee and back.",
+    "Call the same function more than once when an operation must be repeated.",
+    "Compose behavior by having one function call other functions."
+  ],
+  "warnings": [
+    "Writing a function name without call parentheses does not invoke it.",
+    "A function called before its definition is not known to the compiler yet in this lesson.",
+    "C++ does not permit a named function definition inside another function."
+  ],
+  "challenge": "Complete the four functions in this order. 1. In checkFlashing(), use std::cout to write exactly `Flashing secure` followed by a newline. 2. In checkVent(), use std::cout to write exactly `Vent clear` followed by a newline. 3. In inspectRoof(), write exactly `Roof inspection started` and a newline, call checkFlashing(), call checkVent(), then write exactly `Roof inspection complete` and a newline. 4. In main(), keep the sequence that writes `Crew dispatched`, calls inspectRoof(), writes `Crew returned`, and returns 0. Keep all three void function definitions above main(), keep their signatures unchanged, qualify cout with std::, and do not add `using namespace std;`.",
+  "expectedOutput": [
+    "Crew dispatched",
+    "Roof inspection started",
+    "Flashing secure",
+    "Vent clear",
+    "Roof inspection complete",
+    "Crew returned"
+  ],
+  "hints": [
+    "First complete checkFlashing(): find its TODO and make that function write its one exact result line with std::cout and a newline.",
+    "Language-neutral pseudocode: CHECK_FLASHING: OUTPUT `Flashing secure`; CHECK_VENT: OUTPUT `Vent clear`; INSPECT_ROOF: OUTPUT `Roof inspection started`, CALL CHECK_FLASHING, CALL CHECK_VENT, OUTPUT `Roof inspection complete`; MAIN: OUTPUT `Crew dispatched`, CALL INSPECT_ROOF, OUTPUT `Crew returned`, RETURN success.",
+    "Near-C++ structure: `void checkFlashing() { <write its required line> }`, `void checkVent() { <write its required line> }`, and `void inspectRoof() { <write start>; checkFlashing(); checkVent(); <write completion>; }`. Keep the existing `int main()` structure and use `std::cout` for each write."
+  ],
+  "sources": [
+    "main.cpp"
+  ],
+  "sourceChecks": [
+    {
+      "file": "main.cpp",
+      "contains": [
+        "void checkFlashing()",
+        "void checkVent()",
+        "void inspectRoof()",
+        "checkFlashing();",
+        "checkVent();",
+        "inspectRoof();"
+      ],
+      "notContains": [
+        "void main",
+        "void checkFlashing();",
+        "void checkVent();"
+      ]
+    }
+  ]
+}

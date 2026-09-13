@@ -1,0 +1,51 @@
+{
+  "order": 20,
+  "id": "3.6",
+  "title": "Using an integrated debugger: Stepping",
+  "url": "https://www.learncpp.com/cpp-tutorial/using-an-integrated-debugger-stepping/",
+  "estimatedMinutes": 20,
+  "recap": [
+    "A debugger pauses a running program so its execution path and current state can be inspected without adding temporary output. Stepping commands provide precise control over which statement runs next.",
+    "Step Into follows a called function, Step Over executes a call as one operation, and Step Out completes the current function before returning control to its caller. A debug build is required for source-level stepping to behave predictably."
+  ],
+  "objectives": [
+    "Start a CLion debugging session at a deliberate breakpoint.",
+    "Use Step Into to follow calls across function boundaries.",
+    "Use Step Out to return from a helper and Step Over to skip a known helper.",
+    "Trace the executed calculations before changing source code."
+  ],
+  "warnings": [
+    "An optimized release build may skip statements, reorder execution, or prevent useful stepping.",
+    "Stepping into stream output can enter standard-library implementation code; Step Out if that happens.",
+    "Ordinary forward stepping cannot undo an accidental step, so restart the session when necessary.",
+    "Do not add diagnostic output as a substitute for practicing debugger navigation."
+  ],
+  "challenge": "Repair a dispatch estimator that should combine an 18-minute warehouse leg, a 27-minute customer leg, and a 5-minute handoff. In CLion's Debug configuration, place the initial breakpoint on the statement in main() that calls estimateDispatchMinutes(18, 27). Step Into the estimator, follow the executed calculations, Step Into addHandoffMinutes(), and use Step Out to return. Restart and Step Over that helper call to compare navigation behavior. Do not hard-code the answer or add diagnostic output.",
+  "expectedOutput": [
+    "Dispatch estimate: 50 minutes"
+  ],
+  "hints": [
+    "Record the order in which main(), estimateDispatchMinutes(), and addHandoffMinutes() execute before editing anything.",
+    "At the estimator's local initialization, compare the two parameter values and the value produced for travelMinutes.",
+    "The handoff helper contributes the expected fixed amount; make the travel calculation use each leg's distinct role."
+  ],
+  "sources": [
+    "main.cpp"
+  ],
+  "sourceChecks": [
+    {
+      "file": "main.cpp",
+      "contains": [
+        "int addHandoffMinutes(int travelMinutes)",
+        "int estimateDispatchMinutes(int warehouseLeg, int customerLeg)",
+        "addHandoffMinutes(travelMinutes)",
+        "estimateDispatchMinutes(18, 27)"
+      ],
+      "notContains": [
+        "std::cerr",
+        "using namespace std",
+        "Dispatch estimate: 50 minutes"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "order": 23,
+  "id": "3.9",
+  "title": "Using an integrated debugger: The call stack",
+  "url": "https://www.learncpp.com/cpp-tutorial/using-an-integrated-debugger-the-call-stack/",
+  "estimatedMinutes": 20,
+  "recap": [
+    "The call stack lists active function invocations at the current execution point. Its top frame is executing now, while lower frames identify callers and the locations that will resume after returns.",
+    "A breakpoint in a shared helper can be reached through different caller chains. Comparing those chains reveals which high-level route produced each invocation."
+  ],
+  "objectives": [
+    "Open and read CLion's Frames view at a breakpoint.",
+    "Record the complete caller path for repeated helper invocations.",
+    "Distinguish active stack frames from calls that have already returned.",
+    "Use a missing or repeated path to narrow a semantic defect."
+  ],
+  "warnings": [
+    "Debugger frame formatting and runtime frames vary across platforms and IDE versions.",
+    "Completed function calls are removed from the active call stack.",
+    "Displayed source locations generally identify the next statement for each frame.",
+    "Do not change raw readings or the shared offset merely to force the expected output."
+  ],
+  "challenge": "Repair a ventilation difference calculation. The intake raw reading is 12, the outlet raw reading is 8, and both receive an offset of 3. In CLion's Debug configuration, place the initial breakpoint on the return statement in applySensorOffset(). Start debugging and inspect the complete Frames path on every hit, from main() to the active helper. Continue between hits and compare the observed caller paths with the channel-specific functions present in the source. Repair the normal call flow without changing either raw reading or the shared offset helper.",
+  "expectedOutput": [
+    "Ventilation difference: 4"
+  ],
+  "hints": [
+    "Write down the function names in the Frames view at each applySensorOffset() stop.",
+    "The shared helper should be reached through two distinct channel-specific paths.",
+    "Inspect the two initializer calls in ventilationDifference() and make their roles correspond to the local names."
+  ],
+  "sources": [
+    "main.cpp"
+  ],
+  "sourceChecks": [
+    {
+      "file": "main.cpp",
+      "contains": [
+        "int applySensorOffset(int rawReading)",
+        "int sampleIntake()",
+        "int sampleOutlet()",
+        "int ventilationDifference()",
+        "sampleIntake()",
+        "sampleOutlet()"
+      ],
+      "notContains": [
+        "std::cerr",
+        "using namespace std",
+        "Ventilation difference: 4"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,55 @@
+{
+  "order": 26,
+  "id": "4.1",
+  "title": "Introduction to fundamental data types",
+  "url": "https://www.learncpp.com/cpp-tutorial/introduction-to-fundamental-data-types/",
+  "estimatedMinutes": 18,
+  "recap": [
+    "A data type tells the compiler how an object's stored bits should be interpreted. Fundamental types are provided by the core language and include Boolean, character, integer, floating-point, null-pointer, and void categories.",
+    "Choose a type that models the value's meaning: bool for a two-state condition, char for one character, and a floating-point type such as double for a value with a fractional part. Standard-library types such as strings are not fundamental types."
+  ],
+  "objectives": [
+    "Match fixed values to appropriate fundamental type categories.",
+    "Observe how bool, char, and double values are presented by an output stream.",
+    "Use std::boolalpha when textual Boolean output is part of the contract.",
+    "Keep each displayed value derived from its typed object."
+  ],
+  "warnings": [
+    "An integer object cannot preserve a fractional component.",
+    "A char literal uses single quotes and represents one character, not a text string.",
+    "Without std::boolalpha, a bool normally streams as 1 or 0.",
+    "Do not replace the typed objects with hard-coded output text."
+  ],
+  "challenge": "Complete the fixed monitoring record by replacing the three placeholder values with the stated values: the system is online, its zone code is C, and its target voltage is 12.5. Preserve the supplied bool, char, and double object types, and make the Boolean print as the word true. The program must use no input and derive every displayed value from its corresponding object.",
+  "expectedOutput": [
+    "System online: true",
+    "Zone code: C",
+    "Target voltage: 12.5"
+  ],
+  "hints": [
+    "Use the bool literals true and false rather than an integer substitute.",
+    "A single character value is written between single quotes.",
+    "Insert std::boolalpha into the output stream before streaming the Boolean object."
+  ],
+  "sources": [
+    "main.cpp"
+  ],
+  "sourceChecks": [
+    {
+      "file": "main.cpp",
+      "contains": [
+        "bool systemOnline",
+        "char zoneCode",
+        "double targetVoltage",
+        "std::boolalpha"
+      ],
+      "notContains": [
+        "System online: true",
+        "Zone code: C",
+        "Target voltage: 12.5",
+        "std::cin",
+        "using namespace std"
+      ]
+    }
+  ]
+}

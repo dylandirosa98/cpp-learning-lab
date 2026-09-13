@@ -1,0 +1,55 @@
+{
+  "order": 36,
+  "id": "4.11",
+  "title": "Chars",
+  "url": "https://www.learncpp.com/cpp-tutorial/chars/",
+  "estimatedMinutes": 25,
+  "recap": [
+    "A char stores one character and character literals use single quotes. Printing a char displays its character representation rather than an integer value.",
+    "Escape sequences begin with a backslash. Common examples include newline, tab, escaped single quote, escaped double quote, and escaped backslash."
+  ],
+  "objectives": [
+    "Initialize and print a single char value.",
+    "Use escaped quotes around a character in output.",
+    "Use escaped backslashes in a path literal.",
+    "Use tab and newline character escape sequences deliberately."
+  ],
+  "warnings": [
+    "A character literal uses single quotes and must represent one character or escape sequence.",
+    "Escape sequences use a backslash, not a forward slash.",
+    "Do not use implementation-defined multicharacter literals."
+  ],
+  "challenge": "Repair the badge display while retaining char marker initialized to 'K'. Print the marker inside single quotes, print the literal path C:\\lab\\chapter4 using escaped backslashes, and separate column characters A and B with one tab escape. End every report line with a newline and match the exact deterministic output.",
+  "expectedOutput": [
+    "Marker: 'K'",
+    "Path: C:\\lab\\chapter4",
+    "Columns: A\tB"
+  ],
+  "hints": [
+    "The single-quote character can be represented by the escape sequence '\\''.",
+    "Each literal backslash in output requires two backslashes in a string literal.",
+    "Print 'A', then '\\t', then 'B' before the final newline."
+  ],
+  "sources": [
+    "main.cpp"
+  ],
+  "sourceChecks": [
+    {
+      "file": "main.cpp",
+      "contains": [
+        "char marker{ 'K' }",
+        "<< marker <<",
+        "C:\\\\lab\\\\chapter4",
+        "'\\t'",
+        "'\\n'"
+      ],
+      "notContains": [
+        "std::cin",
+        "using namespace std",
+        "Marker: 'K'",
+        "'/n'",
+        "'AB'"
+      ]
+    }
+  ]
+}

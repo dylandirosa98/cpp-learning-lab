@@ -1,0 +1,52 @@
+{
+  "order": 13,
+  "id": "2.13",
+  "title": "How to design your first programs",
+  "url": "https://www.learncpp.com/cpp-tutorial/how-to-design-your-first-programs/",
+  "estimatedMinutes": 20,
+  "recap": [
+    "Program design begins by stating the intended outcome and concrete requirements. Breaking that outcome into small, ordered tasks turns a vague idea into functions with clear inputs and outputs.",
+    "Implementation is safer when one small function is completed and checked at a time. A simple working version provides a stronger base than a large collection of unfinished features or premature optimizations."
+  ],
+  "objectives": [
+    "Translate a user-facing goal into testable requirements.",
+    "Decompose a work process into focused functions.",
+    "Arrange function calls into a clear sequence.",
+    "Implement and test the design incrementally.",
+    "Favor maintainable structure over early micro-optimization."
+  ],
+  "warnings": [
+    "Starting implementation before defining success often creates avoidable rework.",
+    "An oversized first version can overwhelm both development and testing.",
+    "Writing the entire program before compiling makes defects harder to localize.",
+    "A function that remains difficult may need another round of decomposition."
+  ],
+  "challenge": "Build a work-order pipeline with calculateTotalDefects, calculateRepairMinutes, and printWorkOrder. Use three flashing defects, five fastener defects, and 12 repair minutes per defect. Keep main focused on inputs and the sequence of calls, and perform all output in printWorkOrder.",
+  "expectedOutput": [
+    "Defects logged: 8",
+    "Estimated repair time: 96 minutes"
+  ],
+  "hints": [
+    "Start from responsibilities rather than statements: one function combines defect categories, one converts a defect total into time, one presents results, and main coordinates those stages.",
+    "Language-neutral pseudocode: TOTAL-DEFECTS(flashing, fastener) returns flashing plus fastener. REPAIR-MINUTES(defects, minutes-per-defect) returns defects multiplied by minutes-per-defect. PRINT-WORK-ORDER(defects, minutes) prints the two required lines. MAIN calculates TOTAL from 3 and 5, calculates MINUTES from TOTAL and 12, then gives both values to PRINT-WORK-ORDER.",
+    "Near-C++ structure: keep the three existing function signatures and main in one source file. The first two int functions each need the matching arithmetic return expression; the void function keeps both std::cout statements; main stores each returned int and passes both to the reporter. No using namespace std is needed."
+  ],
+  "sources": [
+    "main.cpp"
+  ],
+  "sourceChecks": [
+    {
+      "file": "main.cpp",
+      "contains": [
+        "int calculateTotalDefects(int flashingDefects, int fastenerDefects)",
+        "int calculateRepairMinutes(int defects, int minutesPerDefect)",
+        "void printWorkOrder(int defects, int repairMinutes)",
+        "calculateTotalDefects(3, 5)",
+        "calculateRepairMinutes"
+      ],
+      "notContains": [
+        "using namespace std"
+      ]
+    }
+  ]
+}

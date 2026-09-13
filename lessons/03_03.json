@@ -1,0 +1,87 @@
+{
+  "order": 17,
+  "id": "3.3",
+  "title": "A strategy for debugging",
+  "url": "https://www.learncpp.com/cpp-tutorial/a-strategy-for-debugging/",
+  "estimatedMinutes": 22,
+  "recap": [
+    "Useful debugging starts with reliable reproduction. Fixed inputs and precise expected checkpoints make repeated observations comparable and prevent the investigation from drifting.",
+    "Runtime checkpoints can divide an execution path into regions. A correct checkpoint moves the search later, while an incorrect checkpoint proves the cause occurred earlier, allowing the search to home in efficiently."
+  ],
+  "objectives": [
+    "Follow precise reproduction steps with deterministic inputs.",
+    "Choose an initial checkpoint near the middle of a calculation pipeline.",
+    "Use correct and incorrect observations to discard parts of the execution path.",
+    "Stop when one stage has correct inputs but produces an incorrect output."
+  ],
+  "warnings": [
+    "A failure that cannot be reproduced consistently provides weak diagnostic evidence.",
+    "The final incorrect value only proves that the cause occurred somewhere earlier in its executed path.",
+    "Reading every line from the beginning is less efficient than selecting informative checkpoints.",
+    "Do not edit while gathering baseline observations, because changed code invalidates the comparison."
+  ],
+  "challenge": "Isolate and repair the sensor pipeline fault. Raw reading 18 with offset 2 must normalize to 20; scaling by 3 must produce 60; combining a second-zone reading of 12 must produce 72; and holding back 7 units must leave 65. Run the untouched starter first. Break after combineZones() as a midpoint checkpoint. If that value is wrong, move earlier; if it is correct, move later. Compare normalized and scaled values until one stage has correct inputs but an incorrect result. Repair only that stage and rerun the complete fixed-input reproduction. Preserve the four-stage module and calculate every displayed value.",
+  "expectedOutput": [
+    "Normalized reading: 20",
+    "Combined load: 72",
+    "Available capacity: 65"
+  ],
+  "hints": [
+    "Use combined as the first checkpoint. If it is not 72, inspect normalized and scaled rather than starting at the final reserve calculation.",
+    "When normalized is 20, inspect the value returned from scaleReading() and compare it with the expected intermediate value 60.",
+    "A scale factor of 3 means the incoming normalized reading contributes three equal times to the scaled result."
+  ],
+  "sources": [
+    "main.cpp",
+    "sensor_pipeline.cpp"
+  ],
+  "sourceChecks": [
+    {
+      "file": "sensor_pipeline.h",
+      "contains": [
+        "#ifndef CPP_LEARNING_LAB_SENSOR_PIPELINE_H",
+        "#define CPP_LEARNING_LAB_SENSOR_PIPELINE_H",
+        "int normalizeReading(int rawReading, int offset);",
+        "int scaleReading(int reading, int factor);",
+        "int combineZones(int primary, int secondary);",
+        "int reserveCapacity(int combined, int holdback);",
+        "#endif"
+      ],
+      "notContains": [
+        "{",
+        "#include \"sensor_pipeline.cpp\""
+      ]
+    },
+    {
+      "file": "sensor_pipeline.cpp",
+      "contains": [
+        "#include \"sensor_pipeline.h\"",
+        "int normalizeReading(int rawReading, int offset)",
+        "int scaleReading(int reading, int factor)",
+        "int combineZones(int primary, int secondary)",
+        "int reserveCapacity(int combined, int holdback)"
+      ],
+      "notContains": [
+        "std::cout",
+        "using namespace std"
+      ]
+    },
+    {
+      "file": "main.cpp",
+      "contains": [
+        "#include \"sensor_pipeline.h\"",
+        "normalizeReading(18, 2)",
+        "scaleReading(normalized, 3)",
+        "combineZones(scaled, 12)",
+        "reserveCapacity(combined, 7)"
+      ],
+      "notContains": [
+        "Normalized reading: 20",
+        "Combined load: 72",
+        "Available capacity: 65",
+        "using namespace std",
+        "#include \"sensor_pipeline.cpp\""
+      ]
+    }
+  ]
+}

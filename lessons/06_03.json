@@ -1,0 +1,47 @@
+{
+  "order": 51,
+  "id": "6.3",
+  "title": "Remainder and exponentiation",
+  "url": "https://www.learncpp.com/cpp-tutorial/remainder-and-exponentiation/",
+  "estimatedMinutes": 25,
+  "recap": [
+    "The remainder operator % returns the remainder after integer division. It is useful for periodic wrapping and divisibility tests, and its operands must have integral types.",
+    "C++ has no exponentiation operator: ^ is bitwise XOR. std::pow from <cmath> performs exponentiation and returns a floating-point result, while direct multiplication can be preferable for small integer powers."
+  ],
+  "objectives": [
+    "Use remainder to wrap an offset into a fixed cycle.",
+    "Use remainder to test whether an integer is even.",
+    "Call std::pow rather than mistaking ^ for exponentiation.",
+    "Print results calculated from named operands."
+  ],
+  "warnings": [
+    "The % operator is for integral operands, not floating-point remainder calculations.",
+    "The ^ operator does not raise a number to a power in C++.",
+    "std::pow returns a floating-point value even when supplied integral values."
+  ],
+  "challenge": "Advance weekday index 5 by 4 days and wrap it into the 0-through-6 range with %. Test whether a shipment count of 18 is even using remainder. Finally calculate 2 raised to 5 with std::pow. Keep the run deterministic and print all three results.",
+  "expectedOutput": [
+    "Wrapped weekday index: 2",
+    "Shipment is even: true",
+    "2 to the power 5: 32"
+  ],
+  "hints": [
+    "Use (startDay + dayOffset) % daysPerWeek to wrap the index.",
+    "An integer is even when its remainder after division by 2 equals zero.",
+    "Include <cmath> and call std::pow(base, exponent); use std::boolalpha for the boolean line."
+  ],
+  "sources": ["main.cpp"],
+  "sourceChecks": [
+    {
+      "file": "main.cpp",
+      "contains": [
+        "#include <cmath>",
+        "(startDay + dayOffset) % daysPerWeek",
+        "shipmentCount % 2 == 0",
+        "std::pow(base, exponent)",
+        "std::boolalpha"
+      ],
+      "notContains": ["std::cin", "using namespace std", "base ^ exponent", "Wrapped weekday index: 2"]
+    }
+  ]
+}
