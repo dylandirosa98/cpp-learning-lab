@@ -35,9 +35,9 @@ int main()
     constexpr int teams{ 4 };
     constexpr int rounds{ 5 };
 
-    const int defaultScore{ basePoints + bonusPoints + multiplier }; // TODO: Let multiplication bind before addition.
-    const int groupedScore{ basePoints + bonusPoints * multiplier }; // TODO: Group the addition explicitly.
-    const int pointsPerRound{ totalPoints / teams * rounds }; // TODO: Use both left-associated divisions.
+    const int defaultScore{ basePoints + bonusPoints * multiplier }; // TODO: Let multiplication bind before addition.
+    const int groupedScore{ (basePoints + bonusPoints) * multiplier }; // TODO: Group the addition explicitly.
+    const int pointsPerRound{ totalPoints / teams / rounds }; // TODO: Use both left-associated divisions.
 
     std::cout << "Default precedence: " << defaultScore << '\n';
     std::cout << "Parenthesized: " << groupedScore << '\n';
