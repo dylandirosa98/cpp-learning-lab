@@ -12,6 +12,14 @@ LearnCpp owns its lesson text and examples. This project does not mirror them.
 
 The command-line checker invokes `g++` directly, so a system CMake installation is not required. CLion can use its bundled CMake.
 
+On NixOS, enter the included development shell instead of installing the tools globally:
+
+```bash
+nix develop
+```
+
+This provides Python, GCC, CMake, Git, and GitHub CLI for the current terminal.
+
 ## Start
 
 ```bash
@@ -49,6 +57,7 @@ Clone the repository rather than downloading a ZIP. Cloning configures the GitHu
 ```bash
 git clone https://github.com/dylandirosa98/cpp-learning-lab.git
 cd cpp-learning-lab
+nix develop # NixOS only
 ./course setup
 ```
 
