@@ -35,10 +35,10 @@ int main()
     constexpr int pointsPerGain{ 2 };
     constexpr int penalty{ 7 };
 
-    const int wholeMinutes{ totalMinutes + sessions }; // TODO: Use integer division.
-    const double exactMinutes{ static_cast<double>(totalMinutes) + sessions }; // TODO: Divide after converting.
-    const int netScore{ gains + pointsPerGain - penalty }; // TODO: Multiply gains by pointsPerGain.
-    const int reversedScore{ netScore }; // TODO: Apply unary minus to netScore.
+    const int wholeMinutes{ totalMinutes / sessions }; // TODO: Use integer division.
+    const double exactMinutes{ static_cast<double>(totalMinutes) / sessions }; // TODO: Divide after converting.
+    const int netScore{ gains * pointsPerGain - penalty }; // TODO: Multiply gains by pointsPerGain.
+    const int reversedScore{ -netScore }; // TODO: Apply unary minus to netScore.
 
     std::cout << "Whole minutes per session: " << wholeMinutes << '\n';
     std::cout << "Exact minutes per session: " << exactMinutes << '\n';
