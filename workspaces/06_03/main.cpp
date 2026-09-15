@@ -36,9 +36,9 @@ int main()
     constexpr int base{ 2 };
     constexpr int exponent{ 5 };
 
-    const int wrappedDay{ startDay + dayOffset + daysPerWeek }; // TODO: Wrap the sum with remainder.
-    const bool shipmentIsEven{ shipmentCount == 2 }; // TODO: Test the remainder after division by 2.
-    const double power{ base * exponent }; // TODO: Call std::pow.
+    const int wrappedDay{ (startDay + dayOffset) % daysPerWeek }; // TODO: Wrap the sum with remainder.
+    const bool shipmentIsEven{ shipmentCount % 2 == 0 }; // TODO: Test the remainder after division by 2.
+    const double power{ std::pow(base, exponent) }; // TODO: Call std::pow.
 
     std::cout << std::boolalpha;
     std::cout << "Wrapped weekday index: " << wrappedDay << '\n';
