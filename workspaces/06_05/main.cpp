@@ -28,7 +28,7 @@ Run from project root: ./course check 6.5
 int main()
 {
     int auditCode{ 4 };
-    int auditResult{}; // TODO: Use (auditCode += 2, auditCode * 3).
+    int auditResult{(auditCode += 2, auditCode * 3)}; // TODO: Use (auditCode += 2, auditCode * 3).
 
     std::cout << "Audit code after left operand: " << auditCode << '\n';
     std::cout << "Comma expression result: " << auditResult << '\n';
