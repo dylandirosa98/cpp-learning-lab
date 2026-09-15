@@ -30,9 +30,9 @@ int main()
 {
     int counter{ 5 };
 
-    int postfixValue{}; // TODO: Capture the value from counter++.
-    int prefixValue{}; // TODO: Capture the value from ++counter.
-    // TODO: Decrement counter once in its own statement.
+    int postfixValue{ counter++ }; // TODO: Capture the value from counter++.
+    int prefixValue{ ++counter }; // TODO: Capture the value from ++counter.
+    --counter;// TODO: Decrement counter once in its own statement.
 
     std::cout << "Postfix produced: " << postfixValue << '\n';
     std::cout << "Prefix produced: " << prefixValue << '\n';
