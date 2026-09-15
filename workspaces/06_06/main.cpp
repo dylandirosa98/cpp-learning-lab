@@ -32,10 +32,10 @@ int main()
     constexpr int subtotal{ 42 };
     constexpr int freeShippingThreshold{ 50 };
 
-    const bool qualifiesForFreeShipping{ subtotal == freeShippingThreshold }; // TODO: Use the threshold policy.
-    const int shippingCharge{ qualifiesForFreeShipping ? 7 : 0 }; // TODO: Select 0 or 7 in the correct order.
-    const std::string_view shippingTier{ qualifiesForFreeShipping ? "standard" : "free" }; // TODO: Correct both alternatives.
-    const int orderTotal{ subtotal - shippingCharge }; // TODO: Add subtotal and shippingCharge.
+    const bool qualifiesForFreeShipping{ subtotal >= freeShippingThreshold }; // TODO: Use the threshold policy.
+    const int shippingCharge{ qualifiesForFreeShipping ? 0 : 7 }; // TODO: Select 0 or 7 in the correct order.
+    const std::string_view shippingTier{ qualifiesForFreeShipping ? "free" : "standard" }; // TODO: Correct both alternatives.
+    const int orderTotal{ subtotal + shippingCharge }; // TODO: Add subtotal and shippingCharge.
 
     std::cout << "Shipping tier: " << shippingTier << '\n';
     std::cout << "Shipping charge: " << shippingCharge << '\n';
