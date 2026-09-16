@@ -38,7 +38,7 @@ int main()
     const bool restockRequired{ needsRestock(remaining, targetApples) };
     const int needed{ applesToRestock(remaining, targetApples) };
     const int crates{ cratesNeeded(needed, crateCapacity) };
-    const int projected{ remaining + crates + crateCapacity };
+    const int projected{ remaining + crates * crateCapacity };
 
     printHeading();
     printQuantity("Started", startingApples);

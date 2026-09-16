@@ -28,29 +28,33 @@ Run from project root: ./course check 6.x
 int applesRemaining(int starting, int sold, int spoiled)
 {
     // TODO: Subtract both outgoing quantities from starting.
-    return starting + sold + spoiled;
+    return starting - sold - spoiled;
 }
 
 bool needsRestock(int remaining, int target)
 {
     // TODO: Require remaining to be non-negative and below target.
-    return remaining == target;
+    return remaining >= 0 && remaining < target;
 }
 
 int applesToRestock(int remaining, int target)
 {
     // TODO: Use the conditional operator to return a shortage or zero.
-    return remaining + target;
+    return remaining < target ? target - remaining : 0;
 }
 
 int cratesNeeded(int applesNeeded, int crateCapacity)
 {
     // TODO: Divide for full crates, then increment when the remainder is nonzero.
-    return applesNeeded * crateCapacity;
+    int crates{ applesNeeded / crateCapacity };
+    if (applesNeeded % crateCapacity != 0)
+        ++crates;
+
+    return crates;
 }
 
 std::string_view appleLabel(int quantity)
 {
     // TODO: Use the conditional operator to select singular or plural text.
-    return quantity == 0 ? "apple" : "apples";
+    return quantity == 1 ? "apple" : "apples";
 }

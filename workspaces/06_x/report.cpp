@@ -35,17 +35,17 @@ void printHeading()
 void printQuantity(std::string_view description, int quantity)
 {
     // TODO: Print the description, quantity, and appleLabel(quantity).
-    std::cout << description << quantity << '\n';
+    std::cout << description << ": " << quantity << ' ' << appleLabel(quantity) << '\n';
 }
 
 void printStatus(bool restockRequired)
 {
     // TODO: Select "restock required" or "stock level healthy".
-    std::cout << "Status: " << restockRequired << '\n';
+    std::cout << "Status: " << (restockRequired ? "restock required" : "stock level healthy") << '\n';
 }
 
 void printCrates(int crates)
 {
     // TODO: Print the exact crate-order line from the supplied count.
-    std::cout << crates << '\n';
+    std::cout << "Crates to order: " << crates << '\n';
 }
