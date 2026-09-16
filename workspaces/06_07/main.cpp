@@ -31,8 +31,9 @@ Run from project root: ./course check 6.7
 
 bool approximatelyEqualRelAbs(double a, double b, double relEpsilon, double absEpsilon)
 {
-    // TODO: Replace this exact comparison with the combined tolerance policy.
-    return a == b && relEpsilon == absEpsilon;
+    const double difference{ std::abs(a - b) };
+    const double largestMagnitude{ std::max(std::abs(a), std::abs(b)) };
+    return difference <= std::max(absEpsilon, relEpsilon * largestMagnitude);
 }
 
 int main()
