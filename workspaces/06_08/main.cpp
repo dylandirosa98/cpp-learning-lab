@@ -30,7 +30,7 @@ Run from project root: ./course check 6.8
 bool canEnter(bool hasBadge, bool isStaff, bool hasAppointment, bool isSuspended)
 {
     // TODO: Combine all four parameters into the stated access policy.
-    return hasBadge || isStaff || hasAppointment || isSuspended;
+    return hasBadge && (isStaff || hasAppointment) && !isSuspended;
 }
 
 int main()
