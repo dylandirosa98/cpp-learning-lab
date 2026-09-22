@@ -57,6 +57,16 @@ def display_id(lesson: dict) -> str:
     return lesson["id"]
 
 
+def display_progress_key(key: str) -> str:
+    match = re.fullmatch(r"([a-zA-Z]+|\d+)_([a-zA-Z]+|\d+)", key)
+    if match is None:
+        return key
+    chapter, lesson = match.groups()
+    chapter = chapter.upper() if chapter.isalpha() else str(int(chapter))
+    lesson = lesson.lower() if lesson.isalpha() else str(int(lesson))
+    return f"{chapter}.{lesson}"
+
+
 def load_progress() -> dict:
     if not PROGRESS_FILE.exists():
         return {"completed": [], "hintsViewed": {}}
@@ -356,12 +366,19 @@ def reset_lesson(lesson: dict, assume_yes: bool) -> None:
 def show_progress() -> None:
     lessons = load_lessons()
     completed = set(load_progress().get("completed", []))
-    print(f"Completed {len(completed)}/{len(lessons)} lessons")
+    catalog_keys = {lesson["key"] for lesson in lessons}
+    catalog_completed = completed & catalog_keys
+    print(f"Completed {len(catalog_completed)}/{len(lessons)} lessons")
     for chapter in sorted({lesson["id"].split(".")[0] for lesson in lessons}, key=int):
         chapter_lessons = [lesson for lesson in lessons if lesson["id"].startswith(f"{chapter}.")]
         chapter_completed = sum(lesson["key"] in completed for lesson in chapter_lessons)
         print(f"Chapter {chapter}: {chapter_completed}/{len(chapter_lessons)}")
     list_lessons()
+    uncataloged = sorted(completed - catalog_keys)
+    if uncataloged:
+        print("\nCompleted lessons not in this course catalog")
+        for key in uncataloged:
+            print(f"[x] {display_progress_key(key)}")
 
 
 def next_lesson() -> dict | None:

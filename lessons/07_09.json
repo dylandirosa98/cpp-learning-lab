@@ -1,0 +1,68 @@
+{
+  "order": 66,
+  "id": "7.9",
+  "title": "Inline functions and variables",
+  "url": "https://www.learncpp.com/cpp-tutorial/inline-functions-and-variables/",
+  "estimatedMinutes": 30,
+  "recap": [
+    "In modern C++, inline primarily means that identical definitions may appear in multiple translation units without violating the one-definition rule. It does not force the compiler to replace a call with the function body.",
+    "An inline definition must be visible wherever it is used and must be identical in every translation unit. Defining it once in an include-guarded header satisfies those requirements and lets the linker consolidate the definitions."
+  ],
+  "objectives": [
+    "Define an inline variable in a header.",
+    "Define an inline function in the same header.",
+    "Include and use those definitions from two translation units.",
+    "Keep every repeated inline definition identical through one header."
+  ],
+  "warnings": [
+    "Do not use inline as a demand for call-site expansion; optimization remains the compiler's decision.",
+    "Different definitions of the same external inline identifier produce undefined behavior.",
+    "A header guard prevents duplicate definitions within one translation unit, while inline permits matching definitions across translation units."
+  ],
+  "challenge": "Create points.h as a tiny header-only component. Define inline constexpr int pointsPerBadge as 4 and inline int badgePoints(int badges) to multiply by it. Include the header from main.cpp and bonus.cpp, then print points for 3 base badges, 2 bonus badges calculated in bonus.cpp, and their total.",
+  "expectedOutput": [
+    "Base badge points: 12",
+    "Bonus badge points: 8",
+    "Total points: 20"
+  ],
+  "hints": [
+    "Put both full definitions inside the points.h include guard.",
+    "badgePoints should return badges * pointsPerBadge.",
+    "Have bonus.cpp expose bonusBadgePoints(), and let main add that result to its own call."
+  ],
+  "sources": ["main.cpp", "bonus.cpp"],
+  "sourceChecks": [
+    {
+      "file": "points.h",
+      "contains": [
+        "#ifndef CPP_LEARNING_LAB_POINTS_H",
+        "#define CPP_LEARNING_LAB_POINTS_H",
+        "inline constexpr int pointsPerBadge{ 4 };",
+        "inline int badgePoints(int badges)",
+        "return badges * pointsPerBadge;",
+        "#endif"
+      ],
+      "notContains": ["#pragma once", "static", "std::cout", "using namespace std"]
+    },
+    {
+      "file": "main.cpp",
+      "contains": [
+        "#include \"points.h\"",
+        "int bonusBadgePoints();",
+        "const int basePoints{ badgePoints(3) };",
+        "const int bonusPoints{ bonusBadgePoints() };",
+        "const int totalPoints{ basePoints + bonusPoints };"
+      ],
+      "notContains": ["#include \"bonus.cpp\"", "pointsPerBadge{ 4 }", "using namespace std", "Total points: 20"]
+    },
+    {
+      "file": "bonus.cpp",
+      "contains": [
+        "#include \"points.h\"",
+        "int bonusBadgePoints()",
+        "return badgePoints(2);"
+      ],
+      "notContains": ["pointsPerBadge{ 4 }", "#include \"main.cpp\"", "using namespace std"]
+    }
+  ]
+}

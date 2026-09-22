@@ -1,0 +1,52 @@
+{
+  "order": 64,
+  "id": "7.7",
+  "title": "External linkage and variable forward declarations",
+  "url": "https://www.learncpp.com/cpp-tutorial/external-linkage-and-variable-forward-declarations/",
+  "estimatedMinutes": 25,
+  "recap": [
+    "Identifiers with external linkage can refer to the same entity from different translation units. A variable used from another source file needs a matching extern declaration with no initializer at the point of use.",
+    "A non-const global variable has external linkage by default, while a const global needs extern on its initialized definition to override its default internal linkage. Exactly one translation unit should provide each non-inline definition."
+  ],
+  "objectives": [
+    "Define one non-const global with external linkage.",
+    "Define one const global with external linkage.",
+    "Forward declare both variables with extern in another source file.",
+    "Use the linked variables in a calculated result."
+  ],
+  "warnings": [
+    "An extern declaration without an initializer is not a definition and must be matched by a definition elsewhere.",
+    "Do not put extern on an initialized non-const definition; it is redundant and may trigger a warning.",
+    "A const global definition needs extern if it must be visible from another translation unit."
+  ],
+  "challenge": "In limits.cpp, define g_dailyLimit as 12 without extern and define the const g_bonusLimit as 3 with extern. Forward declare both variables in main.cpp, add them, and print the daily capacity.",
+  "expectedOutput": [
+    "Daily capacity: 15"
+  ],
+  "hints": [
+    "The non-const definition is int g_dailyLimit{ 12 };.",
+    "The const definition needs an initializer and external linkage: extern const int g_bonusLimit{ 3 };.",
+    "In main.cpp, both forward declarations use extern but neither has an initializer."
+  ],
+  "sources": ["main.cpp", "limits.cpp"],
+  "sourceChecks": [
+    {
+      "file": "main.cpp",
+      "contains": [
+        "extern int g_dailyLimit;",
+        "extern const int g_bonusLimit;",
+        "const int capacity{ g_dailyLimit + g_bonusLimit };",
+        "std::cout << \"Daily capacity: \" << capacity << '\\n';"
+      ],
+      "notContains": ["g_dailyLimit{ 12 }", "g_bonusLimit{ 3 }", "#include \"limits.cpp\"", "using namespace std", "Daily capacity: 15"]
+    },
+    {
+      "file": "limits.cpp",
+      "contains": [
+        "int g_dailyLimit{ 12 };",
+        "extern const int g_bonusLimit{ 3 };"
+      ],
+      "notContains": ["extern int g_dailyLimit", "std::cout", "std::cin", "using namespace std"]
+    }
+  ]
+}

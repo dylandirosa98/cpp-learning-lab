@@ -1,0 +1,49 @@
+{
+  "order": 70,
+  "id": "7.13",
+  "title": "Using declarations and using directives",
+  "url": "https://www.learncpp.com/cpp-tutorial/using-declarations-and-using-directives/",
+  "estimatedMinutes": 25,
+  "recap": [
+    "A qualified name identifies its scope explicitly, such as Shipping::status. A using-declaration makes one selected qualified name available unqualified within its scope, whereas a using-directive makes every name in a namespace eligible for unqualified lookup.",
+    "Explicit qualification is clearest and avoids accidental collisions. A focused using-declaration can be acceptable in a source-file block after includes, but using-directives and using-statements in headers expose code to current and future naming conflicts."
+  ],
+  "objectives": [
+    "Use one block-scoped using-declaration for a selected namespace member.",
+    "Keep a same-named member from another namespace explicitly qualified.",
+    "Distinguish qualified and unqualified name use.",
+    "Avoid broad namespace directives."
+  ],
+  "warnings": [
+    "Do not use using namespace std or another using-directive to save typing.",
+    "Do not put using-statements in headers or before include directives.",
+    "An unqualified name can become ambiguous when multiple visible namespaces offer the same identifier."
+  ],
+  "challenge": "Define Inventory::status and Shipping::status as distinct constexpr string views. Inside main, use a block-scoped using-declaration that introduces only Inventory::status, print that name unqualified, and print Shipping::status with explicit qualification.",
+  "expectedOutput": [
+    "Inventory: ready",
+    "Shipping: dispatched"
+  ],
+  "hints": [
+    "Both namespace members may have the same identifier because their qualified names differ.",
+    "Place using Inventory::status inside main after the opening brace.",
+    "Do not introduce Shipping::status; qualify that use directly."
+  ],
+  "sources": ["main.cpp"],
+  "sourceChecks": [
+    {
+      "file": "main.cpp",
+      "contains": [
+        "#include <string_view>",
+        "namespace Inventory",
+        "constexpr std::string_view status{ \"ready\" };",
+        "namespace Shipping",
+        "constexpr std::string_view status{ \"dispatched\" };",
+        "int main()\n{\nusing Inventory::status;",
+        "std::cout << \"Inventory: \" << status << '\\n';",
+        "std::cout << \"Shipping: \" << Shipping::status << '\\n';"
+      ],
+      "notContains": ["std::cin", "using namespace", "using Shipping::status", "Inventory: ready\n"]
+    }
+  ]
+}

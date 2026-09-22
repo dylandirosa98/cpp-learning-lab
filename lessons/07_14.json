@@ -1,0 +1,68 @@
+{
+  "order": 71,
+  "id": "7.14",
+  "title": "Unnamed and inline namespaces",
+  "url": "https://www.learncpp.com/cpp-tutorial/unnamed-and-inline-namespaces/",
+  "estimatedMinutes": 35,
+  "recap": [
+    "Names declared in an unnamed namespace have internal linkage, making an unnamed namespace a convenient home for implementation details that should remain inside one translation unit. Unnamed namespaces generally belong in source files rather than headers.",
+    "An inline namespace exposes its members through the enclosing namespace while retaining a qualified version name. This supports a default API version while allowing callers to request an older or alternate version explicitly."
+  ],
+  "objectives": [
+    "Keep a pricing implementation detail in a source-file unnamed namespace.",
+    "Declare old and current API versions in named namespaces.",
+    "Make the current version available through an inline namespace.",
+    "Call the default, legacy, and explicitly named current APIs."
+  ],
+  "warnings": [
+    "Do not place unnamed namespaces in headers; each including translation unit would receive distinct entities.",
+    "Inline namespaces do not give their contents internal linkage.",
+    "Only one version should be inline when unqualified access through the parent namespace must be unambiguous."
+  ],
+  "challenge": "Build a versioned Pricing API. V1::total returns the subtotal unchanged. Inline namespace V2::total adds a source-file-only service fee of 3 stored in an unnamed namespace. Print calls through Pricing::V1, the default Pricing namespace, and Pricing::V2 to demonstrate version selection.",
+  "expectedOutput": [
+    "Legacy total: 20",
+    "Default total: 23",
+    "Named current total: 23"
+  ],
+  "hints": [
+    "Declare namespace V1 normally and prefix namespace V2 with inline in pricing.h.",
+    "Put the serviceFee constant in namespace followed directly by an unnamed block in pricing.cpp.",
+    "Pricing::total resolves to the member of inline namespace V2."
+  ],
+  "sources": ["main.cpp", "pricing.cpp"],
+  "sourceChecks": [
+    {
+      "file": "pricing.h",
+      "contains": [
+        "#ifndef CPP_LEARNING_LAB_CHAPTER7_PRICING_H",
+        "#define CPP_LEARNING_LAB_CHAPTER7_PRICING_H",
+        "namespace Pricing",
+        "namespace V1",
+        "inline namespace V2",
+        "int total(int subtotal);",
+        "#endif"
+      ],
+      "notContains": ["#pragma once", "namespace {", "serviceFee", "using namespace"]
+    },
+    {
+      "file": "pricing.cpp",
+      "contains": [
+        "#include \"pricing.h\"",
+        "namespace {\nconstexpr int serviceFee{ 3 };\n}",
+        "return subtotal;",
+        "return subtotal + serviceFee;"
+      ],
+      "notContains": ["std::cout", "std::cin", "using namespace std", "static int serviceFee"]
+    },
+    {
+      "file": "main.cpp",
+      "contains": [
+        "Pricing::V1::total(subtotal)",
+        "Pricing::total(subtotal)",
+        "Pricing::V2::total(subtotal)"
+      ],
+      "notContains": ["std::cin", "using namespace", "Legacy total: 20"]
+    }
+  ]
+}

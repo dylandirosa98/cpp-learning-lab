@@ -1,0 +1,48 @@
+{
+  "order": 59,
+  "id": "7.2",
+  "title": "User-defined namespaces and the scope resolution operator",
+  "url": "https://www.learncpp.com/cpp-tutorial/user-defined-namespaces-and-the-scope-resolution-operator/",
+  "estimatedMinutes": 30,
+  "recap": [
+    "A user-defined namespace places related declarations in a named scope and prevents otherwise identical identifiers from colliding. Namespace definitions belong at global scope or inside another namespace.",
+    "The scope resolution operator :: selects an identifier from a particular namespace. Qualified names such as Shipping::fee make the intended declaration explicit without importing every name from that namespace."
+  ],
+  "objectives": [
+    "Define functions with identical signatures in two different namespaces.",
+    "Use the scope resolution operator to select each function explicitly.",
+    "Observe how namespaces prevent a naming collision.",
+    "Avoid using directives when qualification is clearer."
+  ],
+  "warnings": [
+    "A namespace definition cannot be placed inside a function body.",
+    "Do not add custom declarations to namespace std.",
+    "A declaration and its definition must use the same namespace."
+  ],
+  "challenge": "Define fee(int baseCharge) in both Shipping and Billing. Shipping adds 2 to the base charge while Billing adds 5. Call each function with a base charge of 10 by using its qualified name and print both results.",
+  "expectedOutput": [
+    "Shipping fee: 12",
+    "Billing fee: 15"
+  ],
+  "hints": [
+    "Place one fee definition in namespace Shipping and the other in namespace Billing.",
+    "Return baseCharge + 2 from Shipping::fee and baseCharge + 5 from Billing::fee.",
+    "Call the functions as Shipping::fee(baseCharge) and Billing::fee(baseCharge)."
+  ],
+  "sources": ["main.cpp"],
+  "sourceChecks": [
+    {
+      "file": "main.cpp",
+      "contains": [
+        "namespace Shipping",
+        "namespace Billing",
+        "int fee(int baseCharge)",
+        "return baseCharge + 2;",
+        "return baseCharge + 5;",
+        "Shipping::fee(baseCharge)",
+        "Billing::fee(baseCharge)"
+      ],
+      "notContains": ["std::cin", "using namespace", "Shipping fee: 12", "Billing fee: 15"]
+    }
+  ]
+}

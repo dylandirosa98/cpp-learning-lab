@@ -1,13 +1,16 @@
+import io
 import sys
 import tempfile
 import unittest
+from contextlib import redirect_stdout
 from pathlib import Path
+from unittest.mock import patch
 
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from tools.course import SOLUTIONS, STARTERS, load_lessons, normalize_lesson_id, normalized_cpp_code, source_rule_failures, strip_cpp_comments  # noqa: E402
+from tools.course import SOLUTIONS, STARTERS, load_lessons, normalize_lesson_id, normalized_cpp_code, show_progress, source_rule_failures, strip_cpp_comments  # noqa: E402
 
 
 class CourseTest(unittest.TestCase):
@@ -22,6 +25,7 @@ class CourseTest(unittest.TestCase):
                 "4.1", "4.2", "4.3", "4.4", "4.5", "4.6", "4.7", "4.8", "4.9", "4.10", "4.11", "4.12", "4.x",
                 "5.1", "5.2", "5.3", "5.4", "5.5", "5.6", "5.7", "5.8", "5.9", "5.x",
                 "6.1", "6.2", "6.3", "6.4", "6.5", "6.6", "6.7", "6.8", "6.x",
+                "7.1", "7.2", "7.3", "7.4", "7.5", "7.6", "7.7", "7.8", "7.9", "7.10", "7.11", "7.12", "7.13", "7.14", "7.x",
             ],
         )
 
@@ -75,6 +79,21 @@ class CourseTest(unittest.TestCase):
         self.assertEqual(normalize_lesson_id("06_08"), "06_08")
         self.assertEqual(normalize_lesson_id("6.x"), "06_x")
         self.assertEqual(normalize_lesson_id("06x"), "06_x")
+
+    def test_progress_shows_completed_lessons_missing_from_catalog(self):
+        lessons = [{"id": "2.1", "key": "02_01", "title": "Functions", "estimatedMinutes": 10}]
+        progress = {"completed": ["02_01", "o_01"], "hintsViewed": {}}
+        output = io.StringIO()
+
+        with patch("tools.course.load_lessons", return_value=lessons), patch(
+            "tools.course.load_progress", return_value=progress
+        ), redirect_stdout(output):
+            show_progress()
+
+        report = output.getvalue()
+        self.assertIn("Completed 1/1 lessons", report)
+        self.assertIn("O.1", report)
+        self.assertNotIn("Completed 2/1 lessons", report)
 
     def test_every_starter_file_has_actionable_instructions(self):
         for source in list(STARTERS.glob("**/*.cpp")) + list(STARTERS.glob("**/*.h")):

@@ -1,0 +1,133 @@
+{
+  "order": 72,
+  "id": "7.x",
+  "title": "Chapter 7 summary and quiz",
+  "url": "https://www.learncpp.com/cpp-tutorial/chapter-7-summary-and-quiz/",
+  "estimatedMinutes": 55,
+  "recap": [
+    "Chapter 7 connects block scope and automatic duration, namespace scope and static duration, and linkage across translation units. Namespaces organize interfaces, inline variables safely define shared header constants, extern declarations expose one external object, and unnamed namespaces hide source-file implementation details.",
+    "Static locals preserve carefully chosen state between calls. Inline namespaces select a default API version, while explicit qualification and narrow block-scoped using-declarations keep name lookup understandable. Multi-file programs work best when headers expose small interfaces and source files own implementation and presentation details."
+  ],
+  "objectives": [
+    "Define shared scenario constants as inline constexpr namespace members.",
+    "Share one externally linked const starting ID across translation units.",
+    "Generate consecutive sample IDs with block-scoped static state.",
+    "Hide a calibration offset in a source-file unnamed namespace.",
+    "Provide legacy and default calibration behavior with a versioned inline namespace.",
+    "Use a narrow using-declaration only in main and preserve module boundaries.",
+    "Produce a deterministic multi-file field survey report without stdin."
+  ],
+  "warnings": [
+    "Do not move console output into the survey calculation module or calculations into the report module.",
+    "Do not put the unnamed namespace, mutable state, or an initialized extern definition in a header.",
+    "Do not replace explicit qualification with using-directives.",
+    "Do not hard-code generated IDs, calibrated readings, or the average in main or reporting code.",
+    "Static local state is appropriate here only because the program intentionally has one process-wide sample sequence."
+  ],
+  "challenge": "Build a deterministic field survey across config.h, survey.h/cpp, report.h/cpp, and main.cpp. Config owns inline constexpr values for three samples and readings 40, 43, and 38. Survey exposes one externally linked starting ID of 100, generates IDs with a static local, keeps a +2 offset in an unnamed namespace, and offers legacy V1 calibration plus default inline V2 calibration. Report alone prints all output. Main uses a local using-declaration for Survey::calibrate, calculates all IDs, calibrated values, and their integer average, and coordinates the exact report.",
+  "expectedOutput": [
+    "Field survey",
+    "Target samples: 3",
+    "Sample 100: raw 40, calibrated 42",
+    "Sample 101: raw 43, calibrated 45",
+    "Sample 102: raw 38, calibrated 40",
+    "Legacy first reading: 40",
+    "Default first reading: 42",
+    "Average calibrated: 42"
+  ],
+  "hints": [
+    "Define g_firstSampleId once in survey.cpp; initialize nextSampleId's static local from it and post-increment the local on return.",
+    "Keep V1 and inline V2 declarations in survey.h, but let only the V2 definition add the unnamed-namespace calibrationOffset.",
+    "In main, introduce only Survey::calibrate, calculate three IDs and values, then pass every value to Report functions in order."
+  ],
+  "sources": ["main.cpp", "survey.cpp", "report.cpp"],
+  "sourceChecks": [
+    {
+      "file": "config.h",
+      "contains": [
+        "#ifndef CPP_LEARNING_LAB_CHAPTER7_CONFIG_H",
+        "#define CPP_LEARNING_LAB_CHAPTER7_CONFIG_H",
+        "namespace SurveyConfig",
+        "inline constexpr int targetSamples{ 3 };",
+        "inline constexpr int firstReading{ 40 };",
+        "inline constexpr int secondReading{ 43 };",
+        "inline constexpr int thirdReading{ 38 };",
+        "#endif"
+      ],
+      "notContains": ["#pragma once", "extern", "std::cout", "using namespace"]
+    },
+    {
+      "file": "survey.h",
+      "contains": [
+        "#ifndef CPP_LEARNING_LAB_CHAPTER7_SURVEY_H",
+        "#define CPP_LEARNING_LAB_CHAPTER7_SURVEY_H",
+        "namespace Survey",
+        "extern const int g_firstSampleId;",
+        "int nextSampleId();",
+        "namespace V1",
+        "inline namespace V2",
+        "int calibrate(int rawReading);",
+        "#endif"
+      ],
+      "notContains": ["#pragma once", "namespace {", "calibrationOffset", "static int", "using namespace"]
+    },
+    {
+      "file": "survey.cpp",
+      "contains": [
+        "#include \"survey.h\"",
+        "namespace {\nconstexpr int calibrationOffset{ 2 };\n}",
+        "extern const int g_firstSampleId{ 100 };",
+        "int nextSampleId()\n{\nstatic int s_nextSampleId{ g_firstSampleId };\n        return s_nextSampleId++;",
+        "return rawReading;",
+        "return rawReading + calibrationOffset;"
+      ],
+      "notContains": ["std::cout", "std::cin", "using namespace", "return 42;"]
+    },
+    {
+      "file": "report.h",
+      "contains": [
+        "#ifndef CPP_LEARNING_LAB_CHAPTER7_REPORT_H",
+        "#define CPP_LEARNING_LAB_CHAPTER7_REPORT_H",
+        "namespace Report",
+        "void printHeading(int targetSamples);",
+        "void printSample(int id, int rawReading, int calibratedReading);",
+        "void printSummary(int legacyFirst, int defaultFirst, int average);",
+        "#endif"
+      ],
+      "notContains": ["#pragma once", "std::cout", "Survey::calibrate", "using namespace"]
+    },
+    {
+      "file": "report.cpp",
+      "contains": [
+        "#include \"report.h\"",
+        "std::cout << \"Field survey\\n\";",
+        "std::cout << \"Target samples: \" << targetSamples << '\\n';",
+        "std::cout << \"Sample \" << id << \": raw \" << rawReading",
+        "<< \", calibrated \" << calibratedReading << '\\n';",
+        "std::cout << \"Legacy first reading: \" << legacyFirst << '\\n';",
+        "std::cout << \"Default first reading: \" << defaultFirst << '\\n';",
+        "std::cout << \"Average calibrated: \" << average << '\\n';"
+      ],
+      "notContains": ["std::cin", "using namespace", "calibrate(", "Sample 100", "Average calibrated: 42"]
+    },
+    {
+      "file": "main.cpp",
+      "contains": [
+        "#include \"config.h\"",
+        "#include \"report.h\"",
+        "#include \"survey.h\"",
+        "int main()\n{\nusing Survey::calibrate;",
+        "const int firstId{ Survey::nextSampleId() };",
+        "const int secondId{ Survey::nextSampleId() };",
+        "const int thirdId{ Survey::nextSampleId() };",
+        "const int firstCalibrated{ calibrate(SurveyConfig::firstReading) };",
+        "const int secondCalibrated{ calibrate(SurveyConfig::secondReading) };",
+        "const int thirdCalibrated{ calibrate(SurveyConfig::thirdReading) };",
+        "const int average{ (firstCalibrated + secondCalibrated + thirdCalibrated) / SurveyConfig::targetSamples };",
+        "Survey::V1::calibrate(SurveyConfig::firstReading)",
+        "Report::printHeading(SurveyConfig::targetSamples);"
+      ],
+      "notContains": ["std::cout", "std::cin", "using namespace", "firstId{ 100 }", "average{ 42 }"]
+    }
+  ]
+}

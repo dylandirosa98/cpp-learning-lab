@@ -1,0 +1,46 @@
+{
+  "order": 68,
+  "id": "7.11",
+  "title": "Static local variables",
+  "url": "https://www.learncpp.com/cpp-tutorial/static-local-variables/",
+  "estimatedMinutes": 25,
+  "recap": [
+    "A local variable normally has automatic duration, so a fresh object is created each time execution reaches its definition and destroyed when its block ends. Adding static gives a local variable static duration while preserving its block scope.",
+    "A static local is initialized once and retains its value between calls. This is useful for state that is truly unique to a function, such as a process-wide ID sequence, but hidden mutable state should not be used when callers need independent instances or a reset operation."
+  ],
+  "objectives": [
+    "Give a block-scoped counter static duration.",
+    "Initialize persistent local state explicitly.",
+    "Return the current ticket number before advancing the stored value.",
+    "Observe retained state through deterministic repeated calls."
+  ],
+  "warnings": [
+    "Do not replace the static local with a global variable; that unnecessarily widens its scope.",
+    "Do not use a normal automatic local, which would restart the sequence on every call.",
+    "Use mutable static locals only for state that should be shared by every call and never independently reset."
+  ],
+  "challenge": "Implement issueTicket() with an explicitly initialized static local unsigned int named s_nextTicket. Each call should return the current value and then advance the stored counter. Call it three times to print consecutive deterministic ticket numbers beginning at 100.",
+  "expectedOutput": [
+    "Ticket: 100",
+    "Ticket: 101",
+    "Ticket: 102"
+  ],
+  "hints": [
+    "Declare s_nextTicket inside issueTicket(), not at namespace scope.",
+    "Prefix the declaration with static so initialization happens only once.",
+    "Post-increment returns the old value before increasing the persistent counter."
+  ],
+  "sources": ["main.cpp"],
+  "sourceChecks": [
+    {
+      "file": "main.cpp",
+      "contains": [
+        "unsigned int issueTicket()",
+        "static unsigned int s_nextTicket{ 100 };",
+        "return s_nextTicket++;",
+        "std::cout << \"Ticket: \" << issueTicket() << '\\n';\n    std::cout << \"Ticket: \" << issueTicket() << '\\n';\n    std::cout << \"Ticket: \" << issueTicket() << '\\n';"
+      ],
+      "notContains": ["std::cin", "using namespace std", "g_nextTicket", "\"Ticket: 100\""]
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 # C++ Learning Lab
 
-A CLion-first interactive companion to [LearnCpp](https://www.learncpp.com/), currently covering Chapters 2 through 6. The lab links to each original lesson, provides a short original recap, and follows it with a focused coding challenge, progressive hints, automated checks, and a reference solution. Completed workspace code and course progress are tracked in Git so the same course can be continued across machines.
+A CLion-first interactive companion to [LearnCpp](https://www.learncpp.com/), currently covering Chapters 2 through 7. The lab links to each original lesson, provides a short original recap, and follows it with a focused coding challenge, progressive hints, automated checks, and a reference solution. Completed workspace code and course progress are tracked in Git so the same course can be continued across machines.
 
 LearnCpp owns its lesson text and examples. This project does not mirror them.
 
@@ -65,7 +65,7 @@ GitHub authentication is required to push. On a new machine, run `gh auth login`
 
 Run `./course sync` before starting work on another machine. It pulls remote changes with rebase and creates any missing lesson workspaces. When `./course check 6.1` passes, the checker commits that lesson's workspace and progress and pushes the current branch automatically. Failed lessons are never committed. Set `COURSE_NO_SYNC=1` for a one-off local check without committing or pushing.
 
-The same commands accept Chapter 3 through Chapter 6 lesson IDs, for example:
+The same commands accept Chapter 3 through Chapter 7 lesson IDs, for example:
 
 ```bash
 ./course check 3.1
@@ -78,6 +78,9 @@ The same commands accept Chapter 3 through Chapter 6 lesson IDs, for example:
 ./course lesson 6.1
 ./course check 6.7
 ./course reset 6.x
+./course lesson 7.1
+./course check 7.14
+./course reset 7.x
 ```
 
 Your editable files live under `workspaces/`. Every C++ starter file begins with comments explaining that file's tasks, function responsibilities, expected output, LearnCpp link, and checker command. The original starters and reference solutions remain separate.
@@ -101,6 +104,8 @@ Chapter 4 focuses on fundamental types and conversions. Its `4.x` capstone is a 
 Chapter 5 focuses on constants and strings. Its lessons distinguish named constants from magic values, use `std::string` when text needs ownership, and use `std::string_view` for inexpensive read-only access without outliving the viewed text. The `5.x` capstone composes owned full names, calculates an age difference, selects the older person through safe views, and exercises a deterministic first-person-wins tie rule across separate logic, report, and coordinator modules.
 
 Chapter 6 focuses on operators and expressions. Its exercises cover precedence and associativity, arithmetic and integer division, remainder and `std::pow`, sequenced increment/decrement side effects, the comma and conditional operators, robust floating-point comparisons, and short-circuit logical policies. The `6.x` capstone calculates a deterministic apple inventory and pluralized restock report while preserving separate inventory, reporting, and coordinator modules.
+
+Chapter 7 focuses on scope, duration, and linkage. Its exercises cover blocks, namespaces, local and global variables, shadowing, internal and external linkage, inline variables, shared constants, static locals, using declarations, and unnamed and inline namespaces. The `7.x` capstone builds a deterministic multi-file field survey while keeping configuration, survey logic, reporting, and coordination separate.
 
 ## Course Verification
 

@@ -1,0 +1,66 @@
+{
+  "order": 67,
+  "id": "7.10",
+  "title": "Sharing global constants across multiple files (using inline variables)",
+  "url": "https://www.learncpp.com/cpp-tutorial/sharing-global-constants-across-multiple-files-using-inline-variables/",
+  "estimatedMinutes": 30,
+  "recap": [
+    "C++17 inline constexpr variables let a header provide constants to many translation units. Each user sees the definition for constant-expression evaluation, while inline permits the repeated identical definitions and the linker treats them as one entity.",
+    "Grouping related constants in a namespace prevents collisions and makes their origin clear. Compared with extern const declarations backed by a source file, inline constexpr constants remain usable at compile time everywhere the header is included."
+  ],
+  "objectives": [
+    "Define shared constants as inline constexpr variables in a header.",
+    "Group the constants in a descriptive namespace.",
+    "Use the constants in compile-time expressions in multiple translation units.",
+    "Avoid duplicated literal definitions and extern-only runtime constants."
+  ],
+  "warnings": [
+    "A namespace-scope constexpr variable is not implicitly inline; write both keywords for shared header constants.",
+    "Changing a constants header requires recompiling every translation unit that includes it.",
+    "All definitions of an inline variable must be identical, so keep the single source text in one guarded header."
+  ],
+  "challenge": "In time_constants.h, define inline constexpr minutesPerHour as 60 and hoursPerWorkday as 8 inside namespace timeConstants. Use minutesPerHour in main.cpp to calculate a 90-minute meeting at compile time, and use both constants in schedule.cpp to return a 480-minute workday.",
+  "expectedOutput": [
+    "Meeting length: 90 minutes",
+    "Workday length: 480 minutes"
+  ],
+  "hints": [
+    "Place the namespace and both inline constexpr int definitions inside the header guard.",
+    "A 90-minute meeting is minutesPerHour + minutesPerHour / 2.",
+    "schedule.cpp should include the constants header and multiply hoursPerWorkday by minutesPerHour."
+  ],
+  "sources": ["main.cpp", "schedule.cpp"],
+  "sourceChecks": [
+    {
+      "file": "time_constants.h",
+      "contains": [
+        "#ifndef CPP_LEARNING_LAB_TIME_CONSTANTS_H",
+        "#define CPP_LEARNING_LAB_TIME_CONSTANTS_H",
+        "namespace timeConstants",
+        "inline constexpr int minutesPerHour{ 60 };",
+        "inline constexpr int hoursPerWorkday{ 8 };",
+        "#endif"
+      ],
+      "notContains": ["#pragma once", "extern", "static", "using namespace std"]
+    },
+    {
+      "file": "main.cpp",
+      "contains": [
+        "#include \"time_constants.h\"",
+        "int workdayMinutes();",
+        "constexpr int meetingMinutes{ timeConstants::minutesPerHour + timeConstants::minutesPerHour / 2 };",
+        "workdayMinutes()"
+      ],
+      "notContains": ["minutesPerHour{ 60 }", "hoursPerWorkday{ 8 }", "#include \"schedule.cpp\"", "using namespace std", "Meeting length: 90"]
+    },
+    {
+      "file": "schedule.cpp",
+      "contains": [
+        "#include \"time_constants.h\"",
+        "int workdayMinutes()",
+        "return timeConstants::hoursPerWorkday * timeConstants::minutesPerHour;"
+      ],
+      "notContains": ["minutesPerHour{ 60 }", "hoursPerWorkday{ 8 }", "std::cout", "using namespace std"]
+    }
+  ]
+}

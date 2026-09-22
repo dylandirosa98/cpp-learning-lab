@@ -1,0 +1,49 @@
+{
+  "order": 61,
+  "id": "7.4",
+  "title": "Introduction to global variables",
+  "url": "https://www.learncpp.com/cpp-tutorial/introduction-to-global-variables/",
+  "estimatedMinutes": 25,
+  "recap": [
+    "A variable declared outside every function is a global variable. Its identifier has global namespace scope from its declaration to the end of the file, and the object has static storage duration, so it exists for the program's entire execution.",
+    "Global variables may be placed in a user-defined namespace and accessed with a qualified name. Prefer constant globals when shared fixed data is appropriate, and avoid mutable global state because hidden dependencies make programs difficult to reason about."
+  ],
+  "objectives": [
+    "Define a constant global variable outside all functions.",
+    "Place the global in a user-defined namespace.",
+    "Access the global from both a function and main with a qualified name.",
+    "Calculate a result instead of duplicating the global's value."
+  ],
+  "warnings": [
+    "Variables declared inside a function are local even if their names use a global-style prefix.",
+    "Non-constant globals can be changed from many places and should generally be avoided.",
+    "Constant and constexpr global variables require initializers."
+  ],
+  "challenge": "Define constexpr int capacity with value 40 in namespace Warehouse at global scope. Implement availableSpace(int stored) by subtracting stored from Warehouse::capacity. For 27 stored items, print the qualified capacity, stored amount, and calculated available space.",
+  "expectedOutput": [
+    "Warehouse capacity: 40",
+    "Items stored: 27",
+    "Available space: 13"
+  ],
+  "hints": [
+    "Define namespace Warehouse and its constexpr int capacity before the function definitions.",
+    "availableSpace should return Warehouse::capacity - stored.",
+    "Use Warehouse::capacity at the output site too, rather than repeating 40."
+  ],
+  "sources": ["main.cpp"],
+  "sourceChecks": [
+    {
+      "file": "main.cpp",
+      "contains": [
+        "namespace Warehouse",
+        "constexpr int capacity{ 40 };",
+        "int availableSpace(int stored)",
+        "return Warehouse::capacity - stored;",
+        "constexpr int stored{ 27 };",
+        "<< Warehouse::capacity <<",
+        "availableSpace(stored)"
+      ],
+      "notContains": ["std::cin", "using namespace", "Warehouse capacity: 40", "Available space: 13", "return 13;"]
+    }
+  ]
+}

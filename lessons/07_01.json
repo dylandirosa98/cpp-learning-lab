@@ -1,0 +1,45 @@
+{
+  "order": 58,
+  "id": "7.1",
+  "title": "Compound statements (blocks)",
+  "url": "https://www.learncpp.com/cpp-tutorial/compound-statements-blocks/",
+  "estimatedMinutes": 20,
+  "recap": [
+    "A compound statement, also called a block, groups zero or more statements between braces so the compiler can treat the group as one statement. A block does not need a semicolon after its closing brace.",
+    "Blocks can be nested. An if statement can therefore control several related statements with one block, but excessive nesting makes control flow harder to follow and is often a sign that code should be moved into a function."
+  ],
+  "objectives": [
+    "Use a block as the statement controlled by an if condition.",
+    "Execute two related statements only when a fixed condition is true.",
+    "Distinguish a block's braces from list-initialization braces.",
+    "Keep the nesting depth small and readable."
+  ],
+  "warnings": [
+    "Without a block, an if statement controls only the next statement.",
+    "Do not put a semicolon between an if condition and its controlled block.",
+    "Avoid adding nested blocks when a separate function would express the work more clearly."
+  ],
+  "challenge": "Start approvedUnits at 0 and set inspectionPassed to true. Use one if statement with a compound statement containing both the assignment of 12 approved units and the inspection message. Then report the final approved unit count outside the conditional block.",
+  "expectedOutput": [
+    "Inspection passed",
+    "Units released: 12"
+  ],
+  "hints": [
+    "The statement controlled by if (inspectionPassed) should begin with { and end with }.",
+    "Place both approvedUnits = 12; and the first std::cout statement inside that block.",
+    "Print approvedUnits after the block so the final report is not part of the conditional statement."
+  ],
+  "sources": ["main.cpp"],
+  "sourceChecks": [
+    {
+      "file": "main.cpp",
+      "contains": [
+        "bool inspectionPassed{ true };",
+        "int approvedUnits{ 0 };",
+        "if (inspectionPassed)\n{\napprovedUnits = 12;\n        std::cout << \"Inspection passed\\n\";\n}",
+        "<< approvedUnits <<"
+      ],
+      "notContains": ["std::cin", "using namespace std", "Units released: 12", "approvedUnits{ 12 }"]
+    }
+  ]
+}

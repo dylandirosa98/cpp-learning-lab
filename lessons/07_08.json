@@ -1,0 +1,47 @@
+{
+  "order": 65,
+  "id": "7.8",
+  "title": "Why (non-const) global variables are evil",
+  "url": "https://www.learncpp.com/cpp-tutorial/why-non-const-global-variables-are-evil/",
+  "estimatedMinutes": 20,
+  "recap": [
+    "A non-const global variable creates hidden shared state: any function with access can change it, so callers cannot understand behavior from a function's parameters and return value alone. This increases coupling and makes defects harder to trace.",
+    "Prefer local variables and pass required values as arguments. When one mutable resource truly must be program-wide, hide it behind a narrow interface rather than allowing unrestricted direct access."
+  ],
+  "objectives": [
+    "Keep mutable inventory state local to main.",
+    "Pass values explicitly into a calculation function.",
+    "Return a result instead of mutating hidden state.",
+    "Demonstrate that the same function works with different arguments."
+  ],
+  "warnings": [
+    "A naming prefix makes a global recognizable but does not remove its coupling or mutation risks.",
+    "Avoid global variables that control decisions, because an unrelated call can silently change program behavior.",
+    "Objects with static storage duration in different translation units can also introduce initialization-order hazards."
+  ],
+  "challenge": "Implement remainingStock as a calculation over its stock and shipped parameters, with no mutable global state. In main, keep the starting stock of 18 and shipped count of 5 local, calculate the remaining stock, and make a second call for a 9-item sample with 2 shipped to demonstrate reuse.",
+  "expectedOutput": [
+    "Remaining stock: 13",
+    "Sample remaining: 7"
+  ],
+  "hints": [
+    "Give remainingStock two int parameters rather than reading any file-scope variable.",
+    "Return stock - shipped without changing either argument.",
+    "Initialize local constexpr inputs in main and print results returned by the function."
+  ],
+  "sources": ["main.cpp"],
+  "sourceChecks": [
+    {
+      "file": "main.cpp",
+      "contains": [
+        "int remainingStock(int stock, int shipped)",
+        "return stock - shipped;",
+        "constexpr int startingStock{ 18 };",
+        "constexpr int shipped{ 5 };",
+        "const int remaining{ remainingStock(startingStock, shipped) };",
+        "remainingStock(9, 2)"
+      ],
+      "notContains": ["g_stock", "static int", "std::cin", "using namespace std", "Remaining stock: 13", "Sample remaining: 7"]
+    }
+  ]
+}

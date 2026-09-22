@@ -1,0 +1,68 @@
+{
+  "order": 69,
+  "id": "7.12",
+  "title": "Scope, duration, and linkage summary",
+  "url": "https://www.learncpp.com/cpp-tutorial/scope-duration-and-linkage-summary/",
+  "estimatedMinutes": 35,
+  "recap": [
+    "Scope describes where a name can be used, duration describes when an object is created and destroyed, and linkage determines whether declarations in different scopes or translation units denote the same entity. These properties answer different questions and should not be treated as synonyms.",
+    "Local variables have block scope and no linkage, while ordinary locals have automatic duration and static locals have static duration. A namespace-scope const normally has internal linkage, so sharing one const object across files requires an extern declaration and an external-linkage definition."
+  ],
+  "objectives": [
+    "Declare an externally linked constant in a header and define it once in a source file.",
+    "Use a static local to preserve a visit count across function calls.",
+    "Keep displayed values in a nested block with automatic duration.",
+    "Build and link declarations and definitions across translation units."
+  ],
+  "warnings": [
+    "An initialized definition in a header can create one object per translation unit or violate the one-definition rule, depending on its declaration.",
+    "Do not initialize an extern variable declaration in the header when one shared definition belongs in a source file.",
+    "Scope controls name visibility; it does not by itself determine object lifetime or linkage."
+  ],
+  "challenge": "Create one externally linked const int daily limit shared through counter.h and defined in counter.cpp. Implement visitsToday() with an initialized static local counter that advances on each call. In main, call it three times into const automatic locals inside a nested block and print the limit and retained sequence.",
+  "expectedOutput": [
+    "Daily limit: 3",
+    "Visit: 1",
+    "Visit: 2",
+    "Visit: 3"
+  ],
+  "hints": [
+    "The header declaration is extern const int followed by the shared name and no initializer.",
+    "Give the definition external linkage in counter.cpp and initialize it to 3 exactly once.",
+    "Inside visitsToday(), increment a static local initialized to zero before returning it."
+  ],
+  "sources": ["main.cpp", "counter.cpp"],
+  "sourceChecks": [
+    {
+      "file": "counter.h",
+      "contains": [
+        "#ifndef CPP_LEARNING_LAB_CHAPTER7_COUNTER_H",
+        "#define CPP_LEARNING_LAB_CHAPTER7_COUNTER_H",
+        "extern const int g_dailyLimit;",
+        "int visitsToday();",
+        "#endif"
+      ],
+      "notContains": ["#pragma once", "g_dailyLimit{", "std::cout", "using namespace std"]
+    },
+    {
+      "file": "counter.cpp",
+      "contains": [
+        "#include \"counter.h\"",
+        "extern const int g_dailyLimit{ 3 };",
+        "int visitsToday()\n{\nstatic int s_visits{ 0 };\n    ++s_visits;",
+        "return s_visits;"
+      ],
+      "notContains": ["std::cout", "std::cin", "using namespace std", "return 1;"]
+    },
+    {
+      "file": "main.cpp",
+      "contains": [
+        "#include \"counter.h\"",
+        "std::cout << \"Daily limit: \" << g_dailyLimit << '\\n';\n\n{\nconst int first{ visitsToday() };",
+        "const int second{ visitsToday() };",
+        "const int third{ visitsToday() };"
+      ],
+      "notContains": ["std::cin", "using namespace std", "static int", "Visit: 1"]
+    }
+  ]
+}

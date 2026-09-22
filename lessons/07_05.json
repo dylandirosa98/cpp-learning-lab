@@ -1,0 +1,47 @@
+{
+  "order": 62,
+  "id": "7.5",
+  "title": "Variable shadowing (name hiding)",
+  "url": "https://www.learncpp.com/cpp-tutorial/variable-shadowing-name-hiding/",
+  "estimatedMinutes": 20,
+  "recap": [
+    "A declaration in an inner scope shadows an outer declaration with the same name. While both objects exist, an unqualified use of that name selects the innermost declaration, which can make it easy to inspect or modify the wrong object.",
+    "A local variable can shadow a global variable. The otherwise hidden global can still be selected with the scope resolution operator and no left operand, as in ::statusCode, but distinct names are normally clearer and shadowing should be avoided."
+  ],
+  "objectives": [
+    "Observe a local variable shadowing a global with the same name.",
+    "Modify the local through its unqualified name.",
+    "Select and modify the hidden global with the unary scope resolution operator.",
+    "Confirm that the two declarations refer to distinct objects."
+  ],
+  "warnings": [
+    "Shadowing can silently direct a read or assignment to a different object than intended.",
+    "There is no direct syntax for accessing a shadowed local variable from an enclosing block.",
+    "This exercise demonstrates shadowing deliberately; production code should normally use distinct names."
+  ],
+  "challenge": "Define a global statusCode initialized to 100 and a local statusCode initialized to 7. Increment the local through the unqualified name, decrement the hidden global through ::statusCode, and print both distinct results.",
+  "expectedOutput": [
+    "Local status: 8",
+    "Global status: 99"
+  ],
+  "hints": [
+    "The statusCode defined inside main hides the global statusCode for unqualified uses in main.",
+    "Use ++statusCode; to modify the local object.",
+    "Use --(::statusCode); and print ::statusCode to select the global object explicitly."
+  ],
+  "sources": ["main.cpp"],
+  "sourceChecks": [
+    {
+      "file": "main.cpp",
+      "contains": [
+        "int statusCode{ 100 };",
+        "int statusCode{ 7 };",
+        "++statusCode;",
+        "--(::statusCode);",
+        "<< statusCode <<",
+        "<< ::statusCode <<"
+      ],
+      "notContains": ["std::cin", "using namespace std", "Local status: 8", "Global status: 99", "statusCode = 8", "::statusCode = 99"]
+    }
+  ]
+}

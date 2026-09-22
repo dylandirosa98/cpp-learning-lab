@@ -1,0 +1,46 @@
+{
+  "order": 60,
+  "id": "7.3",
+  "title": "Local variables",
+  "url": "https://www.learncpp.com/cpp-tutorial/local-variables/",
+  "estimatedMinutes": 25,
+  "recap": [
+    "Local variables have block scope: their names are usable from the point of declaration through the end of the block that contains them. A nested block can access a variable from an enclosing block, but the enclosing block cannot access a local declared only in the nested block.",
+    "Ordinary local variables have automatic storage duration, so they are created at their definitions and destroyed when execution leaves their blocks. Defining a variable in the smallest existing scope that needs it reduces the amount of state a reader must track."
+  ],
+  "objectives": [
+    "Declare an outer local that remains usable after a nested block.",
+    "Declare a temporary local in the smallest block that needs it.",
+    "Use both outer and inner locals while both are in scope.",
+    "Report the surviving outer value after the inner local's lifetime ends."
+  ],
+  "warnings": [
+    "A local variable cannot be used before its declaration or after its block ends.",
+    "Names in the same scope must be unique.",
+    "Do not create an otherwise unnecessary block solely to shorten a variable's lifetime in production code; a function may be clearer."
+  ],
+  "challenge": "Create itemsRemaining as a local initialized to 9. In the supplied nested block, define packedItems as a const local initialized to 4, subtract it from itemsRemaining, and print it. After packedItems has gone out of scope, print the updated itemsRemaining.",
+  "expectedOutput": [
+    "Starting items: 9",
+    "Packed in inner scope: 4",
+    "Items after block: 5"
+  ],
+  "hints": [
+    "itemsRemaining must be declared in main's outer block because it is used after the nested block.",
+    "Declare const int packedItems{ 4 }; inside the nested block immediately before using it.",
+    "Update the outer variable with itemsRemaining -= packedItems while both names are in scope."
+  ],
+  "sources": ["main.cpp"],
+  "sourceChecks": [
+    {
+      "file": "main.cpp",
+      "contains": [
+        "int itemsRemaining{ 9 };",
+        "std::cout << \"Starting items: \" << itemsRemaining << '\\n';\n\n    {\nconst int packedItems{ 4 };\n        itemsRemaining -= packedItems;",
+        "<< packedItems <<",
+        "<< itemsRemaining <<"
+      ],
+      "notContains": ["std::cin", "using namespace std", "Items after block: 5", "itemsRemaining{ 5 }"]
+    }
+  ]
+}

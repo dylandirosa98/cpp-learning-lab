@@ -1,0 +1,55 @@
+{
+  "order": 63,
+  "id": "7.6",
+  "title": "Internal linkage",
+  "url": "https://www.learncpp.com/cpp-tutorial/internal-linkage/",
+  "estimatedMinutes": 25,
+  "recap": [
+    "An identifier with internal linkage belongs to one translation unit. Another source file may define an identifier with the same name without creating a collision because the two names refer to independent entities.",
+    "Namespace-scope const and constexpr variables have internal linkage by default. A namespace-scope non-const variable or function can be given internal linkage with static, although unnamed namespaces are generally preferred when hiding several names."
+  ],
+  "objectives": [
+    "Give a non-const global variable internal linkage with static.",
+    "Use the same internal variable name independently in two source files.",
+    "Give a helper function internal linkage.",
+    "Link the translation units through one intentionally external function."
+  ],
+  "warnings": [
+    "At namespace scope, static changes linkage; inside a function, static instead changes storage duration.",
+    "Do not try to forward declare an internal identifier from another translation unit.",
+    "An internal name is still global within its own file, so use it only when file-wide access is justified."
+  ],
+  "challenge": "Give each source file its own static g_offset: 2 in main.cpp and 5 in sensor.cpp. In sensor.cpp, also make applyOffset a static helper and expose sensorReading as the external function main calls. Starting from 10, print both independently adjusted readings.",
+  "expectedOutput": [
+    "Main reading: 12",
+    "Sensor reading: 15"
+  ],
+  "hints": [
+    "Place static int g_offset at namespace scope in each source file; these are two independent variables.",
+    "In sensor.cpp, static int applyOffset(int reading) should add that file's g_offset.",
+    "Leave sensorReading non-static so main.cpp's forward declaration can link to it."
+  ],
+  "sources": ["main.cpp", "sensor.cpp"],
+  "sourceChecks": [
+    {
+      "file": "main.cpp",
+      "contains": [
+        "#include <iostream>\n\nstatic int g_offset{ 2 };\n\nint sensorReading(int reading);",
+        "int sensorReading(int reading);",
+        "10 + g_offset",
+        "sensorReading(10)"
+      ],
+      "notContains": ["#include \"sensor.cpp\"", "extern int g_offset", "using namespace std", "Main reading: 12"]
+    },
+    {
+      "file": "sensor.cpp",
+      "contains": [
+        "static int g_offset{ 5 };\n\nstatic int applyOffset(int reading)",
+        "return reading + g_offset;",
+        "int sensorReading(int reading)",
+        "return applyOffset(reading);"
+      ],
+      "notContains": ["extern int g_offset", "#include \"main.cpp\"", "using namespace std"]
+    }
+  ]
+}
