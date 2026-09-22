@@ -24,14 +24,15 @@ Run from project root: ./course check 7.1
 */
 #include <iostream>
 
-int main()
-{
-    constexpr bool inspectionPassed{ true };
-    int approvedUnits{ 0 };
+int main() {
+    constexpr bool inspectionPassed{true};
+    int approvedUnits{0};
 
-    if (inspectionPassed)
-    {
+    if (inspectionPassed) {
         // TODO: Put both required conditional actions here.
+        // TODO put the things over here.
+        approvedUnits = 12;
+        std::cout << "Inspection passed\n";
     }
 
     std::cout << "Units released: " << approvedUnits << '\n';
