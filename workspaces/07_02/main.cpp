@@ -1,6 +1,7 @@
 /*
 Lesson 7.2 - User-defined namespaces and the scope resolution operator
-LearnCpp: https://www.learncpp.com/cpp-tutorial/user-defined-namespaces-and-the-scope-resolution-operator/
+LearnCpp:
+https://www.learncpp.com/cpp-tutorial/user-defined-namespaces-and-the-scope-resolution-operator/
 Practice:
 - Prevent identical function names from colliding by placing them in namespaces.
 - Select each function explicitly with the scope resolution operator.
@@ -25,30 +26,25 @@ Run from project root: ./course check 7.2
 */
 #include <iostream>
 
-namespace Shipping
-{
-    int fee(int baseCharge)
-    {
-        // TODO: Add Shipping's fee adjustment.
-        return baseCharge;
-    }
+namespace Shipping {
+int fee(int baseCharge) {
+    // TODO: Add Shipping's fee adjustment.
+    return baseCharge + 2;
 }
+} // namespace Shipping
 
-namespace Billing
-{
-    int fee(int baseCharge)
-    {
-        // TODO: Add Billing's fee adjustment.
-        return baseCharge;
-    }
+namespace Billing {
+int fee(int baseCharge) {
+    // TODO: Add Billing's fee adjustment.
+    return baseCharge + 5;
 }
+} // namespace Billing
 
-int main()
-{
-    constexpr int baseCharge{ 10 };
+int main() {
+    constexpr int baseCharge{10};
 
     // TODO: Qualify each fee call with the namespace that owns it.
-    std::cout << "Shipping fee: " << baseCharge << '\n';
-    std::cout << "Billing fee: " << baseCharge << '\n';
+    std::cout << "Shipping fee: " << Shipping::fee(baseCharge) << '\n';
+    std::cout << "Billing fee: " << Billing::fee(baseCharge) << '\n';
     return 0;
 }
