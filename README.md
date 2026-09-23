@@ -1,6 +1,6 @@
 # C++ Learning Lab
 
-A CLion-first interactive companion to [LearnCpp](https://www.learncpp.com/), currently covering Chapters 2 through 7. The lab links to each original lesson, provides a short original recap, and follows it with a focused coding challenge, progressive hints, automated checks, and a reference solution. Completed workspace code and course progress are tracked in Git so the same course can be continued across machines.
+A CLion-first interactive companion to [LearnCpp](https://www.learncpp.com/), currently covering Chapters 2 through 7 and optional Chapter O. The lab links to each original lesson, provides a short original recap, and follows it with a focused coding challenge, progressive hints, automated checks, and a reference solution. Completed workspace code and course progress are tracked in Git so the same course can be continued across machines.
 
 LearnCpp owns its lesson text and examples. This project does not mirror them.
 
@@ -65,7 +65,7 @@ GitHub authentication is required to push. On a new machine, run `gh auth login`
 
 Run `./course sync` before starting work on another machine. It pulls remote changes with rebase and creates any missing lesson workspaces. When `./course check 6.1` passes, the checker commits that lesson's workspace and progress and pushes the current branch automatically. Failed lessons are never committed. Set `COURSE_NO_SYNC=1` for a one-off local check without committing or pushing.
 
-The same commands accept Chapter 3 through Chapter 7 lesson IDs, for example:
+The same commands accept Chapter 3 through Chapter 7 and Chapter O lesson IDs, for example:
 
 ```bash
 ./course check 3.1
@@ -81,15 +81,18 @@ The same commands accept Chapter 3 through Chapter 7 lesson IDs, for example:
 ./course lesson 7.1
 ./course check 7.14
 ./course reset 7.x
+./course lesson O.1
+./course check O.3
+./course reset O.4
 ```
 
-Your editable files live under `workspaces/`. Every C++ starter file begins with comments explaining that file's tasks, function responsibilities, expected output, LearnCpp link, and checker command. The original starters and reference solutions remain separate.
+Your editable files are grouped by chapter under `workspaces/`, such as `workspaces/06/06_07` and `workspaces/O/o_01`. Every C++ starter file begins with comments explaining that file's tasks, function responsibilities, expected output, LearnCpp link, and checker command. The original starters and reference solutions remain separate.
 
 ## Learning Loop
 
 1. Run `./course lesson 2.1`.
 2. Open the linked LearnCpp lesson and read it in full.
-3. Edit the matching folder under `workspaces/` in CLion.
+3. Edit the matching chapter and lesson folder under `workspaces/` in CLion.
 4. Predict the output before running the checker.
 5. Run `./course check 2.1`.
 6. Use hints only after a real attempt.
@@ -106,6 +109,8 @@ Chapter 5 focuses on constants and strings. Its lessons distinguish named consta
 Chapter 6 focuses on operators and expressions. Its exercises cover precedence and associativity, arithmetic and integer division, remainder and `std::pow`, sequenced increment/decrement side effects, the comma and conditional operators, robust floating-point comparisons, and short-circuit logical policies. The `6.x` capstone calculates a deterministic apple inventory and pluralized restock report while preserving separate inventory, reporting, and coordinator modules.
 
 Chapter 7 focuses on scope, duration, and linkage. Its exercises cover blocks, namespaces, local and global variables, shadowing, internal and external linkage, inline variables, shared constants, static locals, using declarations, and unnamed and inline namespaces. The `7.x` capstone builds a deterministic multi-file field survey while keeping configuration, survey logic, reporting, and coordination separate.
+
+Optional Chapter O focuses on bit manipulation. Its four exercises use `std::bitset`, apply all six bitwise operators, manage named flags with masks, and convert decimal integers to binary without relying on bitwise operators or `std::bitset`.
 
 ## Course Verification
 

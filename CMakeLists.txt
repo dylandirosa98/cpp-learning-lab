@@ -7,11 +7,13 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 add_compile_options(-Wall -Wextra -Wpedantic)
 
-file(GLOB lesson_cmake_files CONFIGURE_DEPENDS "${CMAKE_SOURCE_DIR}/workspaces/*/CMakeLists.txt")
+file(GLOB lesson_cmake_files CONFIGURE_DEPENDS "${CMAKE_SOURCE_DIR}/workspaces/*/*/CMakeLists.txt")
 foreach(lesson_cmake_file IN LISTS lesson_cmake_files)
     get_filename_component(lesson_directory "${lesson_cmake_file}" DIRECTORY)
     get_filename_component(lesson_name "${lesson_directory}" NAME)
-    add_subdirectory("${lesson_directory}" "${CMAKE_BINARY_DIR}/${lesson_name}")
+    get_filename_component(chapter_directory "${lesson_directory}" DIRECTORY)
+    get_filename_component(chapter_name "${chapter_directory}" NAME)
+    add_subdirectory("${lesson_directory}" "${CMAKE_BINARY_DIR}/${chapter_name}/${lesson_name}")
 endforeach()
 
 add_executable(testlesson testlesson.cpp)

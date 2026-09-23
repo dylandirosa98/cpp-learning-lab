@@ -36,12 +36,14 @@ def load_lessons() -> list[dict]:
 def normalize_lesson_id(value: str) -> str:
     compact = value.strip().lower().replace("lesson", "").strip()
     parts = compact.replace("_", ".").split(".")
-    if len(parts) == 2 and parts[0].isdigit() and parts[1] == "x":
-        return f"{int(parts[0]):02d}_x"
+    if len(parts) == 2 and (parts[0].isdigit() or len(parts[0]) == 1 and parts[0].isalpha()):
+        chapter = f"{int(parts[0]):02d}" if parts[0].isdigit() else parts[0]
+        if parts[1] == "x":
+            return f"{chapter}_x"
+        if parts[1].isdigit():
+            return f"{chapter}_{int(parts[1]):02d}"
     if compact.endswith("x") and compact[:-1].isdigit():
         return f"{int(compact[:-1]):02d}_x"
-    if len(parts) == 2 and parts[0].isdigit() and parts[1].isdigit():
-        return f"{int(parts[0]):02d}_{int(parts[1]):02d}"
     return compact
 
 
@@ -65,6 +67,12 @@ def display_progress_key(key: str) -> str:
     chapter = chapter.upper() if chapter.isalpha() else str(int(chapter))
     lesson = lesson.lower() if lesson.isalpha() else str(int(lesson))
     return f"{chapter}.{lesson}"
+
+
+def workspace_path(lesson: dict) -> Path:
+    chapter = lesson["id"].split(".")[0]
+    chapter_directory = f"{int(chapter):02d}" if chapter.isdigit() else chapter.upper()
+    return WORKSPACES / chapter_directory / lesson["key"]
 
 
 def load_progress() -> dict:
@@ -91,7 +99,7 @@ def git_sync_lesson(lesson: dict, source_dir: Path) -> None:
         relative_source = source_dir.resolve().relative_to(WORKSPACES.resolve())
     except ValueError:
         return
-    if relative_source != Path(lesson["key"]):
+    if relative_source != workspace_path(lesson).relative_to(WORKSPACES):
         return
     if run_git("rev-parse", "--is-inside-work-tree").returncode != 0:
         print("Git sync skipped: this folder is not a Git repository.")
@@ -143,8 +151,20 @@ def sync_repository() -> None:
 
 def ensure_workspace(lesson: dict, announce: bool = True) -> Path:
     source = STARTERS / lesson["key"]
-    destination = WORKSPACES / lesson["key"]
+    destination = workspace_path(lesson)
+    legacy = WORKSPACES / lesson["key"]
+    if legacy.exists():
+        if destination.exists():
+            raise SystemExit(
+                f"Both old and new workspace paths exist for {lesson['id']}: "
+                f"{legacy.relative_to(ROOT)} and {destination.relative_to(ROOT)}"
+            )
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        legacy.rename(destination)
+        if announce:
+            print(f"Moved {legacy.relative_to(ROOT)} to {destination.relative_to(ROOT)}")
     if not destination.exists():
+        destination.parent.mkdir(parents=True, exist_ok=True)
         shutil.copytree(source, destination)
         if announce:
             print(f"Created {destination.relative_to(ROOT)}")
@@ -186,7 +206,7 @@ def refresh_instructions() -> None:
     preserved = []
     for lesson in load_lessons():
         starter_directory = STARTERS / lesson["key"]
-        workspace_directory = WORKSPACES / lesson["key"]
+        workspace_directory = workspace_path(lesson)
         for starter in sorted(starter_directory.iterdir()):
             if starter.suffix not in {".cpp", ".h"}:
                 continue
@@ -236,7 +256,7 @@ def show_lesson(lesson: dict) -> None:
     print("```text")
     print("\n".join(lesson["expectedOutput"]))
     print("```")
-    print(f"\nWorkspace: {WORKSPACES / lesson['key']}")
+    print(f"\nWorkspace: {workspace_path(lesson)}")
 
 
 def list_lessons() -> None:
@@ -352,7 +372,7 @@ def show_solution(lesson: dict) -> None:
 
 
 def reset_lesson(lesson: dict, assume_yes: bool) -> None:
-    destination = WORKSPACES / lesson["key"]
+    destination = workspace_path(lesson)
     if destination.exists() and not assume_yes:
         answer = input(f"Replace all edits in {destination.relative_to(ROOT)}? [y/N] ").strip().lower()
         if answer != "y":
@@ -369,7 +389,8 @@ def show_progress() -> None:
     catalog_keys = {lesson["key"] for lesson in lessons}
     catalog_completed = completed & catalog_keys
     print(f"Completed {len(catalog_completed)}/{len(lessons)} lessons")
-    for chapter in sorted({lesson["id"].split(".")[0] for lesson in lessons}, key=int):
+    chapters = dict.fromkeys(lesson["id"].split(".")[0] for lesson in lessons)
+    for chapter in chapters:
         chapter_lessons = [lesson for lesson in lessons if lesson["id"].startswith(f"{chapter}.")]
         chapter_completed = sum(lesson["key"] in completed for lesson in chapter_lessons)
         print(f"Chapter {chapter}: {chapter_completed}/{len(chapter_lessons)}")
