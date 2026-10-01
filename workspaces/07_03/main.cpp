@@ -26,14 +26,16 @@ Run from project root: ./course check 7.3
 */
 #include <iostream>
 
-int main()
-{
+int main() {
     // TODO: Declare the outer local itemsRemaining with the required starting value.
-    int itemsRemaining{};
+    int itemsRemaining{9};
     std::cout << "Starting items: " << itemsRemaining << '\n';
 
     {
         // TODO: Declare packedItems here, then update and report the outer local.
+        const int packedItems{4};
+        itemsRemaining -= packedItems;
+        std::cout << "Packed in inner scope: " << packedItems << '\n';
     }
 
     std::cout << "Items after block: " << itemsRemaining << '\n';
