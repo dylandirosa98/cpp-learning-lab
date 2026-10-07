@@ -15,14 +15,12 @@ Completion checklist:
 - Both g_offset and applyOffset are static; sensorReading is not static.
 - The complete target passes ./course check 7.6.
 */
-static int g_offset{ 0 }; // TODO: Initialize this internal variable correctly.
+static int g_offset{5}; // TODO: Initialize this internal variable correctly.
 
-static int applyOffset(int reading)
-{
-    return reading - g_offset; // TODO: Apply g_offset in the correct direction.
+static int applyOffset(int reading) {
+    return reading + g_offset; // TODO: Apply g_offset in the correct direction.
 }
 
-int sensorReading(int reading)
-{
+int sensorReading(int reading) {
     return applyOffset(reading);
 }
