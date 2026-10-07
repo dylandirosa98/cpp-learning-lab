@@ -24,15 +24,16 @@ Run from project root: ./course check 7.5
 */
 #include <iostream>
 
-int statusCode{ 100 };
+int statusCode{100};
 
-int main()
-{
-    int statusCode{ 7 };
+int main() {
+    int statusCode{7};
 
     // TODO: Increment the local and decrement the hidden global explicitly.
+    ++statusCode;
+    --(::statusCode);
 
     std::cout << "Local status: " << statusCode << '\n';
-    std::cout << "Global status: " << statusCode << '\n'; // TODO: Select the global.
+    std::cout << "Global status: " << ::statusCode << '\n'; // TODO: Select the global.
     return 0;
 }
