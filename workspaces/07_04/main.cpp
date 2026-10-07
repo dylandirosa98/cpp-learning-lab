@@ -27,19 +27,21 @@ Run from project root: ./course check 7.4
 #include <iostream>
 
 // TODO: Define namespace Warehouse and its constexpr capacity here at global scope.
-
-int availableSpace(int stored)
-{
-    // TODO: Subtract stored from the namespaced global capacity.
-    return stored;
+namespace Warehouse {
+constexpr int capacity{40};
 }
 
-int main()
-{
-    constexpr int stored{ 27 };
+int availableSpace(int stored) {
+    // TODO: Subtract stored from the namespaced global capacity.
+
+    return Warehouse::capacity - stored;
+}
+
+int main() {
+    constexpr int stored{27};
 
     // TODO: Print Warehouse::capacity instead of a placeholder.
-    std::cout << "Warehouse capacity: " << 0 << '\n';
+    std::cout << "Warehouse capacity: " << Warehouse::capacity << '\n';
     std::cout << "Items stored: " << stored << '\n';
     std::cout << "Available space: " << availableSpace(stored) << '\n';
     return 0;
