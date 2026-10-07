@@ -17,10 +17,11 @@ Completion checklist:
 #include <iostream>
 
 // TODO: Add matching extern declarations for both variables from limits.cpp.
+extern int g_dailyLimit;
+extern const int g_bonusLimit;
 
-int main()
-{
-    const int capacity{ 0 }; // TODO: Add the two external variables.
+int main() {
+    const int capacity{g_dailyLimit + g_bonusLimit}; // TODO: Add the two external variables.
     std::cout << "Daily capacity: " << capacity << '\n';
     return 0;
 }

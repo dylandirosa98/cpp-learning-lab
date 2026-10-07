@@ -14,5 +14,5 @@ Completion checklist:
 - Types, names, constness, and values match main.cpp's declarations.
 - The complete target passes ./course check 7.7 without warnings.
 */
-int g_dailyLimit{ 0 }; // TODO: Initialize the externally linked non-const definition.
-extern const int g_bonusLimit{ 0 }; // TODO: Initialize this external const definition to 3.
+int g_dailyLimit{12};             // TODO: Initialize the externally linked non-const definition.
+extern const int g_bonusLimit{3}; // TODO: Initialize this external const definition to 3.
