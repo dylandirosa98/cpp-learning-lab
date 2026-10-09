@@ -17,11 +17,10 @@ Completion checklist:
 #ifndef CPP_LEARNING_LAB_POINTS_H
 #define CPP_LEARNING_LAB_POINTS_H
 
-inline constexpr int pointsPerBadge{ 0 }; // TODO: Initialize this inline variable to 4.
+inline constexpr int pointsPerBadge{4}; // TODO: Initialize this inline variable to 4.
 
-inline int badgePoints(int badges)
-{
-    return badges; // TODO: Multiply by pointsPerBadge.
+inline int badgePoints(int badges) {
+    return badges * pointsPerBadge; // TODO: Multiply by pointsPerBadge.
 }
 
 #endif

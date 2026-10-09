@@ -21,11 +21,10 @@ Completion checklist:
 
 int bonusBadgePoints();
 
-int main()
-{
-    const int basePoints{ 3 }; // TODO: Call badgePoints.
-    const int bonusPoints{ bonusBadgePoints() };
-    const int totalPoints{ basePoints - bonusPoints }; // TODO: Add the results.
+int main() {
+    const int basePoints{badgePoints(3)}; // TODO: Call badgePoints.
+    const int bonusPoints{bonusBadgePoints()};
+    const int totalPoints{basePoints + bonusPoints}; // TODO: Add the results.
 
     std::cout << "Base badge points: " << basePoints << '\n';
     std::cout << "Bonus badge points: " << bonusPoints << '\n';

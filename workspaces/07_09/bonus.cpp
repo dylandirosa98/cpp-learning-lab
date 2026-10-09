@@ -16,7 +16,6 @@ Completion checklist:
 */
 #include "points.h"
 
-int bonusBadgePoints()
-{
-    return 0; // TODO: Return the points for 2 badges.
+int bonusBadgePoints() {
+    return badgePoints(2); // TODO: Return the points for 2 badges.
 }
