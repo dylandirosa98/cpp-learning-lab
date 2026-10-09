@@ -1,6 +1,7 @@
 /*
 Lesson 7.10 - Sharing global constants across multiple files (using inline variables)
-LearnCpp: https://www.learncpp.com/cpp-tutorial/sharing-global-constants-across-multiple-files-using-inline-variables/
+LearnCpp:
+https://www.learncpp.com/cpp-tutorial/sharing-global-constants-across-multiple-files-using-inline-variables/
 Tasks:
 - Inside namespace timeConstants, define inline constexpr int minutesPerHour as 60.
 - Define inline constexpr int hoursPerWorkday as 8 beside it.
@@ -17,10 +18,9 @@ Completion checklist:
 #ifndef CPP_LEARNING_LAB_TIME_CONSTANTS_H
 #define CPP_LEARNING_LAB_TIME_CONSTANTS_H
 
-namespace timeConstants
-{
-    constexpr int minutesPerHour{ 0 }; // TODO: Make inline and initialize to 60.
-    constexpr int hoursPerWorkday{ 0 }; // TODO: Make inline and initialize to 8.
-}
+namespace timeConstants {
+inline constexpr int minutesPerHour{60}; // TODO: Make inline and initialize to 60.
+inline constexpr int hoursPerWorkday{8}; // TODO: Make inline and initialize to 8.
+} // namespace timeConstants
 
 #endif

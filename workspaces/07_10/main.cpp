@@ -1,6 +1,7 @@
 /*
 Lesson 7.10 - Sharing global constants across multiple files (using inline variables)
-LearnCpp: https://www.learncpp.com/cpp-tutorial/sharing-global-constants-across-multiple-files-using-inline-variables/
+LearnCpp:
+https://www.learncpp.com/cpp-tutorial/sharing-global-constants-across-multiple-files-using-inline-variables/
 Tasks:
 - Include time_constants.h and forward declare workdayMinutes from schedule.cpp.
 - Calculate a constexpr 90-minute meeting using minutesPerHour plus half an hour.
@@ -20,9 +21,10 @@ Completion checklist:
 
 int workdayMinutes();
 
-int main()
-{
-    constexpr int meetingMinutes{ 0 }; // TODO: Add one hour and half an hour.
+int main() {
+    constexpr int meetingMinutes{timeConstants::minutesPerHour +
+                                 timeConstants::minutesPerHour /
+                                     2}; // TODO: Add one hour and half an hour.
     std::cout << "Meeting length: " << meetingMinutes << " minutes\n";
     std::cout << "Workday length: " << workdayMinutes() << " minutes\n";
     return 0;

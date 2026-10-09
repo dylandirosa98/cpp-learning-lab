@@ -1,6 +1,7 @@
 /*
 Lesson 7.10 - Sharing global constants across multiple files (using inline variables)
-LearnCpp: https://www.learncpp.com/cpp-tutorial/sharing-global-constants-across-multiple-files-using-inline-variables/
+LearnCpp:
+https://www.learncpp.com/cpp-tutorial/sharing-global-constants-across-multiple-files-using-inline-variables/
 Tasks:
 - Include time_constants.h so this translation unit sees both constant definitions.
 - Return hoursPerWorkday multiplied by minutesPerHour from workdayMinutes.
@@ -16,7 +17,7 @@ Completion checklist:
 */
 #include "time_constants.h"
 
-int workdayMinutes()
-{
-    return 0; // TODO: Multiply the two shared constants.
+int workdayMinutes() {
+    return timeConstants::hoursPerWorkday *
+           timeConstants::minutesPerHour; // TODO: Multiply the two shared constants.
 }
