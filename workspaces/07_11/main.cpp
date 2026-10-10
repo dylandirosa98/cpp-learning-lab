@@ -26,15 +26,13 @@ Run from project root: ./course check 7.11
 */
 #include <iostream>
 
-unsigned int issueTicket()
-{
+unsigned int issueTicket() {
     // TODO: Give this local static duration and advance it after selecting the result.
-    unsigned int nextTicket{ 100 };
-    return nextTicket;
+    static unsigned int s_nextTicket{100};
+    return s_nextTicket++;
 }
 
-int main()
-{
+int main() {
     std::cout << "Ticket: " << issueTicket() << '\n';
     std::cout << "Ticket: " << issueTicket() << '\n';
     std::cout << "Ticket: " << issueTicket() << '\n';
