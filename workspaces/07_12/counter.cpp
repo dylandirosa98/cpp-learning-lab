@@ -21,10 +21,11 @@ Run from project root: ./course check 7.12
 #include "counter.h"
 
 // TODO: Provide the single external definition initialized to 3.
+extern const int g_dailyLimit{3};
 
-int visitsToday()
-{
+int visitsToday() {
     // TODO: Make this count persist, increment it, and return the new value.
-    int visits{ 0 };
-    return visits;
+    static int s_visits{0};
+    ++s_visits;
+    return s_visits;
 }

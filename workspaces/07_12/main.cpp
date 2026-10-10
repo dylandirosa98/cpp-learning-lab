@@ -26,14 +26,17 @@ Run from project root: ./course check 7.12
 
 #include <iostream>
 
-int main()
-{
+int main() {
     std::cout << "Daily limit: " << g_dailyLimit << '\n';
 
     {
         // TODO: Store three visits in const automatic locals and print each one.
-        const int first{ visitsToday() };
+        const int first{visitsToday()};
+        const int second{visitsToday()};
+        const int third{visitsToday()};
         std::cout << "Visit: " << first << '\n';
+        std::cout << "Visit: " << second << '\n';
+        std::cout << "Visit: " << third << '\n';
     }
 
     return 0;

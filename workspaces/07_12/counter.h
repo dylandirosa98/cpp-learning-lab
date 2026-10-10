@@ -22,7 +22,7 @@ Run from project root: ./course check 7.12
 #define CPP_LEARNING_LAB_CHAPTER7_COUNTER_H
 
 // TODO: Give this declaration external linkage without defining the value here.
-const int g_dailyLimit{ 1 };
+extern const int g_dailyLimit;
 int visitsToday();
 
 #endif
