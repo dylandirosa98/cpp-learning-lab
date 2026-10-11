@@ -27,20 +27,18 @@ Run from project root: ./course check 7.13
 #include <iostream>
 #include <string_view>
 
-namespace Inventory
-{
-    constexpr std::string_view status{ "waiting" };
+namespace Inventory {
+constexpr std::string_view status{"ready"};
 }
 
-namespace Shipping
-{
-    constexpr std::string_view status{ "waiting" };
+namespace Shipping {
+constexpr std::string_view status{"dispatched"};
 }
 
-int main()
-{
+int main() {
     // TODO: Introduce only Inventory::status, then use it without qualification.
-    std::cout << "Inventory: " << Inventory::status << '\n';
+    using Inventory::status;
+    std::cout << "Inventory: " << status << '\n';
     std::cout << "Shipping: " << Shipping::status << '\n';
     return 0;
 }
