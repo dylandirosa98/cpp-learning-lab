@@ -25,10 +25,11 @@ Run from project root: ./course check 7.14
 
 #include <iostream>
 
-int main()
-{
-    constexpr int subtotal{ 20 };
+int main() {
+    constexpr int subtotal{20};
     std::cout << "Legacy total: " << Pricing::V1::total(subtotal) << '\n';
     // TODO: Add calls through Pricing::total and Pricing::V2::total.
+    std::cout << "Default total: " << Pricing::total(subtotal) << '\n';
+    std::cout << "Named current total: " << Pricing::V2::total(subtotal) << '\n';
     return 0;
 }

@@ -21,18 +21,15 @@ Run from project root: ./course check 7.14
 #ifndef CPP_LEARNING_LAB_CHAPTER7_PRICING_H
 #define CPP_LEARNING_LAB_CHAPTER7_PRICING_H
 
-namespace Pricing
-{
-    namespace V1
-    {
-        int total(int subtotal);
-    }
-
-    // TODO: Make V2 the inline namespace selected through Pricing::total.
-    namespace V2
-    {
-        int total(int subtotal);
-    }
+namespace Pricing {
+namespace V1 {
+int total(int subtotal);
 }
+
+// TODO: Make V2 the inline namespace selected through Pricing::total.
+inline namespace V2 {
+int total(int subtotal);
+}
+} // namespace Pricing
 
 #endif

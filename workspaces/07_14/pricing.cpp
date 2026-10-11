@@ -21,14 +21,15 @@ Run from project root: ./course check 7.14
 #include "pricing.h"
 
 // TODO: Put a constexpr service fee of 3 in an unnamed namespace.
+namespace {
+constexpr int serviceFee{3};
+}
 
-int Pricing::V1::total(int subtotal)
-{
+int Pricing::V1::total(int subtotal) {
     return subtotal;
 }
 
-int Pricing::V2::total(int subtotal)
-{
+int Pricing::V2::total(int subtotal) {
     // TODO: Add the source-file-only service fee.
-    return subtotal;
+    return subtotal + serviceFee;
 }
