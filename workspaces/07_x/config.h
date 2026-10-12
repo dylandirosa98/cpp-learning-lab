@@ -21,13 +21,11 @@ Run from project root: ./course check 7.x
 #ifndef CPP_LEARNING_LAB_CHAPTER7_CONFIG_H
 #define CPP_LEARNING_LAB_CHAPTER7_CONFIG_H
 
-namespace SurveyConfig
-{
-    // TODO: Add inline to each shared header constant and correct each value.
-    constexpr int targetSamples{ 1 };
-    constexpr int firstReading{ 0 };
-    constexpr int secondReading{ 0 };
-    constexpr int thirdReading{ 0 };
-}
+namespace SurveyConfig {
+inline constexpr int targetSamples{3};
+inline constexpr int firstReading{40};
+inline constexpr int secondReading{43};
+inline constexpr int thirdReading{38};
+} // namespace SurveyConfig
 
 #endif

@@ -27,19 +27,20 @@ namespace Report
 {
     void printHeading(int targetSamples)
     {
-        // TODO: Print the exact heading and target lines.
-        std::cout << targetSamples << '\n';
+        std::cout << "Field survey\n";
+        std::cout << "Target samples: " << targetSamples << '\n';
     }
 
     void printSample(int id, int rawReading, int calibratedReading)
     {
-        // TODO: Print one exact sample line using all three parameters.
-        std::cout << id << ' ' << rawReading << ' ' << calibratedReading << '\n';
+        std::cout << "Sample " << id << ": raw " << rawReading
+                  << ", calibrated " << calibratedReading << '\n';
     }
 
     void printSummary(int legacyFirst, int defaultFirst, int average)
     {
-        // TODO: Print the three exact summary lines in order.
-        std::cout << legacyFirst << ' ' << defaultFirst << ' ' << average << '\n';
+        std::cout << "Legacy first reading: " << legacyFirst << '\n';
+        std::cout << "Default first reading: " << defaultFirst << '\n';
+        std::cout << "Average calibrated: " << average << '\n';
     }
 }

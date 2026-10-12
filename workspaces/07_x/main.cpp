@@ -26,15 +26,20 @@ Run from project root: ./course check 7.x
 
 int main()
 {
-    // TODO: Introduce only the default calibration function for local shorthand.
+    using Survey::calibrate;
 
     const int firstId{ Survey::nextSampleId() };
-    // TODO: Request the other two IDs and calibrate all three configured readings.
-    const int firstCalibrated{ Survey::V1::calibrate(SurveyConfig::firstReading) };
-    // TODO: Calculate the average from all three calibrated values and target count.
+    const int secondId{ Survey::nextSampleId() };
+    const int thirdId{ Survey::nextSampleId() };
+    const int firstCalibrated{ calibrate(SurveyConfig::firstReading) };
+    const int secondCalibrated{ calibrate(SurveyConfig::secondReading) };
+    const int thirdCalibrated{ calibrate(SurveyConfig::thirdReading) };
+    const int average{ (firstCalibrated + secondCalibrated + thirdCalibrated) / SurveyConfig::targetSamples };
 
     Report::printHeading(SurveyConfig::targetSamples);
     Report::printSample(firstId, SurveyConfig::firstReading, firstCalibrated);
-    // TODO: Print the other samples and all three summary values.
+    Report::printSample(secondId, SurveyConfig::secondReading, secondCalibrated);
+    Report::printSample(thirdId, SurveyConfig::thirdReading, thirdCalibrated);
+    Report::printSummary(Survey::V1::calibrate(SurveyConfig::firstReading), firstCalibrated, average);
     return 0;
 }

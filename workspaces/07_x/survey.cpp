@@ -21,26 +21,23 @@ Run from project root: ./course check 7.x
 */
 #include "survey.h"
 
-// TODO: Add an unnamed namespace containing a constexpr offset of 2.
-
-namespace Survey
-{
-    // TODO: Define the external starting ID once with value 100.
-
-    int nextSampleId()
-    {
-        // TODO: Persist an ID initialized from g_firstSampleId and post-increment it.
-        return g_firstSampleId;
-    }
-
-    int V1::calibrate(int rawReading)
-    {
-        return rawReading;
-    }
-
-    int V2::calibrate(int rawReading)
-    {
-        // TODO: Add the source-file-only calibration offset.
-        return rawReading;
-    }
+namespace {
+constexpr int calibrationOffset{2};
 }
+
+namespace Survey {
+extern const int g_firstSampleId{100};
+
+int nextSampleId() {
+    static int s_nextSampleId{g_firstSampleId};
+    return s_nextSampleId++;
+}
+
+int V1::calibrate(int rawReading) {
+    return rawReading;
+}
+
+int V2::calibrate(int rawReading) {
+    return rawReading + calibrationOffset;
+}
+} // namespace Survey

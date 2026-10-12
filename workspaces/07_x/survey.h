@@ -22,23 +22,20 @@ Run from project root: ./course check 7.x
 #ifndef CPP_LEARNING_LAB_CHAPTER7_SURVEY_H
 #define CPP_LEARNING_LAB_CHAPTER7_SURVEY_H
 
-namespace Survey
-{
-    // TODO: Declare, but do not define, the shared read-only starting ID.
-    const int g_firstSampleId{ 0 };
+namespace Survey {
+// TODO: Declare, but do not define, the shared read-only starting ID.
+extern const int g_firstSampleId;
 
-    int nextSampleId();
+int nextSampleId();
 
-    namespace V1
-    {
-        int calibrate(int rawReading);
-    }
-
-    // TODO: Make V2 the default API with an inline namespace.
-    namespace V2
-    {
-        int calibrate(int rawReading);
-    }
+namespace V1 {
+int calibrate(int rawReading);
 }
+
+// TODO: Make V2 the default API with an inline namespace.
+inline namespace V2 {
+int calibrate(int rawReading);
+}
+} // namespace Survey
 
 #endif
