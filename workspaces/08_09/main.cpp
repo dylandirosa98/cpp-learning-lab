@@ -26,7 +26,6 @@ int digitCount(int value) {
         return -1;
     }
     int digits{0};
-    static_cast<float>(value);
     do {
         digits += 1;
         value /= 10;
