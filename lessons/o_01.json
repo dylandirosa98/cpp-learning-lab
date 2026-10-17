@@ -1,0 +1,50 @@
+{
+  "order": 89,
+  "id": "O.1",
+  "title": "Bit flags and bit manipulation via std::bitset",
+  "url": "https://www.learncpp.com/cpp-tutorial/bit-flags-and-bit-manipulation-via-stdbitset/",
+  "estimatedMinutes": 35,
+  "recap": [
+    "A bit can represent one Boolean flag. std::bitset groups a fixed number of bits and provides named operations for querying and changing individual positions.",
+    "Bit positions are numbered from right to left starting at zero. test queries a position, set turns it on, reset turns it off, and flip inverts it; count reports how many bits are on."
+  ],
+  "objectives": [
+    "Represent eight independent flags with std::bitset<8>.",
+    "Use set, reset, and flip to manipulate named bit positions.",
+    "Use test and count to inspect the resulting flags."
+  ],
+  "warnings": [
+    "Bit position zero is the rightmost bit, not the leftmost bit.",
+    "std::bitset is optimized for convenient bit operations, not necessarily minimum object size.",
+    "Give positions meaningful names instead of scattering unexplained numeric indexes."
+  ],
+  "challenge": "Start with read and share permissions enabled in an eight-bit permission set. Enable write, disable read, and flip admin from off to on using named positions and std::bitset member functions. Print the final bits, the read and write states, and the number of enabled permissions.",
+  "expectedOutput": [
+    "Permissions: 00001110",
+    "Read: false",
+    "Write: true",
+    "Enabled count: 3"
+  ],
+  "hints": [
+    "Name the read, write, share, and admin positions with constexpr std::size_t values 0 through 3.",
+    "Call set(writePosition), reset(readPosition), and flip(adminPosition) on the same std::bitset.",
+    "Enable std::boolalpha before printing test results, and use count() for the final line."
+  ],
+  "sources": ["main.cpp"],
+  "sourceChecks": [
+    {
+      "file": "main.cpp",
+      "contains": [
+        "#include <bitset>",
+        "std::bitset<8> permissions{ 0b0000'0101 };",
+        "permissions.set(writePosition);",
+        "permissions.reset(readPosition);",
+        "permissions.flip(adminPosition);",
+        "permissions.test(readPosition)",
+        "permissions.test(writePosition)",
+        "permissions.count()"
+      ],
+      "notContains": ["std::cin", "using namespace std", "Permissions: 00001110"]
+    }
+  ]
+}

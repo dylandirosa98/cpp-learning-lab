@@ -1,0 +1,50 @@
+{
+  "order": 91,
+  "id": "O.3",
+  "title": "Bit manipulation with bitwise operators and bit masks",
+  "url": "https://www.learncpp.com/cpp-tutorial/bit-manipulation-with-bitwise-operators-and-bit-masks/",
+  "estimatedMinutes": 45,
+  "recap": [
+    "A bit mask identifies one or more positions to query or modify. Meaningful mask names make a packed flag value understandable without exposing raw bit positions throughout a program.",
+    "AND queries flags, OR sets them, AND with an inverted mask clears them, and XOR toggles them. Narrow unsigned types may require an explicit cast after NOT because integral promotion occurs."
+  ],
+  "objectives": [
+    "Define meaningful masks for article state flags.",
+    "Implement reusable query, set, clear, and toggle operations.",
+    "Print a packed uint8_t value as an eight-bit pattern."
+  ],
+  "warnings": [
+    "Do not use logical operators where bitwise operators are required.",
+    "Cast the inverted mask back to std::uint8_t before clearing a flag.",
+    "A std::uint8_t may print as a character, so use std::bitset for the pattern."
+  ],
+  "challenge": "Begin with only an article's favorited flag enabled. Use reusable mask functions to enable viewed and edited, clear favorited, and toggle shared on. Print the final packed bits and query the viewed, favorited, and shared states.",
+  "expectedOutput": [
+    "Flags: 00001011",
+    "Viewed: true",
+    "Favorited: false",
+    "Shared: true"
+  ],
+  "hints": [
+    "Use one-bit binary constants of type std::uint8_t for viewed, edited, favorited, and shared.",
+    "Set with flags | mask, clear with flags & static_cast<std::uint8_t>(~mask), and toggle with flags ^ mask.",
+    "Query with static_cast<bool>(flags & mask), and construct std::bitset<8> from the final flags for output."
+  ],
+  "sources": ["main.cpp"],
+  "sourceChecks": [
+    {
+      "file": "main.cpp",
+      "contains": [
+        "#include <bitset>",
+        "#include <cstdint>",
+        "return static_cast<bool>(flags & mask);",
+        "return static_cast<std::uint8_t>(flags | mask);",
+        "return static_cast<std::uint8_t>(flags & static_cast<std::uint8_t>(~mask));",
+        "return static_cast<std::uint8_t>(flags ^ mask);",
+        "std::uint8_t flags{ optionFavorited };",
+        "std::bitset<8>{ flags }"
+      ],
+      "notContains": ["std::cin", "using namespace std", "Flags: 00001011"]
+    }
+  ]
+}

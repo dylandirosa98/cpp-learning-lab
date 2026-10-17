@@ -1,0 +1,53 @@
+{
+  "order": 90,
+  "id": "O.2",
+  "title": "Bitwise operators",
+  "url": "https://www.learncpp.com/cpp-tutorial/bitwise-operators/",
+  "estimatedMinutes": 40,
+  "recap": [
+    "Bitwise operators apply an operation independently to corresponding bits. AND keeps bits set in both operands, OR keeps bits set in either, XOR keeps differing bits, and NOT flips every bit.",
+    "Left and right shift move a bit pattern and discard bits shifted beyond its width. Parenthesize bitwise expressions sent to an output stream so stream insertion is not confused with shifting."
+  ],
+  "objectives": [
+    "Apply bitwise AND, OR, XOR, and NOT to fixed-width bitsets.",
+    "Shift a bit pattern left and right.",
+    "Observe the result of every bitwise operator as an eight-bit pattern."
+  ],
+  "warnings": [
+    "Bitwise operators are different from the logical operators && and ||.",
+    "Bits shifted off either end are lost.",
+    "Use unsigned integers or std::bitset to avoid signed bit-operation surprises."
+  ],
+  "challenge": "Create two eight-bit values, 00111100 and 00001010. Print their bitwise AND, OR, and XOR, the bitwise NOT of the first value, the first value shifted left once, and the first value shifted right twice.",
+  "expectedOutput": [
+    "AND: 00001000",
+    "OR: 00111110",
+    "XOR: 00110110",
+    "NOT: 11000011",
+    "Left: 01111000",
+    "Right: 00001111"
+  ],
+  "hints": [
+    "Initialize std::bitset<8> left and right from binary literals.",
+    "Use &, |, ^, and ~ directly between the bitsets.",
+    "Wrap each shift expression in parentheses before inserting it into std::cout."
+  ],
+  "sources": ["main.cpp"],
+  "sourceChecks": [
+    {
+      "file": "main.cpp",
+      "contains": [
+        "#include <bitset>",
+        "std::bitset<8> left{ 0b0011'1100 };",
+        "std::bitset<8> right{ 0b0000'1010 };",
+        "(left & right)",
+        "(left | right)",
+        "(left ^ right)",
+        "(~left)",
+        "(left << 1)",
+        "(left >> 2)"
+      ],
+      "notContains": ["std::cin", "using namespace std", "AND: 00001000"]
+    }
+  ]
+}

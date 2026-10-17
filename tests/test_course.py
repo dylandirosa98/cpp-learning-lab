@@ -10,7 +10,7 @@ from unittest.mock import patch
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from tools.course import SOLUTIONS, STARTERS, load_lessons, normalize_lesson_id, normalized_cpp_code, show_progress, source_rule_failures, strip_cpp_comments  # noqa: E402
+from tools.course import SOLUTIONS, STARTERS, load_lessons, normalize_lesson_id, normalized_cpp_code, show_progress, source_rule_failures, strip_cpp_comments, workspace_path  # noqa: E402
 
 
 class CourseTest(unittest.TestCase):
@@ -27,6 +27,7 @@ class CourseTest(unittest.TestCase):
                 "6.1", "6.2", "6.3", "6.4", "6.5", "6.6", "6.7", "6.8", "6.x",
                 "7.1", "7.2", "7.3", "7.4", "7.5", "7.6", "7.7", "7.8", "7.9", "7.10", "7.11", "7.12", "7.13", "7.14", "7.x",
                 "8.1", "8.2", "8.3", "8.4", "8.5", "8.6", "8.7", "8.8", "8.9", "8.10", "8.11", "8.12", "8.13", "8.14", "8.15", "8.x",
+                "O.1", "O.2", "O.3", "O.4",
             ],
         )
 
@@ -63,6 +64,11 @@ class CourseTest(unittest.TestCase):
                         self.assertTrue((directory / rule["file"]).is_file(), f"Missing {directory / rule['file']}")
 
                 self.assertTrue((STARTERS / lesson["key"] / "CMakeLists.txt").is_file())
+                workspace = workspace_path(lesson)
+                self.assertTrue(workspace.is_dir())
+                self.assertTrue((workspace / "CMakeLists.txt").is_file())
+                for source in lesson["sources"]:
+                    self.assertTrue((workspace / source).is_file(), f"Missing {workspace / source}")
                 self.assertEqual(source_rule_failures(lesson, SOLUTIONS / lesson["key"]), [])
 
     def test_lesson_id_normalization(self):
@@ -80,6 +86,15 @@ class CourseTest(unittest.TestCase):
         self.assertEqual(normalize_lesson_id("06_08"), "06_08")
         self.assertEqual(normalize_lesson_id("6.x"), "06_x")
         self.assertEqual(normalize_lesson_id("06x"), "06_x")
+        self.assertEqual(normalize_lesson_id("O.1"), "o_01")
+        self.assertEqual(normalize_lesson_id("o_04"), "o_04")
+
+    def test_workspaces_are_grouped_by_chapter(self):
+        lessons = {lesson["id"]: lesson for lesson in load_lessons()}
+
+        self.assertEqual(workspace_path(lessons["2.1"]).relative_to(ROOT), Path("workspaces/02/02_01"))
+        self.assertEqual(workspace_path(lessons["6.x"]).relative_to(ROOT), Path("workspaces/06/06_x"))
+        self.assertEqual(workspace_path(lessons["O.1"]).relative_to(ROOT), Path("workspaces/O/o_01"))
 
     def test_progress_shows_completed_lessons_missing_from_catalog(self):
         lessons = [{"id": "2.1", "key": "02_01", "title": "Functions", "estimatedMinutes": 10}]
