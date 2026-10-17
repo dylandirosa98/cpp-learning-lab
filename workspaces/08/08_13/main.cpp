@@ -3,7 +3,10 @@ Lesson 8.13 - Introduction to random number generation
 LearnCpp: https://www.learncpp.com/cpp-tutorial/introduction-to-random-number-generation/
 
 Problem:
-Implement rawDraw. Construct a local std::mt19937 from seed and return its draw at zero-based drawIndex. Index 0 is the first raw engine output. Return 0 for a negative index. Every function call starts a fresh engine, so identical arguments must return identical results. No distribution and no std::rand. Tested indices are at most 100.
+Implement rawDraw. Construct a local std::mt19937 from seed and return its draw at zero-based
+drawIndex. Index 0 is the first raw engine output. Return 0 for a negative index. Every function
+call starts a fresh engine, so identical arguments must return identical results. No distribution
+and no std::rand. Tested indices are at most 100.
 
 Expected results (examples):
 - rawDraw(42, 0) -> 1608637542
@@ -16,20 +19,25 @@ Implement the function body; main is only a supplied demo.
 The checker tests multiple calls, including edge cases. No source-token checks.
 Run from project root: ./course check 8.13
 */
-#include <iostream>
 #include <cstdint>
+#include <iostream>
 #include <random>
 
+std::uint32_t rawDraw(unsigned int seed, int drawIndex) {
+    // TODO: Implement the behavior described above.
+    if (drawIndex < 0) {
+        return 0;
+    }
+    std::mt19937 mt{seed};
+    uint32_t newmt{};
 
-std::uint32_t rawDraw(unsigned int seed, int drawIndex)
-{
-// TODO: Implement the behavior described above.
-    (void)seed;
-    (void)drawIndex;
-    return 0;
+    for (int i{}; i <= drawIndex; i++) {
+        newmt = mt();
+    }
+
+    return newmt;
 }
 
-int main()
-{
+int main() {
     return 0;
 }
