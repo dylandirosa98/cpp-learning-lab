@@ -26,6 +26,7 @@ class CourseTest(unittest.TestCase):
                 "5.1", "5.2", "5.3", "5.4", "5.5", "5.6", "5.7", "5.8", "5.9", "5.x",
                 "6.1", "6.2", "6.3", "6.4", "6.5", "6.6", "6.7", "6.8", "6.x",
                 "7.1", "7.2", "7.3", "7.4", "7.5", "7.6", "7.7", "7.8", "7.9", "7.10", "7.11", "7.12", "7.13", "7.14", "7.x",
+                "8.1", "8.2", "8.3", "8.4", "8.5", "8.6", "8.7", "8.8", "8.9", "8.10", "8.11", "8.12", "8.13", "8.14", "8.15", "8.x",
             ],
         )
 
@@ -137,6 +138,62 @@ class CourseTest(unittest.TestCase):
             source.write_text("const int cartonsPerShelf{6};\n")
 
             failures = source_rule_failures(lesson, Path(directory))
+
+        self.assertEqual(failures, [])
+
+    def test_source_checks_ignore_formatter_wrapping(self):
+        # clang-format (LLVM style) wraps long expressions and moves braces.
+        # Concept checks must not fail on that.
+        lesson = {
+            "sourceChecks": [
+                {
+                    "file": "main.cpp",
+                    "contains": [
+                        "constexpr int meetingMinutes{ timeConstants::minutesPerHour + timeConstants::minutesPerHour / 2 };",
+                        "int workdayMinutes();",
+                    ],
+                    "notContains": [],
+                },
+                {
+                    "file": "schedule.cpp",
+                    "contains": [
+                        "return timeConstants::hoursPerWorkday * timeConstants::minutesPerHour;",
+                    ],
+                    "notContains": [],
+                },
+                {
+                    "file": "time_constants.h",
+                    "contains": [
+                        "namespace timeConstants",
+                        "inline constexpr int minutesPerHour{ 60 };",
+                    ],
+                    "notContains": [],
+                },
+            ]
+        }
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root / "main.cpp").write_text(
+                "int workdayMinutes();\n"
+                "int main() {\n"
+                "    constexpr int meetingMinutes{timeConstants::minutesPerHour +\n"
+                "                                 timeConstants::minutesPerHour /\n"
+                "                                     2};\n"
+                "}\n"
+            )
+            (root / "schedule.cpp").write_text(
+                "int workdayMinutes() {\n"
+                "    return timeConstants::hoursPerWorkday *\n"
+                "           timeConstants::minutesPerHour;\n"
+                "}\n"
+            )
+            (root / "time_constants.h").write_text(
+                "namespace timeConstants {\n"
+                "inline constexpr int minutesPerHour{60};\n"
+                "}\n"
+            )
+
+            failures = source_rule_failures(lesson, root)
 
         self.assertEqual(failures, [])
 

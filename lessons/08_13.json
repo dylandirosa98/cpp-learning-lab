@@ -1,0 +1,41 @@
+{
+  "order": 85,
+  "id": "8.13",
+  "title": "Introduction to random number generation",
+  "url": "https://www.learncpp.com/cpp-tutorial/introduction-to-random-number-generation/",
+  "estimatedMinutes": 25,
+  "recap": [
+    "A pseudo-random number generator is an algorithm that produces a sequence of numbers that behaves like random numbers. Seeding it with a fixed value makes the whole sequence reproducible, which is exactly what a deterministic exercise needs.",
+    "The standard library provides engines in <random>. std::mt19937 implements the Mersenne Twister engine, and a fixed seed makes its raw output identical on every run and across standard library implementations."
+  ],
+  "objectives": [
+    "Implement rawDraw from its behavioral contract.",
+    "Practice the lesson construct by writing the control flow yourself.",
+    "Handle multiple inputs and edge cases without hard-coded example answers."
+  ],
+  "warnings": [
+    "The examples are not the whole test suite; implement the general behavior.",
+    "Do not edit the test drivers. Only the supplied public function signatures are fixed.",
+    "Console output and exact source tokens are not graded."
+  ],
+  "challenge": "Implement rawDraw. Construct a local std::mt19937 from seed and return its draw at zero-based drawIndex. Index 0 is the first raw engine output. Return 0 for a negative index. Every function call starts a fresh engine, so identical arguments must return identical results. No distribution and no std::rand. Tested indices are at most 100.",
+  "expectedOutput": [
+    "rawDraw(42, 0) -> 1608637542",
+    "rawDraw(42, 1) -> 3421126067",
+    "rawDraw(42, 2) -> 4083286876",
+    "rawDraw(5489, 0) -> 3499211612",
+    "rawDraw(42, -1) -> 0"
+  ],
+  "hints": [
+    "Use seed to construct a local engine on each call.",
+    "Discard drawIndex outputs, then return the next one.",
+    "The raw engine output is specified by mt19937 and requires no distribution."
+  ],
+  "sources": [
+    "main.cpp"
+  ],
+  "sourceChecks": [],
+  "behaviorTests": [
+    "tests/lesson_cases/08_13.cpp"
+  ]
+}

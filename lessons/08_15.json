@@ -1,0 +1,40 @@
+{
+  "order": 87,
+  "id": "8.15",
+  "title": "Global random numbers (Random.h)",
+  "url": "https://www.learncpp.com/cpp-tutorial/global-random-numbers-random-h/",
+  "estimatedMinutes": 25,
+  "recap": [
+    "A header that defines a generator needs the inline keyword so every file that includes it shares one instance instead of getting its own copy. The same rule that makes shared constants safe makes a shared engine safe.",
+    "Wrapping the engine and its distribution in a small namespace gives callers one obvious function: Random::get(min, max). Callers never touch the engine directly, and a fixed seed keeps the whole program reproducible."
+  ],
+  "objectives": [
+    "Implement Random::get from its behavioral contract.",
+    "Practice the lesson construct by writing the control flow yourself.",
+    "Handle multiple inputs and edge cases without hard-coded example answers."
+  ],
+  "warnings": [
+    "The examples are not the whole test suite; implement the general behavior.",
+    "Do not edit the test drivers. Only the supplied public function signatures are fixed.",
+    "Console output and exact source tokens are not graded."
+  ],
+  "challenge": "Implement Random::reset(unsigned int seed) and Random::get(int min, int max) in random.h. reset reseeds one shared inline std::mt19937; get returns the next uniform integer in the INCLUSIVE range, advancing that same engine. Use std::uniform_int_distribution<int>. Calls from different .cpp files must share the sequence, not get separate engines. Inputs always have min <= max and a power-of-two range size (1, 2, 4, or 8); no invalid-range handling is required.",
+  "expectedOutput": [
+    "reset(5489); get(1,4); get(1,4); get(0,1) -> 4, 1, 1",
+    "Resetting to the same seed replays the sequence.",
+    "The next call from another .cpp file continues the same sequence."
+  ],
+  "hints": [
+    "Define the engine as an inline namespace variable in the header.",
+    "reset calls the engine seed member; get must not reseed it.",
+    "Construct a distribution for the requested range and invoke it on the shared engine."
+  ],
+  "sources": [
+    "main.cpp"
+  ],
+  "sourceChecks": [],
+  "behaviorTests": [
+    "tests/lesson_cases/08_15.cpp",
+    "tests/lesson_cases/random_peer.cpp"
+  ]
+}

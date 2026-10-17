@@ -168,7 +168,25 @@ def normalized_cpp_code(content: str) -> str:
 
 
 def compact_cpp(content: str) -> str:
-    return re.sub(r"\s*([{}])\s*", r"\1", strip_cpp_comments(content))
+    # Canonical single-space form. Kept for compatibility; concept checks
+    # in source_rule_failures use token_regex for style-insensitive matching.
+    stripped = strip_cpp_comments(content).replace("\r\n", "\n").replace("\r", "\n")
+    return re.sub(r"\s+", " ", stripped).strip()
+
+
+def token_regex(token: str) -> re.Pattern[str] | None:
+    # Style-insensitive matcher for a source token: every gap between
+    # non-whitespace characters matches any whitespace run (including none),
+    # so formatter wrapping, indentation, and brace placement never matter.
+    # Identifier boundaries are guarded so `std::string` does not match
+    # inside `std::string_view` and `extern` does not match `external`.
+    chars = [char for char in strip_cpp_comments(token) if not char.isspace()]
+    if not chars:
+        return None
+    pattern = r"\s*".join(re.escape(char) for char in chars)
+    prefix = r"(?<![\w])" if re.match(r"\w", chars[0]) else ""
+    suffix = r"(?![\w])" if re.match(r"\w", chars[-1]) else ""
+    return re.compile(prefix + pattern + suffix)
 
 
 def top_block_comment(content: str) -> tuple[str, str] | None:
@@ -232,10 +250,15 @@ def show_lesson(lesson: dict) -> None:
         print_wrapped(item, "  - ")
     print("\nChallenge")
     print_wrapped(lesson["challenge"], "  ")
-    print("\nExpected output")
-    print("```text")
-    print("\n".join(lesson["expectedOutput"]))
-    print("```")
+    if lesson.get("behaviorTests"):
+        print("\nTesting")
+        print("The checker calls your functions with multiple inputs and checks their results.")
+        print("No source-token checks or console formatting requirements apply.")
+    else:
+        print("\nExpected output")
+        print("```text")
+        print("\n".join(lesson["expectedOutput"]))
+        print("```")
     print(f"\nWorkspace: {WORKSPACES / lesson['key']}")
 
 
@@ -262,12 +285,18 @@ def source_rule_failures(lesson: dict, source_dir: Path) -> list[str]:
         if not path.exists():
             failures.append(f"Missing required file: {rule['file']}")
             continue
-        content = compact_cpp(path.read_text())
+        content = strip_cpp_comments(path.read_text())
         for token in rule.get("contains", []):
-            if compact_cpp(token) not in content:
+            pattern = token_regex(token)
+            if pattern is None:
+                continue
+            if not pattern.search(content):
                 failures.append(f"{rule['file']} must contain: {token}")
         for token in rule.get("notContains", []):
-            if compact_cpp(token) in content:
+            pattern = token_regex(token)
+            if pattern is None:
+                continue
+            if pattern.search(content):
                 failures.append(f"{rule['file']} must not contain: {token}")
     return failures
 
@@ -280,7 +309,13 @@ def compile_and_run(lesson: dict, source_dir: Path) -> tuple[bool, str]:
     lesson_build = BUILD / lesson["key"]
     lesson_build.mkdir(parents=True, exist_ok=True)
     executable = lesson_build / "challenge"
-    sources = [str(source_dir / source) for source in lesson["sources"]]
+    if lesson.get("behaviorTests"):
+        # Trusted drivers live outside the editable workspace. They include its
+        # main.cpp with main renamed, then exercise the learner's public functions.
+        sources = [str(ROOT / source) for source in lesson["behaviorTests"]]
+        sources += [str(source_dir / source) for source in lesson["sources"] if source != "main.cpp"]
+    else:
+        sources = [str(source_dir / source) for source in lesson["sources"]]
     command = [
         compiler,
         "-std=c++20",
@@ -296,8 +331,25 @@ def compile_and_run(lesson: dict, source_dir: Path) -> tuple[bool, str]:
     build = subprocess.run(command, capture_output=True, text=True)
     if build.returncode != 0:
         return False, f"Compilation failed:\n{build.stderr.rstrip()}"
-    if build.stderr.strip():
+    if build.stderr.strip() and not lesson.get("behaviorTests"):
         return False, f"Compile warnings must be fixed:\n{build.stderr.rstrip()}"
+
+    if lesson.get("behaviorTests"):
+        for case in lesson.get("testCases", [{"args": [], "exitCode": 0}]):
+            args = case.get("args", [])
+            try:
+                run = subprocess.run([str(executable), *args], capture_output=True, text=True, timeout=5)
+            except subprocess.TimeoutExpired:
+                return False, f"Behavioral test timed out (arguments: {args})."
+            expected_status = case.get("exitCode", 0)
+            if run.returncode != expected_status:
+                detail = run.stderr.strip() or run.stdout.strip()
+                return False, (
+                    f"Behavioral tests failed (arguments: {args}): expected exit status "
+                    f"{expected_status}, got {run.returncode}.\n{detail}"
+                )
+        warnings = f"\nCompiler warnings (not a test failure):\n{build.stderr.rstrip()}" if build.stderr.strip() else ""
+        return True, "All behavioral tests passed." + warnings
 
     try:
         run = subprocess.run([str(executable)], capture_output=True, text=True, timeout=5)

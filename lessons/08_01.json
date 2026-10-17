@@ -1,0 +1,45 @@
+{
+  "order": 73,
+  "id": "8.1",
+  "title": "Control flow introduction",
+  "url": "https://www.learncpp.com/cpp-tutorial/control-flow-introduction/",
+  "estimatedMinutes": 15,
+  "recap": [
+    "A program normally executes statements one after another, but control flow statements let the execution path branch. A conditional statement runs its associated statement only when a condition holds, and a loop repeats a statement while a condition holds.",
+    "In this lesson you meet the simplest branch: an if statement with an else. Choosing between exactly two outcomes from one fixed comparison is the foundation every later control flow structure builds on."
+  ],
+  "objectives": [
+    "Follow one execution path through a small deterministic program.",
+    "Branch on a fixed comparison and print a different result per branch.",
+    "Exercise both branches with fixed calls, without reading input."
+  ],
+  "warnings": [
+    "Only one branch of an if/else runs on each call.",
+    "Do not replace the two calls with hard-coded report lines.",
+    "Keep the comparison in the condition; do not print both results."
+  ],
+  "challenge": "Complete printScoreResult so a score at or above passMark prints pass after the shared prefix, and a lower score prints fail. Keep both calls in main so the same function exercises both branches in one deterministic run.",
+  "expectedOutput": [
+    "Score 72: pass",
+    "Score 45: fail"
+  ],
+  "hints": [
+    "The shared prefix std::cout << \"Score \" << score << \": \"; stays outside the if statement.",
+    "Use if (score >= passMark) for the passing branch and an else for the failing branch.",
+    "Print only the word pass or fail inside each branch, newline included."
+  ],
+  "sources": ["main.cpp"],
+  "sourceChecks": [
+    {
+      "file": "main.cpp",
+      "contains": [
+        "void printScoreResult(int score, int passMark)",
+        "if (score >= passMark)",
+        "else",
+        "printScoreResult(72, 60)",
+        "printScoreResult(45, 60)"
+      ],
+      "notContains": ["std::cin", "using namespace std", "Score 72: pass", "Score 45: fail"]
+    }
+  ]
+}

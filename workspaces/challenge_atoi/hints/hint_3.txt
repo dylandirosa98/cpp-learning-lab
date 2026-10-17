@@ -1,0 +1,7 @@
+Hint 3 — overflow without undefined behavior: never let
+result * 10 + digit overflow a signed int. Before updating, check
+  result > (INT_MAX - digit) / 10
+If true, the next step would overflow, so clamp now: return INT_MAX
+for a positive sign, INT_MIN for a negative sign. Needs <climits>
+and no long long. Decide the sign before the loop so the clamp
+knows which bound to return.

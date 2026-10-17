@@ -1,0 +1,41 @@
+{
+  "order": 78,
+  "id": "8.6",
+  "title": "Switch fallthrough and scoping",
+  "url": "https://www.learncpp.com/cpp-tutorial/switch-fallthrough-and-scoping/",
+  "estimatedMinutes": 25,
+  "recap": [
+    "When a case has no break, execution continues into the next case. Fallthrough can be intentional, and the [[fallthrough]] attribute, or a fall-through comment, documents it so the compiler stays quiet.",
+    "Variables declared inside a case are visible to the whole switch, so a case that needs its own variable wraps its statements in a block. Stacked case labels share one set of statements without falling through."
+  ],
+  "objectives": [
+    "Implement rankScore from its behavioral contract.",
+    "Practice the lesson construct by writing the control flow yourself.",
+    "Handle multiple inputs and edge cases without hard-coded example answers."
+  ],
+  "warnings": [
+    "The examples are not the whole test suite; implement the general behavior.",
+    "Do not edit the test drivers. Only the supplied public function signatures are fixed.",
+    "Console output and exact source tokens are not graded."
+  ],
+  "challenge": "Implement rankScore. Valid ranks 0 through 3 start with 100 points. Rank 1 adds 10; rank 2 earns the rank-1 bonus plus 25; rank 3 earns both lower bonuses plus 50. Return -1 for invalid ranks. Practice a switch with intentional fallthrough and [[fallthrough]] between bonus cases; keep any case-local declarations in a block.",
+  "expectedOutput": [
+    "rankScore(0) -> 100",
+    "rankScore(1) -> 110",
+    "rankScore(2) -> 135",
+    "rankScore(3) -> 185",
+    "rankScore(4) -> -1"
+  ],
+  "hints": [
+    "Start with one score of 100 and add bonuses to it.",
+    "Begin at case 3 and fall through the lower ranks.",
+    "Reject invalid ranks before calculating bonuses."
+  ],
+  "sources": [
+    "main.cpp"
+  ],
+  "sourceChecks": [],
+  "behaviorTests": [
+    "tests/lesson_cases/08_06.cpp"
+  ]
+}

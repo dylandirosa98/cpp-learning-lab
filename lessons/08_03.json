@@ -1,0 +1,55 @@
+{
+  "order": 75,
+  "id": "8.3",
+  "title": "Common if statement problems",
+  "url": "https://www.learncpp.com/cpp-tutorial/common-if-statement-problems/",
+  "estimatedMinutes": 20,
+  "recap": [
+    "Conditions should be boolean expressions. Comparing with == tests equality, while assigning with = inside a condition is a different statement that usually hides a bug.",
+    "A non-boolean condition converts to bool, which turns zero into false and any other value into true. Writing the comparison explicitly keeps the intent visible and the compiler able to warn you."
+  ],
+  "objectives": [
+    "Use == for equality tests inside conditions.",
+    "Order an if / else if / else chain so each case is distinct.",
+    "Keep conditions boolean instead of relying on conversions."
+  ],
+  "warnings": [
+    "if (left = right) assigns and then tests the assigned value; it is not an equality test.",
+    "Do not put assignments inside conditions.",
+    "Each printed line must match the branch that produced it."
+  ],
+  "challenge": "Complete printComparison so equal values print the equals line, a smaller left value prints the less-than line, and a larger left value prints the greater-than line. Use == and < in the conditions and keep all three calls in main.",
+  "expectedOutput": [
+    "3 equals 3",
+    "2 is less than 5",
+    "9 is greater than 4"
+  ],
+  "hints": [
+    "Start the chain with if (left == right).",
+    "Use else if (left < right) for the second branch.",
+    "The final else means left is greater than right."
+  ],
+  "sources": ["main.cpp"],
+  "sourceChecks": [
+    {
+      "file": "main.cpp",
+      "contains": [
+        "void printComparison(int left, int right)",
+        "if (left == right)",
+        "else if (left < right)",
+        "else",
+        "printComparison(3, 3)",
+        "printComparison(2, 5)",
+        "printComparison(9, 4)"
+      ],
+      "notContains": [
+        "std::cin",
+        "using namespace std",
+        "if (left = right)",
+        "3 equals 3",
+        "2 is less than 5",
+        "9 is greater than 4"
+      ]
+    }
+  ]
+}

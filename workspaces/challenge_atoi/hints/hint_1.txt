@@ -1,0 +1,6 @@
+Hint 1 — structure: use a single index i through three phases.
+Phase 1: advance i past leading ' ' characters.
+Phase 2: if s[i] is '+' or '-', record the sign and advance i once.
+Anything else (like a second sign in "+-12") means the digits phase
+will find no digits, which correctly yields 0.
+Phase 3: consume digits from i onward, stopping at the first non-digit.

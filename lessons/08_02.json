@@ -1,0 +1,49 @@
+{
+  "order": 74,
+  "id": "8.2",
+  "title": "If statements and blocks",
+  "url": "https://www.learncpp.com/cpp-tutorial/if-statements-and-blocks/",
+  "estimatedMinutes": 20,
+  "recap": [
+    "An if statement controls exactly one statement, but a block groups several statements so one condition can control all of them. Braces after the condition make the group explicit and avoid dangling-else surprises.",
+    "An if / else if / else chain selects the first matching branch. Blocks keep each branch readable and make it obvious which statements belong to which condition."
+  ],
+  "objectives": [
+    "Group several statements under one if condition with a block.",
+    "Chain conditions with else if and finish with else.",
+    "Exercise every branch with deterministic calls."
+  ],
+  "warnings": [
+    "Without a block, only the first statement after the condition belongs to the if.",
+    "A dangling else binds to the nearest unmatched if; blocks remove the ambiguity.",
+    "Do not print the same line from multiple branches."
+  ],
+  "challenge": "Complete printGrade so a score of 90 or above prints the grade A line and a distinction status line inside one block, a score of 80 or above prints the grade B line, and anything lower prints the C-or-lower line. Keep all three calls in main.",
+  "expectedOutput": [
+    "Grade: A",
+    "Status: distinction",
+    "Grade: B",
+    "Grade: C or lower"
+  ],
+  "hints": [
+    "The distinction status is a second statement inside the first block.",
+    "Chain the second condition with else if (score >= 80).",
+    "The final else handles every remaining score."
+  ],
+  "sources": ["main.cpp"],
+  "sourceChecks": [
+    {
+      "file": "main.cpp",
+      "contains": [
+        "void printGrade(int score)",
+        "if (score >= 90)",
+        "else if (score >= 80)",
+        "else",
+        "printGrade(95)",
+        "printGrade(82)",
+        "printGrade(60)"
+      ],
+      "notContains": ["std::cin", "using namespace std"]
+    }
+  ]
+}

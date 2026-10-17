@@ -1,0 +1,41 @@
+{
+  "order": 80,
+  "id": "8.8",
+  "title": "Introduction to loops and while statements",
+  "url": "https://www.learncpp.com/cpp-tutorial/introduction-to-loops-and-while-statements/",
+  "estimatedMinutes": 20,
+  "recap": [
+    "A while loop repeats its statement while its condition stays true. The condition is checked before every iteration, so the body may run zero times.",
+    "A loop variable counts the iterations. Updating it inside the body is what eventually ends the loop, and forgetting that step creates an infinite loop."
+  ],
+  "objectives": [
+    "Implement sumUpTo from its behavioral contract.",
+    "Practice the lesson construct by writing the control flow yourself.",
+    "Handle multiple inputs and edge cases without hard-coded example answers."
+  ],
+  "warnings": [
+    "The examples are not the whole test suite; implement the general behavior.",
+    "Do not edit the test drivers. Only the supplied public function signatures are fixed.",
+    "Console output and exact source tokens are not graded."
+  ],
+  "challenge": "Implement sumUpTo with a while loop. Return the sum of every integer from 1 through limit, inclusive. Return 0 when limit <= 0. The tested limits are at most 1000, so the sum fits in int. You write the initialization, condition, accumulation, and increment yourself.",
+  "expectedOutput": [
+    "sumUpTo(0) -> 0",
+    "sumUpTo(1) -> 1",
+    "sumUpTo(5) -> 15",
+    "sumUpTo(10) -> 55",
+    "sumUpTo(-3) -> 0"
+  ],
+  "hints": [
+    "Keep a total and a current integer starting at 1.",
+    "Continue while the current integer is <= limit.",
+    "Increment the current integer inside the loop to avoid an infinite loop."
+  ],
+  "sources": [
+    "main.cpp"
+  ],
+  "sourceChecks": [],
+  "behaviorTests": [
+    "tests/lesson_cases/08_08.cpp"
+  ]
+}

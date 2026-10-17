@@ -1,0 +1,45 @@
+{
+  "order": 76,
+  "id": "8.4",
+  "title": "Constexpr if statements",
+  "url": "https://www.learncpp.com/cpp-tutorial/constexpr-if-statements/",
+  "estimatedMinutes": 20,
+  "recap": [
+    "A regular if checks its condition at runtime, but if constexpr checks a constant expression at compile time. The branch that does not match is discarded, so it is never executed, though it still has to be valid code.",
+    "if constexpr lets one function adapt to compile-time configuration without duplicating code. Both branches must make sense, but only the selected one is compiled into the program."
+  ],
+  "objectives": [
+    "Write if constexpr with a constant-expression condition.",
+    "Provide both a taken and a discarded branch.",
+    "Keep compile-time flags as constexpr booleans."
+  ],
+  "warnings": [
+    "if constexpr needs a constant expression; a function parameter is not one.",
+    "The discarded branch is not executed, but it is still checked.",
+    "Do not use if constexpr for runtime decisions."
+  ],
+  "challenge": "Complete printBuildReport using two if constexpr statements. The first branches on debugBuild and prints either the debug or the release build line. The second branches on verboseBuild and prints either the verbose or the quiet line. Both constants are already declared.",
+  "expectedOutput": [
+    "Build: debug",
+    "Verbose: no"
+  ],
+  "hints": [
+    "Write if constexpr (debugBuild) with an else for the release line.",
+    "The condition must be the constexpr variable itself, not a function parameter.",
+    "Both statements live in the same function, one after the other."
+  ],
+  "sources": ["main.cpp"],
+  "sourceChecks": [
+    {
+      "file": "main.cpp",
+      "contains": [
+        "constexpr bool debugBuild{ true };",
+        "constexpr bool verboseBuild{ false };",
+        "if constexpr (debugBuild)",
+        "if constexpr (verboseBuild)",
+        "else"
+      ],
+      "notContains": ["std::cin", "using namespace std", "if (debugBuild)", "if (verboseBuild)"]
+    }
+  ]
+}

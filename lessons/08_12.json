@@ -1,0 +1,72 @@
+{
+  "order": 84,
+  "id": "8.12",
+  "title": "Halts (exiting your program early)",
+  "url": "https://www.learncpp.com/cpp-tutorial/halts-exiting-your-program-early/",
+  "estimatedMinutes": 20,
+  "recap": [
+    "A halt terminates the program immediately. std::exit performs a normal termination with a status code and runs static cleanup, but it does not destroy local variables or unwind the call stack.",
+    "Calling std::exit(0) mid-program skips everything after the call. Returning an error code instead lets the caller decide how to react, which is why halts are reserved for situations that cannot be recovered from."
+  ],
+  "objectives": [
+    "Implement exitForStatus from its behavioral contract.",
+    "Practice the lesson construct by writing the control flow yourself.",
+    "Handle multiple inputs and edge cases without hard-coded example answers."
+  ],
+  "warnings": [
+    "The examples are not the whole test suite; implement the general behavior.",
+    "Do not edit the test drivers. Only the supplied public function signatures are fixed.",
+    "Console output and exact source tokens are not graded."
+  ],
+  "challenge": "Implement exitForStatus using std::exit. Status 0 means success: terminate the PROCESS with exit code 0. Status 1 means retry later: exit code 2. Any other status means failure: exit code 1. This function must never return. Do not print anything. The checker starts a fresh child process for each status, so this cannot terminate the course checker itself.",
+  "expectedOutput": [
+    "exitForStatus(0) -> process exits 0",
+    "exitForStatus(1) -> process exits 2",
+    "exitForStatus(2) -> process exits 1",
+    "exitForStatus(-1) -> process exits 1"
+  ],
+  "hints": [
+    "Returning from this function is not the same as exiting the process.",
+    "Map the input status to its required exit code.",
+    "Call std::exit with that code; automatic local objects are not unwound by std::exit."
+  ],
+  "sources": [
+    "main.cpp"
+  ],
+  "sourceChecks": [],
+  "behaviorTests": [
+    "tests/lesson_cases/08_12.cpp"
+  ],
+  "testCases": [
+    {
+      "args": [
+        "0"
+      ],
+      "exitCode": 0
+    },
+    {
+      "args": [
+        "1"
+      ],
+      "exitCode": 2
+    },
+    {
+      "args": [
+        "2"
+      ],
+      "exitCode": 1
+    },
+    {
+      "args": [
+        "-1"
+      ],
+      "exitCode": 1
+    },
+    {
+      "args": [
+        "99"
+      ],
+      "exitCode": 1
+    }
+  ]
+}

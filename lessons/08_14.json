@@ -1,0 +1,40 @@
+{
+  "order": 86,
+  "id": "8.14",
+  "title": "Generating random numbers using Mersenne Twister",
+  "url": "https://www.learncpp.com/cpp-tutorial/generating-random-numbers-using-mersenne-twister/",
+  "estimatedMinutes": 25,
+  "recap": [
+    "Raw engine output spans a huge range, so a distribution converts it into the range you actually want. std::uniform_int_distribution produces every value in a closed range with equal probability.",
+    "Reuse one distribution object across draws instead of constructing a new one each time. Avoid shaping raw output with the remainder operator, which biases the result toward smaller values."
+  ],
+  "objectives": [
+    "Implement rollTotal from its behavioral contract.",
+    "Practice the lesson construct by writing the control flow yourself.",
+    "Handle multiple inputs and edge cases without hard-coded example answers."
+  ],
+  "warnings": [
+    "The examples are not the whole test suite; implement the general behavior.",
+    "Do not edit the test drivers. Only the supplied public function signatures are fixed.",
+    "Console output and exact source tokens are not graded."
+  ],
+  "challenge": "Implement rollTotal. Seed a fresh std::mt19937 with seed, then draw rolls values with std::uniform_int_distribution<int>{1, 4}. Return their sum, not printed roll lines. Return 0 for rolls <= 0. Draw exactly once per roll and reset the engine on each function call. The four-sided range is intentionally a power of two; tested roll counts are at most 1000.",
+  "expectedOutput": [
+    "rollTotal(42, 4) -> 11",
+    "rollTotal(42, 1) -> 2",
+    "rollTotal(42, 0) -> 0",
+    "rollTotal(42, -1) -> 0"
+  ],
+  "hints": [
+    "Construct the engine and the distribution once, before the loop.",
+    "Call die(generator) once per iteration and add its result.",
+    "Return the total; do not use modulo to replace the specified distribution."
+  ],
+  "sources": [
+    "main.cpp"
+  ],
+  "sourceChecks": [],
+  "behaviorTests": [
+    "tests/lesson_cases/08_14.cpp"
+  ]
+}

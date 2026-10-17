@@ -1,0 +1,6 @@
+Hint 2 — reading a digit: a char is a digit when
+c >= '0' && c <= '9'. Its numeric value is c - '0'.
+Any other char ends the digits phase (break), even mid-string —
+that is how "4193 with words" stops at the space and
+"00000-42a1234" stops at '-'. Track whether you saw at least one
+digit; if not, return 0.

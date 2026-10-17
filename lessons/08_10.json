@@ -1,0 +1,41 @@
+{
+  "order": 82,
+  "id": "8.10",
+  "title": "For statements",
+  "url": "https://www.learncpp.com/cpp-tutorial/for-statements/",
+  "estimatedMinutes": 20,
+  "recap": [
+    "A for loop bundles the counter initialization, condition, and increment into one header, which makes counted loops compact and keeps the loop variable scoped to the loop.",
+    "The for statement is ideal when the number of iterations is known in advance. The header clauses run in a fixed order: initialize once, then check the condition, run the body, and increment."
+  ],
+  "objectives": [
+    "Implement countMultiples from its behavioral contract.",
+    "Practice the lesson construct by writing the control flow yourself.",
+    "Handle multiple inputs and edge cases without hard-coded example answers."
+  ],
+  "warnings": [
+    "The examples are not the whole test suite; implement the general behavior.",
+    "Do not edit the test drivers. Only the supplied public function signatures are fixed.",
+    "Console output and exact source tokens are not graded."
+  ],
+  "challenge": "Implement countMultiples with a for loop. Count integers in the inclusive range [first, last] divisible by divisor. Zero counts as divisible by any positive divisor; negative multiples count too. Return 0 for first > last or divisor <= 0. Test ranges stay between -1000 and 1000, so incrementing cannot overflow.",
+  "expectedOutput": [
+    "countMultiples(1, 10, 3) -> 3",
+    "countMultiples(-3, 3, 3) -> 3",
+    "countMultiples(0, 0, 5) -> 1",
+    "countMultiples(10, 1, 3) -> 0",
+    "countMultiples(1, 10, 0) -> 0"
+  ],
+  "hints": [
+    "Guard against invalid divisors before using %.",
+    "The loop starts at first and includes last.",
+    "A value is divisible when value % divisor equals zero."
+  ],
+  "sources": [
+    "main.cpp"
+  ],
+  "sourceChecks": [],
+  "behaviorTests": [
+    "tests/lesson_cases/08_10.cpp"
+  ]
+}

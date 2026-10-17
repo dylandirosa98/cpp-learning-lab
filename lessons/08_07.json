@@ -1,0 +1,40 @@
+{
+  "order": 79,
+  "id": "8.7",
+  "title": "Goto statements",
+  "url": "https://www.learncpp.com/cpp-tutorial/goto-statements/",
+  "estimatedMinutes": 20,
+  "recap": [
+    "A goto statement jumps to a labeled statement, forward or backward. A backward jump can replace a loop, but repeated jumps quickly produce spaghetti code that is hard to follow.",
+    "Modern C++ prefers loops, break, continue, and functions. Goto remains useful in a few narrow cases, such as jumping to shared cleanup code, and this lesson shows its mechanics so you can recognize it."
+  ],
+  "objectives": [
+    "Implement firstSuccessfulAttempt from its behavioral contract.",
+    "Practice the lesson construct by writing the control flow yourself.",
+    "Handle multiple inputs and edge cases without hard-coded example answers."
+  ],
+  "warnings": [
+    "The examples are not the whole test suite; implement the general behavior.",
+    "Do not edit the test drivers. Only the supplied public function signatures are fixed.",
+    "Console output and exact source tokens are not graded."
+  ],
+  "challenge": "Implement a retry simulation with a backward goto. The first failuresBeforeSuccess attempts fail; the next succeeds. Return the successful attempt number (numbered from 1), or -1 if the attempt budget is exhausted. Negative failures or maxAttempts <= 0 are invalid and return -1. No printing or real network calls. This is a small goto demonstration, not a recommendation to use goto in ordinary retry code.",
+  "expectedOutput": [
+    "firstSuccessfulAttempt(0, 3) -> 1",
+    "firstSuccessfulAttempt(2, 3) -> 3",
+    "firstSuccessfulAttempt(3, 3) -> -1",
+    "firstSuccessfulAttempt(-1, 3) -> -1"
+  ],
+  "hints": [
+    "Validate the inputs before reaching the retry label.",
+    "The attempt succeeds when its number is greater than the number of failures.",
+    "Stop at the budget; otherwise increment and jump back."
+  ],
+  "sources": [
+    "main.cpp"
+  ],
+  "sourceChecks": [],
+  "behaviorTests": [
+    "tests/lesson_cases/08_07.cpp"
+  ]
+}

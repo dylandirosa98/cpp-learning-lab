@@ -1,0 +1,41 @@
+{
+  "order": 88,
+  "id": "8.x",
+  "title": "Chapter 8 summary and quiz",
+  "url": "https://www.learncpp.com/cpp-tutorial/chapter-8-summary-and-quiz/",
+  "estimatedMinutes": 55,
+  "recap": [
+    "Chapter 8 connects conditional statements, switches, loops, and early exits into complete control flow. If chains and switches choose between alternatives, while, do while, and for loops repeat work, and break, continue, return, and halts shape how a loop or a program ends.",
+    "Multi-file programs keep control flow readable by separating configuration, classification logic, presentation, and coordination: constants live in a config header, switches and decisions live in a logic module, printing lives in a report module, and main drives the scan."
+  ],
+  "objectives": [
+    "Implement scanSystems from its behavioral contract.",
+    "Practice the lesson construct by writing the control flow yourself.",
+    "Handle multiple inputs and edge cases without hard-coded example answers."
+  ],
+  "warnings": [
+    "The examples are not the whole test suite; implement the general behavior.",
+    "Do not edit the test drivers. Only the supplied public function signatures are fixed.",
+    "Console output and exact source tokens are not graded."
+  ],
+  "challenge": "Implement scanSystems, a launch-readiness scan over a string of status codes. G increments go, H increments hold, S increments scrub and immediately stops the scan. Each G/H/S also increments checked. T (test mode) and any unknown character are ignored. Return verdict \"scrubbed\" if scrub > 0, otherwise \"on hold\" if hold > 0 or go == 0, otherwise \"go\". Read characters by index with codes[index] and codes.size(). Practice a for loop, switch, continue, and early termination; the reporting/demo main is already supplied. Return the actual tallies, not formatted strings.",
+  "expectedOutput": [
+    "scanSystems(\"GTGHS G\") -> go=2, hold=1, scrub=1, checked=4, verdict=\"scrubbed\"",
+    "scanSystems(\"GG\") -> go=2, hold=0, scrub=0, checked=2, verdict=\"go\"",
+    "scanSystems(\"GHT\") -> go=1, hold=1, scrub=0, checked=2, verdict=\"on hold\"",
+    "scanSystems(\"\") -> all tallies 0, verdict=\"on hold\"",
+    "scanSystems(\"SGG\") -> go=0, hold=0, scrub=1, checked=1, verdict=\"scrubbed\""
+  ],
+  "hints": [
+    "Initialize a ScanResult, then visit the characters in order.",
+    "Ignore T/unknown characters without incrementing checked; stop after counting the first S.",
+    "Choose the verdict after scanning, with scrub taking priority over hold and go."
+  ],
+  "sources": [
+    "main.cpp"
+  ],
+  "sourceChecks": [],
+  "behaviorTests": [
+    "tests/lesson_cases/08_x.cpp"
+  ]
+}

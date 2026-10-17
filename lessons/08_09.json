@@ -1,0 +1,41 @@
+{
+  "order": 81,
+  "id": "8.9",
+  "title": "Do while statements",
+  "url": "https://www.learncpp.com/cpp-tutorial/do-while-statements/",
+  "estimatedMinutes": 20,
+  "recap": [
+    "A do while loop checks its condition after the body, so the body always runs at least once. The semicolon after the condition is required.",
+    "Use a do while when the work must happen once before the decision, such as printing a countdown that includes its starting value even when the start is zero."
+  ],
+  "objectives": [
+    "Implement digitCount from its behavioral contract.",
+    "Practice the lesson construct by writing the control flow yourself.",
+    "Handle multiple inputs and edge cases without hard-coded example answers."
+  ],
+  "warnings": [
+    "The examples are not the whole test suite; implement the general behavior.",
+    "Do not edit the test drivers. Only the supplied public function signatures are fixed.",
+    "Console output and exact source tokens are not graded."
+  ],
+  "challenge": "Implement digitCount with a do while loop. Return the number of decimal digits in a nonnegative integer. Zero has one digit, which is why the loop must run at least once. Return -1 for negative inputs. Repeated integer division by 10 removes the last digit; do not convert the number to text.",
+  "expectedOutput": [
+    "digitCount(0) -> 1",
+    "digitCount(7) -> 1",
+    "digitCount(10) -> 2",
+    "digitCount(1000) -> 4",
+    "digitCount(-12) -> -1"
+  ],
+  "hints": [
+    "Reject negative values before the loop.",
+    "Increase the count once, then divide the value by 10.",
+    "Repeat while the remaining value is greater than zero."
+  ],
+  "sources": [
+    "main.cpp"
+  ],
+  "sourceChecks": [],
+  "behaviorTests": [
+    "tests/lesson_cases/08_09.cpp"
+  ]
+}

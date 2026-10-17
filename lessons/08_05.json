@@ -1,0 +1,41 @@
+{
+  "order": 77,
+  "id": "8.5",
+  "title": "Switch statement basics",
+  "url": "https://www.learncpp.com/cpp-tutorial/switch-statement-basics/",
+  "estimatedMinutes": 20,
+  "recap": [
+    "A switch selects between several fixed alternatives by comparing one integral value against case labels. Each case runs until a break, and the default label catches every value without a matching case.",
+    "Switches express multi-way selection more clearly than a long if / else if chain when every branch tests the same value for equality."
+  ],
+  "objectives": [
+    "Implement statusMessage from its behavioral contract.",
+    "Practice the lesson construct by writing the control flow yourself.",
+    "Handle multiple inputs and edge cases without hard-coded example answers."
+  ],
+  "warnings": [
+    "The examples are not the whole test suite; implement the general behavior.",
+    "Do not edit the test drivers. Only the supplied public function signatures are fixed.",
+    "Console output and exact source tokens are not graded."
+  ],
+  "challenge": "Implement statusMessage using a switch statement. Return \"running\" for 1, \"paused\" for 2, \"stopped\" for 3, and \"unknown\" for every other integer. Return the text; do not print it.",
+  "expectedOutput": [
+    "statusMessage(1) -> \"running\"",
+    "statusMessage(2) -> \"paused\"",
+    "statusMessage(3) -> \"stopped\"",
+    "statusMessage(0) -> \"unknown\"",
+    "statusMessage(-7) -> \"unknown\""
+  ],
+  "hints": [
+    "Switch on the function parameter, not a fixed example.",
+    "Each case can return its result immediately.",
+    "Use default for all unrecognized values."
+  ],
+  "sources": [
+    "main.cpp"
+  ],
+  "sourceChecks": [],
+  "behaviorTests": [
+    "tests/lesson_cases/08_05.cpp"
+  ]
+}

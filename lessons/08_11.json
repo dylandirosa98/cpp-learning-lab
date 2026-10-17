@@ -1,0 +1,41 @@
+{
+  "order": 83,
+  "id": "8.11",
+  "title": "Break and continue",
+  "url": "https://www.learncpp.com/cpp-tutorial/break-and-continue/",
+  "estimatedMinutes": 25,
+  "recap": [
+    "A continue statement jumps to the next iteration of the enclosing loop, skipping the rest of the body. A break statement exits the loop entirely.",
+    "Together they let a loop filter and stop without nesting extra conditions. Both work in while, do while, for, and switch statements."
+  ],
+  "objectives": [
+    "Implement sumCheckpoints from its behavioral contract.",
+    "Practice the lesson construct by writing the control flow yourself.",
+    "Handle multiple inputs and edge cases without hard-coded example answers."
+  ],
+  "warnings": [
+    "The examples are not the whole test suite; implement the general behavior.",
+    "Do not edit the test drivers. Only the supplied public function signatures are fixed.",
+    "Console output and exact source tokens are not graded."
+  ],
+  "challenge": "Implement sumCheckpoints. Visit values 1 through limit in order. Stop BEFORE processing a value equal to stopAt, even if it is a multiple of 3. Skip multiples of 3. Sum all other visited values. Use break for the stop and continue for the skip. If limit <= 0 return 0; if stopAt is outside [1, limit], scan the entire range. Limits are at most 1000.",
+  "expectedOutput": [
+    "sumCheckpoints(10, 8) -> 19 (1+2+4+5+7)",
+    "sumCheckpoints(10, 3) -> 3",
+    "sumCheckpoints(5, 1) -> 0",
+    "sumCheckpoints(5, 99) -> 12",
+    "sumCheckpoints(5, 0) -> 12"
+  ],
+  "hints": [
+    "Check the stop condition before the multiple-of-three condition.",
+    "Use continue to bypass accumulation for a skipped value.",
+    "Return the accumulated total after the loop."
+  ],
+  "sources": [
+    "main.cpp"
+  ],
+  "sourceChecks": [],
+  "behaviorTests": [
+    "tests/lesson_cases/08_11.cpp"
+  ]
+}
