@@ -15,3 +15,9 @@ workspaces/**/main
 workspaces/**/lesson_*
 *.o
 /testlesson
+/.cache/
+.env
+.env.*
+!.env.example
+*.pem
+*.key

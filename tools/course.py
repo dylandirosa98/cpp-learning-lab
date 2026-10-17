@@ -92,61 +92,118 @@ def run_git(*args: str) -> subprocess.CompletedProcess[str]:
     )
 
 
-def git_sync_lesson(lesson: dict, source_dir: Path) -> None:
+def git_sync_lesson(lesson: dict, source_dir: Path) -> bool:
     if os.environ.get("COURSE_NO_SYNC"):
-        return
+        return True
     try:
         relative_source = source_dir.resolve().relative_to(WORKSPACES.resolve())
     except ValueError:
-        return
+        return True
     if relative_source != workspace_path(lesson).relative_to(WORKSPACES):
-        return
+        return True
     if run_git("rev-parse", "--is-inside-work-tree").returncode != 0:
         print("Git sync skipped: this folder is not a Git repository.")
-        return
+        return True
     if run_git("remote", "get-url", "origin").returncode != 0:
         print("Git sync skipped: no origin remote is configured.")
-        return
-
-    paths = [str(source_dir.relative_to(ROOT)), str(PROGRESS_FILE.relative_to(ROOT))]
-    status = run_git("status", "--porcelain", "--", *paths)
-    if not status.stdout.strip():
-        print("Git sync: lesson is already committed.")
-        return
-
-    added = run_git("add", "--", *paths)
-    if added.returncode != 0:
-        print(f"Git sync failed while staging: {added.stderr.strip()}")
-        return
-    committed = run_git(
-        "commit", "--only", "-m", f"Complete lesson {lesson['id']}", "--", *paths
-    )
-    if committed.returncode != 0:
-        print(f"Git sync failed while committing: {committed.stderr.strip()}")
-        return
-
-    branch = run_git("branch", "--show-current").stdout.strip()
-    pushed = run_git("push", "-u", "origin", branch)
-    if pushed.returncode != 0:
-        print("Git commit saved locally, but push failed:")
-        print(pushed.stderr.strip())
-        print("Run './course sync' after resolving the remote changes or authentication.")
-        return
-    print("Git sync: committed and pushed.")
+        return True
+    try:
+        sync_repository(f"Complete lesson {lesson['id']} and save course work")
+    except SystemExit as error:
+        print(f"Lesson checks passed, but synchronization did not finish:\n{error}")
+        return False
+    return True
 
 
-def sync_repository() -> None:
+def checked_git(*args: str) -> subprocess.CompletedProcess[str]:
+    result = run_git(*args)
+    if result.returncode != 0:
+        detail = result.stderr.strip() or result.stdout.strip()
+        raise SystemExit(
+            f"Git sync failed during git {args[0]}:\n{detail}\n"
+            "Your files/local commits are preserved. Resolve the reported issue and run './course sync' again."
+        )
+    return result
+
+
+def snapshot_course(message: str) -> None:
+    checked_git("add", "--all")
+    changed = run_git("diff", "--cached", "--quiet")
+    if changed.returncode == 1:
+        checked_git("commit", "-m", message)
+        print("Saved course work locally (including unfinished exercises).")
+    elif changed.returncode != 0:
+        raise SystemExit(f"Could not inspect staged changes: {changed.stderr.strip()}")
+
+
+def merge_remote_progress() -> bool:
+    """Only auto-resolve the append-only progress data, never learner code."""
+    progress_path = str(PROGRESS_FILE.relative_to(ROOT))
+    conflicts = run_git("diff", "--name-only", "--diff-filter=U").stdout.splitlines()
+    if conflicts != [progress_path]:
+        return False
+    try:
+        ours = json.loads(checked_git("show", f":2:{progress_path}").stdout)
+        theirs = json.loads(checked_git("show", f":3:{progress_path}").stdout)
+        if (set(ours) | set(theirs)) - {"completed", "hintsViewed"}:
+            return False
+        completed = list(dict.fromkeys(ours.get("completed", []) + theirs.get("completed", [])))
+        hints = dict(ours.get("hintsViewed", {}))
+        for key, value in theirs.get("hintsViewed", {}).items():
+            hints[key] = max(hints.get(key, 0), value)
+        save_progress({"completed": completed, "hintsViewed": hints})
+    except (ValueError, TypeError, OSError):
+        return False
+    checked_git("add", "--", progress_path)
+    checked_git("commit", "--no-edit")
+    print("Combined progress from both machines.")
+    return True
+
+
+def sync_repository(message: str = "Sync course work across machines") -> None:
     if run_git("rev-parse", "--is-inside-work-tree").returncode != 0:
         raise SystemExit("This folder is not a Git repository. Clone it with git instead of downloading a ZIP.")
     if run_git("remote", "get-url", "origin").returncode != 0:
         raise SystemExit("No origin remote is configured. Clone the GitHub repository first.")
 
-    pulled = run_git("pull", "--rebase", "--autostash")
-    if pulled.returncode != 0:
-        detail = pulled.stderr.strip() or pulled.stdout.strip()
-        raise SystemExit(f"Git sync failed:\n{detail}")
-    print(pulled.stdout.strip() or "Repository is up to date.")
+    branch = checked_git("branch", "--show-current").stdout.strip()
+    if not branch:
+        raise SystemExit("Git sync stopped: detached HEAD. Switch to your working branch first.")
+    git_dir = Path(checked_git("rev-parse", "--absolute-git-dir").stdout.strip())
+    if any((git_dir / name).exists() for name in ("MERGE_HEAD", "rebase-merge", "rebase-apply", "CHERRY_PICK_HEAD")):
+        raise SystemExit("Git sync stopped: finish the existing merge/rebase/cherry-pick first. No files were overwritten.")
+    if checked_git("ls-files", "--unmerged").stdout.strip():
+        raise SystemExit("Git sync stopped: resolve existing Git conflicts first.")
+
     setup_all()
+    snapshot_course(message)
+    # Never rewrite shared history, force-push, or hide edits in an autostash.
+    # A clean local snapshot is retained even when offline/authentication fails.
+    for attempt in range(3):
+        checked_git("fetch", "origin")
+        remote_ref = f"refs/remotes/origin/{branch}"
+        if run_git("rev-parse", "--verify", remote_ref).returncode == 0:
+            merged = run_git("merge", "--no-edit", remote_ref)
+            if merged.returncode != 0 and not merge_remote_progress():
+                conflicts = run_git("diff", "--name-only", "--diff-filter=U").stdout.strip()
+                raise SystemExit(
+                    "Git sync needs a manual merge; both versions are preserved.\n"
+                    + (f"Conflicting files:\n{conflicts}\n" if conflicts else merged.stderr + merged.stdout)
+                    + "Resolve conflicts, git add the resolved files, and git commit; then run './course sync'."
+                )
+        setup_all()
+        snapshot_course("Prepare course workspaces after sync")
+        pushed = run_git("push", "-u", "origin", branch)
+        if pushed.returncode == 0:
+            print(f"Git sync complete: saved, pulled, and pushed origin/{branch}.")
+            return
+        detail = pushed.stderr.strip() or pushed.stdout.strip()
+        if attempt < 2 and any(reason in detail for reason in ("non-fast-forward", "fetch first")):
+            continue
+        raise SystemExit(
+            f"Local work is saved, but pushing failed:\n{detail}\n"
+            "Run './course sync' again after fixing connectivity/authentication."
+        )
 
 
 def ensure_workspace(lesson: dict, announce: bool = True) -> Path:
@@ -407,7 +464,8 @@ def check_lesson(lesson: dict, source_dir: Path | None = None, mark: bool = True
             completed.append(lesson["key"])
             save_progress(progress)
             print("Progress saved.")
-        git_sync_lesson(lesson, source_dir)
+        if not git_sync_lesson(lesson, source_dir):
+            return False
     return passed
 
 

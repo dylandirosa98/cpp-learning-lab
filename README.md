@@ -63,7 +63,31 @@ nix develop # NixOS only
 
 GitHub authentication is required to push. On a new machine, run `gh auth login` once (or configure an SSH credential) before submitting lessons.
 
-Run `./course sync` before starting work on another machine. It pulls remote changes with rebase and creates any missing lesson workspaces. When `./course check 6.1` passes, the checker commits that lesson's workspace and progress and pushes the current branch automatically. Failed lessons are never committed. Set `COURSE_NO_SYNC=1` for a one-off local check without committing or pushing.
+Run **`./course sync` before and after working on either machine**. It saves all
+non-ignored course files in a local commit (including unfinished exercises, lesson
+definitions, tests, and scratch code), fetches and merges the matching branch from
+GitHub, prepares missing workspaces, and pushes. It retries pending pushes even
+when there are no new edits. Ignored build outputs, editor settings, and credentials
+stay local. Keep secrets outside the repository; `.gitignore` is a convenience,
+not a secret scanner. Save editor buffers before syncing.
+
+Passing `./course check 6.1` also runs this full synchronization automatically.
+Failed lessons are not marked complete, but their work can still be backed up with
+`./course sync`. Set `COURSE_NO_SYNC=1` for a local check without commits or network
+operations. Explicit `./course sync` always syncs, regardless of that variable.
+
+Both machines should use the same branch (`main` by default). Offline sync keeps
+your local snapshot and reports the network failure; rerun it when connected.
+Completion records are combined automatically. Conflicting edits to the same code
+are **never overwritten automatically**: resolve the listed conflicts, `git add`
+the resolved files, `git commit`, then rerun `./course sync`. A check with a sync
+failure exits unsuccessfully while explaining that the lesson itself passed.
+
+For an existing laptop clone using the older checker, first run `git pull --ff-only`
+once to get this update, then use `./course sync`. If that initial pull reports
+local edits or diverged history, preserve those changes and resolve them rather
+than resetting or force-pushing. Run `nix develop` first on NixOS, or install the
+requirements listed above. No machine-specific absolute paths are required.
 
 The same commands accept Chapter 3 through Chapter 8 and Chapter O lesson IDs, for example:
 
