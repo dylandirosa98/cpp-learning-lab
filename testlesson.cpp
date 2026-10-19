@@ -1,25 +1,57 @@
-#include <cmath> // for sqrt() function
 #include <iostream>
 
+namespace Constants {
+constexpr double gravity{9.8};
+}
+
+// Gets tower height from user and returns it
+double getTowerHeight() {
+    std::cout << "Enter the height of the tower in meters: ";
+    double towerHeight{};
+    std::cin >> towerHeight;
+    return towerHeight;
+}
+
+// Returns the current ball height after "seconds" seconds
+double calculateBallHeight(double towerHeight, int seconds) {
+
+    // Using formula: s = (u * t) + (a * t^2) / 2
+    // here u (initial velocity) = 0, so (u * t) = 0
+    const double fallDistance{Constants::gravity * (seconds * seconds) / 2.0};
+    const double ballHeight{towerHeight - fallDistance};
+
+    // If the ball would be under the ground, place it on the ground
+    if (ballHeight < 0.0)
+        return 0.0;
+
+    return ballHeight;
+}
+
+// Prints ball height above ground
+void printBallHeight(double ballHeight, int seconds) {
+    if (ballHeight > 0.0)
+        std::cout << "At " << seconds << " seconds, the ball is at height: " << ballHeight
+                  << " meters\n";
+    else
+        std::cout << "At " << seconds << " seconds, the ball is on the ground.\n";
+}
+
+// Calculates the current ball height and then prints it
+// This is a helper function to make it easier to do this
+void calculateAndPrintBallHeight(double towerHeight, int seconds) {
+    const double ballHeight{calculateBallHeight(towerHeight, seconds)};
+    printBallHeight(ballHeight, seconds);
+}
+
 int main() {
-    for (int i{1}; i <= 150; i++) {
-        bool divisible{false};
-        if (i % 3 == 0) {
-            std::cout << "fizz";
-            divisible = true;
-        }
-        if (i % 5 == 0) {
-            std::cout << "buzz";
-            divisible = true;
-        }
-        if (i % 7 == 0) {
-            std::cout << "pop";
-            divisible = true;
-        }
-        if (divisible == false) {
-            std::cout << i;
-        }
-        std::cout << '\n';
+    const double towerHeight{getTowerHeight()};
+    int seconds{};
+
+    while (calculateBallHeight(towerHeight, seconds) > 0) {
+        calculateAndPrintBallHeight(towerHeight, seconds);
+        seconds++;
     }
+    calculateAndPrintBallHeight(towerHeight, seconds);
+
     return 0;
 }

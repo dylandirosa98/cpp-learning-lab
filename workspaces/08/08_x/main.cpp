@@ -3,7 +3,12 @@ Lesson 8.x - Chapter 8 summary and quiz
 LearnCpp: https://www.learncpp.com/cpp-tutorial/chapter-8-summary-and-quiz/
 
 Problem:
-Implement scanSystems, a launch-readiness scan over a string of status codes. G increments go, H increments hold, S increments scrub and immediately stops the scan. Each G/H/S also increments checked. T (test mode) and any unknown character are ignored. Return verdict "scrubbed" if scrub > 0, otherwise "on hold" if hold > 0 or go == 0, otherwise "go". Read characters by index with codes[index] and codes.size(). Practice a for loop, switch, continue, and early termination; the reporting/demo main is already supplied. Return the actual tallies, not formatted strings.
+Implement scanSystems, a launch-readiness scan over a string of status codes. G increments go, H
+increments hold, S increments scrub and immediately stops the scan. Each G/H/S also increments
+checked. T (test mode) and any unknown character are ignored. Return verdict "scrubbed" if scrub >
+0, otherwise "on hold" if hold > 0 or go == 0, otherwise "go". Read characters by index with
+codes[index] and codes.size(). Practice a for loop, switch, continue, and early termination; the
+reporting/demo main is already supplied. Return the actual tallies, not formatted strings.
 
 Expected results (examples):
 - scanSystems("GTGHS G") -> go=2, hold=1, scrub=1, checked=4, verdict="scrubbed"
@@ -19,8 +24,7 @@ Run from project root: ./course check 8.x
 #include <iostream>
 #include <string_view>
 
-struct ScanResult
-{
+struct ScanResult {
     int go{0};
     int hold{0};
     int scrub{0};
@@ -28,18 +32,41 @@ struct ScanResult
     std::string_view verdict{"on hold"};
 };
 
-ScanResult scanSystems(std::string_view codes)
-{
-// TODO: Implement the behavior described above.
-    (void)codes;
-    return {};
+ScanResult scanSystems(std::string_view codes) {
+    // TODO: Implement the behavior described above.
+    ScanResult newscan{};
+    for (int i{}; i < static_cast<int>(codes.length()); i++) {
+        switch (codes[i]) {
+        case 'G':
+            newscan.go++;
+            newscan.checked++;
+            break;
+        case 'H':
+            newscan.hold++;
+            newscan.checked++;
+            break;
+        case 'S':
+            newscan.scrub++;
+            newscan.checked++;
+            goto checkpoint;
+        default:
+            break;
+        }
+    }
+checkpoint:
+    if (newscan.scrub > 0) {
+        newscan.verdict = "scrubbed";
+    } else if (newscan.hold > 0 || newscan.go == 0) {
+        newscan.verdict = "on hold";
+    } else {
+        newscan.verdict = "go";
+    }
+    return newscan;
 }
 
-int main()
-{
+int main() {
     const auto result{scanSystems("GTGHSG")};
-    std::cout << "GO: " << result.go << "\nHOLD: " << result.hold
-              << "\nSCRUB: " << result.scrub << "\nChecked: " << result.checked
-              << "\nVerdict: " << result.verdict << '\n';
+    std::cout << "GO: " << result.go << "\nHOLD: " << result.hold << "\nSCRUB: " << result.scrub
+              << "\nChecked: " << result.checked << "\nVerdict: " << result.verdict << '\n';
     return 0;
 }
