@@ -1,0 +1,41 @@
+{
+  "order": 114,
+  "id": "10.8",
+  "title": "Type deduction for objects using the auto keyword",
+  "url": "https://www.learncpp.com/cpp-tutorial/type-deduction-for-objects-using-the-auto-keyword/",
+  "estimatedMinutes": 20,
+  "recap": [
+    "auto deduces an object type from its initializer. The expression still has its ordinary type: auto does not turn integer division into floating-point division.",
+    "Use a clear initializer so the deduced type is intentional. const auto can keep the deduced value immutable without repeating its exact type."
+  ],
+  "objectives": [
+    "Implement the stated behavior for multiple inputs.",
+    "Practice type deduction for objects using the auto keyword.",
+    "Run the visible tests and explain one boundary case."
+  ],
+  "warnings": [
+    "The function/type interface is fixed, but implementation syntax is your choice.",
+    "Do not remove the visible tests; the checker keeps an independent copy.",
+    "Respect the stated input domain and lifetime/range rules."
+  ],
+  "challenge": "Implement midpoint(low, high) returning their floating-point midpoint, even for odd sums or reversed endpoints. Inputs are between -1000000 and 1000000. Use auto for a local intermediate so its type follows the expression; the tests care about the double result, not how you spell locals.",
+  "expectedOutput": [
+    "midpoint(1,4) -> 2.5",
+    "midpoint(4,1) -> 2.5",
+    "midpoint(-4,1) -> -1.5"
+  ],
+  "hints": [
+    "The midpoint is the sum divided by two.",
+    "Choose an expression that preserves half units.",
+    "Reversing endpoints should not change the answer."
+  ],
+  "sources": [
+    "main.cpp"
+  ],
+  "sourceChecks": [],
+  "behaviorTests": [
+    "tests/lesson_cases/10_08.cpp"
+  ],
+  "visibleTests": true,
+  "lessonNotes": "lesson.md"
+}

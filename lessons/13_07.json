@@ -1,0 +1,41 @@
+{
+  "order": 150,
+  "id": "13.7",
+  "title": "Introduction to structs, members, and member selection",
+  "url": "https://www.learncpp.com/cpp-tutorial/introduction-to-structs-members-and-member-selection/",
+  "estimatedMinutes": 20,
+  "recap": [
+    "A struct groups related members into one object. Member selection with the dot operator accesses a named part of that object.",
+    "Domain invariants still matter after grouping data. Equal dimensions alone do not make a valid square when the contract excludes zero and negative lengths."
+  ],
+  "objectives": [
+    "Implement the stated behavior for multiple inputs.",
+    "Practice introduction to structs, members, and member selection.",
+    "Run the visible tests and explain one boundary case."
+  ],
+  "warnings": [
+    "The function/type interface is fixed, but implementation syntax is your choice.",
+    "Do not remove the visible tests; the checker keeps an independent copy.",
+    "Respect the stated input domain and lifetime/range rules."
+  ],
+  "challenge": "Implement area(rectangle) and isSquare(rectangle). A rectangle with either dimension <= 0 is invalid: its area is 0 and isSquare is false. Otherwise area is width*height and a square has equal dimensions. Dimensions and products fit int.",
+  "expectedOutput": [
+    "Rectangle{3,4} -> area 12, not square",
+    "Rectangle{3,3} -> area 9, square",
+    "Rectangle{0,0} -> area 0, not square"
+  ],
+  "hints": [
+    "Access width and height through the parameter.",
+    "Validate both dimensions before multiplying.",
+    "Square classification needs validity as well as equality."
+  ],
+  "sources": [
+    "main.cpp"
+  ],
+  "sourceChecks": [],
+  "behaviorTests": [
+    "tests/lesson_cases/13_07.cpp"
+  ],
+  "visibleTests": true,
+  "lessonNotes": "lesson.md"
+}

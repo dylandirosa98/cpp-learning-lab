@@ -1,0 +1,40 @@
+{
+  "order": 145,
+  "id": "13.2",
+  "title": "Unscoped enumerations",
+  "url": "https://www.learncpp.com/cpp-tutorial/unscoped-enumerations/",
+  "estimatedMinutes": 20,
+  "recap": [
+    "An enumeration names a closed set of domain choices. Unscoped enumerator names enter the surrounding scope, so their names must avoid collisions there.",
+    "Use meaningful enumerators to make branching readable. The behavior of a direction operation should not depend on callers remembering numeric positions."
+  ],
+  "objectives": [
+    "Implement the stated behavior for multiple inputs.",
+    "Practice unscoped enumerations.",
+    "Run the visible tests and explain one boundary case."
+  ],
+  "warnings": [
+    "The function/type interface is fixed, but implementation syntax is your choice.",
+    "Do not remove the visible tests; the checker keeps an independent copy.",
+    "Respect the stated input domain and lifetime/range rules."
+  ],
+  "challenge": "Implement turnRight(direction) for the supplied unscoped Direction enum. Rotate north -> east -> south -> west -> north. Inputs are always one of those four enumerators. Prefer a switch with named cases rather than relying on undocumented integer codes.",
+  "expectedOutput": [
+    "turnRight(north) -> east",
+    "turnRight(west) -> north"
+  ],
+  "hints": [
+    "Map each of the four enumerators explicitly.",
+    "The last direction wraps to the first.",
+    "Return a Direction value on every path."
+  ],
+  "sources": [
+    "main.cpp"
+  ],
+  "sourceChecks": [],
+  "behaviorTests": [
+    "tests/lesson_cases/13_02.cpp"
+  ],
+  "visibleTests": true,
+  "lessonNotes": "lesson.md"
+}

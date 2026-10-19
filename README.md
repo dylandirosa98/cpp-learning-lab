@@ -1,6 +1,6 @@
 # C++ Learning Lab
 
-A CLion-first interactive companion to [LearnCpp](https://www.learncpp.com/), currently covering Chapters 2 through 8 and optional Chapter O. The lab links to each original lesson, provides a short original recap, and follows it with a focused coding challenge, progressive hints, automated checks, and a reference solution. Workspace code and course progress are tracked in Git so the same course can be continued across machines.
+A file-based interactive companion to [LearnCpp](https://www.learncpp.com/), covering Chapters 2 through 13 and optional Chapter O. Use Neovim or CLion. The lab links to each original lesson, provides original explanations, and follows them with focused coding challenges, progressive hints, automated checks, and reference solutions. Workspace code and course progress are tracked in Git so the same course can be continued across machines.
 
 LearnCpp owns its lesson text and examples. This project does not mirror them.
 
@@ -89,7 +89,7 @@ local edits or diverged history, preserve those changes and resolve them rather
 than resetting or force-pushing. Run `nix develop` first on NixOS, or install the
 requirements listed above. No machine-specific absolute paths are required.
 
-The same commands accept Chapter 3 through Chapter 8 and Chapter O lesson IDs, for example:
+The same commands accept Chapter 3 through Chapter 13 and Chapter O lesson IDs, for example:
 
 ```bash
 ./course check 3.1
@@ -116,6 +116,92 @@ The same commands accept Chapter 3 through Chapter 8 and Chapter O lesson IDs, f
 Your editable files are grouped by chapter under `workspaces/`, such as `workspaces/06/06_07` and `workspaces/O/o_01`. Every C++ starter file begins with comments explaining that file's tasks, function responsibilities, expected output, LearnCpp link, and checker command. The original starters and reference solutions remain separate.
 
 ## Learning Loop
+
+### Chapter 9 browser experience
+
+From the repository root:
+
+```bash
+./course web
+```
+
+Open **http://127.0.0.1:8765** in your browser. Only Chapter 9 appears in this
+experimental split-pane UI. The live LearnCpp page stays on the left; focused
+activities appear on the right. Nothing from the live page is mirrored in the repo.
+
+The chapter has **29 curated steps**, not a fixed quiz/challenge pair per page:
+short explanations, code predictions, knowledge checks, choose-a-repair debugging
+drills, and the existing coding assignments. For example, 9.5 has seven steps:
+extraction → failed-stream prediction → recovery → repair drill → EOF → final-token
+prediction → combined reader challenge. Shorter 9.4 has three steps. Each step
+states one learning objective, and explanation steps do not force a quiz.
+
+Repair drills update only their displayed example, not your C++ files. Practice
+answers stay in browser memory; they do not record lesson completion. Existing
+quiz/challenge links and all seven main.cpp assignments remain accessible.
+
+Use the browser editor with **Vim keybindings** for file challenges, or keep
+editing the same files externally. **Alt+R** (in Normal or Insert mode) and the
+**Run** button save the current buffer before testing. **:w** and **Save** also
+write it to disk. This is not Neovim and does not load your plugins or configuration.
+Unsaved drafts survive step navigation in the current page; refreshing or closing
+the page warns before discarding them. If the file changes externally, saving
+refuses to overwrite it: copy your draft before reloading and reconciling changes.
+**Submit from the terminal as usual** with
+`./course check 9.1`. Browser tests never mark lessons complete, commit, or push.
+The progress bar reflects submitted topics only, not individual practice steps.
+Chapter 9's browser presentation and normal file workflow share the same lessons
+and progress, rather than creating duplicate exercises. Chapters 10–13 are unchanged.
+
+The browser editor uses locally bundled, MIT-licensed CodeMirror with its Vim
+keymap; no npm installation, CDN, Neovim, or Python msgpack is needed. The server binds only to
+127.0.0.1; it is a personal development tool, not a hosted service or sandbox for
+untrusted C++ code. Keep the terminal running; **Ctrl+C** stops it. If the port is
+busy, use `./course web --port 8766`. Use the exact URL printed in the terminal.
+
+The design draws on Boot.dev's public roadmap, CLI workflow, and Prepcards
+review interaction, without copying their course UI or assets.
+See [design references](tools/web/SOURCES.md).
+
+### File-based challenges: Chapters 9–13
+
+There are 61 new lessons, including chapter capstones and 13.y. Each has a
+`lesson.md`, optional `hints.md`, and a `main.cpp` containing the challenge API
+and **visible executable tests**. Implement the TODOs, not printed answers.
+Chapter 9 is the guided course-format experiment: original explanations, worked
+examples, prediction tasks, missions, and reflection questions, all in files.
+No browser editor or external course subscription is needed.
+
+```bash
+nvim workspaces/09/09_01/lesson.md workspaces/09/09_01/main.cpp
+```
+
+With `main.cpp` open, your configured **Alt+R** CMake shortcut builds and runs
+the visible tests. It reports the first failure or `All ... tests passed`.
+This does **not** submit or change progress. Each lesson has its own C++20 CMake
+target, including the multi-file 11.10 challenge. For terminal-only use:
+
+```bash
+cmake -S workspaces/09/09_01 -B .course/build/visible-09_01
+cmake --build .course/build/visible-09_01
+./.course/build/visible-09_01/lesson_09_01
+./course check 9.1
+```
+
+The last command is the normal submission: independent tests run, and only a
+pass records completion and syncs. Editing visible tests cannot change the
+checker's copy. Some type/API challenges initially fail compilation until you
+add the required declaration; that is intentional. Assertion subprocess tests
+in 9.6 require Linux or macOS. The CMake targets keep assertions enabled.
+Existing completed work and progress are unchanged.
+
+Chapter indexes: [9](workspaces/09/README.md), [10](workspaces/10/README.md),
+[11](workspaces/11/README.md), [12](workspaces/12/README.md), [13](workspaces/13/README.md).
+
+The material is original personal-study content, not a copy of Boot.dev or
+LearnCpp. Chapters 10–13 follow the Chapter 8 function-challenge model with
+behavioral checks, not required source tokens or arbitrary output formatting.
+Lesson 13.5 tests stream formatting because stream operators are its actual API.
 
 1. Run `./course lesson 2.1`.
 2. Open the linked LearnCpp lesson and read it in full.

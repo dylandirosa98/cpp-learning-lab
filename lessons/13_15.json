@@ -1,0 +1,40 @@
+{
+  "order": 158,
+  "id": "13.15",
+  "title": "Alias templates",
+  "url": "https://www.learncpp.com/cpp-tutorial/alias-templates/",
+  "estimatedMinutes": 20,
+  "recap": [
+    "An alias template maps template arguments to an existing type expression. Instantiating the alias does not create a distinct type or new data storage.",
+    "Forward the intended type arguments instead of accidentally fixing them. A type-identity test can catch an alias that looks generic but always selects one concrete type."
+  ],
+  "objectives": [
+    "Implement the stated behavior for multiple inputs.",
+    "Practice alias templates.",
+    "Run the visible tests and explain one boundary case."
+  ],
+  "warnings": [
+    "The function/type interface is fixed, but implementation syntax is your choice.",
+    "Do not remove the visible tests; the checker keeps an independent copy.",
+    "Respect the stated input domain and lifetime/range rules."
+  ],
+  "challenge": "Fix the ScorePair<T> alias so it preserves T instead of always selecting Pair<int>. Then implement maxScore<T>(pair), returning the larger stored value as T (first on equality). The alias names an existing specialization; it does not define a new struct. Both integer and double scores are tested.",
+  "expectedOutput": [
+    "ScorePair<double> must be the same type as Pair<double>",
+    "maxScore<double>({1.25,2.5}) -> 2.5"
+  ],
+  "hints": [
+    "Replace the fixed int in the alias with T.",
+    "Compare the two stored values directly.",
+    "Do not cast double scores to int."
+  ],
+  "sources": [
+    "main.cpp"
+  ],
+  "sourceChecks": [],
+  "behaviorTests": [
+    "tests/lesson_cases/13_15.cpp"
+  ],
+  "visibleTests": true,
+  "lessonNotes": "lesson.md"
+}

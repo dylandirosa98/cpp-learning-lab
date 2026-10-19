@@ -1,0 +1,40 @@
+{
+  "order": 136,
+  "id": "12.9",
+  "title": "Pointers and const",
+  "url": "https://www.learncpp.com/cpp-tutorial/pointers-and-const/",
+  "estimatedMinutes": 20,
+  "recap": [
+    "A pointer to const restricts changing the pointee through that pointer; a const pointer instead restricts changing the stored address. These are independent qualifications.",
+    "Use read-only pointer parameters for source data and writable pointer parameters for destination data. Validate every optional address before mutation."
+  ],
+  "objectives": [
+    "Implement the stated behavior for multiple inputs.",
+    "Practice pointers and const.",
+    "Run the visible tests and explain one boundary case."
+  ],
+  "warnings": [
+    "The function/type interface is fixed, but implementation syntax is your choice.",
+    "Do not remove the visible tests; the checker keeps an independent copy.",
+    "Respect the stated input domain and lifetime/range rules."
+  ],
+  "challenge": "Implement copyIfPresent(source,destination). If either pointer is null, return false without changing any object. Otherwise copy the source integer into the destination and return true. source is a pointer to const: do not mutate it. Passing the same object as source and destination is valid.",
+  "expectedOutput": [
+    "source=4,destination=9 -> destination=4, true",
+    "null source -> false, destination unchanged"
+  ],
+  "hints": [
+    "Check both pointers before any indirection.",
+    "Assign through destination from source.",
+    "Self-copy is allowed and naturally safe."
+  ],
+  "sources": [
+    "main.cpp"
+  ],
+  "sourceChecks": [],
+  "behaviorTests": [
+    "tests/lesson_cases/12_09.cpp"
+  ],
+  "visibleTests": true,
+  "lessonNotes": "lesson.md"
+}

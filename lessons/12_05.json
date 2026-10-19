@@ -1,0 +1,40 @@
+{
+  "order": 132,
+  "id": "12.5",
+  "title": "Pass by lvalue reference",
+  "url": "https://www.learncpp.com/cpp-tutorial/pass-by-lvalue-reference/",
+  "estimatedMinutes": 20,
+  "recap": [
+    "Pass by non-const lvalue reference lets a function intentionally change caller-owned objects. The signature communicates that mutation is possible.",
+    "Two references can alias the same object. Prefer a simple temporary during swapping rather than relying on arithmetic tricks that break under aliasing or overflow."
+  ],
+  "objectives": [
+    "Implement the stated behavior for multiple inputs.",
+    "Practice pass by lvalue reference.",
+    "Run the visible tests and explain one boundary case."
+  ],
+  "warnings": [
+    "The function/type interface is fixed, but implementation syntax is your choice.",
+    "Do not remove the visible tests; the checker keeps an independent copy.",
+    "Respect the stated input domain and lifetime/range rules."
+  ],
+  "challenge": "Implement sortPair(first,second), modifying the caller so first <= second. Swap only when necessary. If both reference parameters refer to the same integer, leave that integer unchanged. Values fit int; do not use arithmetic swapping that could overflow.",
+  "expectedOutput": [
+    "a=8,b=3; sortPair(a,b); -> a=3,b=8",
+    "sortPair(a,a) leaves a unchanged"
+  ],
+  "hints": [
+    "Only swap when the first value is greater.",
+    "Save the first value before overwriting it.",
+    "Ordinary assignment through each reference updates the caller."
+  ],
+  "sources": [
+    "main.cpp"
+  ],
+  "sourceChecks": [],
+  "behaviorTests": [
+    "tests/lesson_cases/12_05.cpp"
+  ],
+  "visibleTests": true,
+  "lessonNotes": "lesson.md"
+}

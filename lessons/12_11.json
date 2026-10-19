@@ -1,0 +1,40 @@
+{
+  "order": 138,
+  "id": "12.11",
+  "title": "Pass by address (part 2)",
+  "url": "https://www.learncpp.com/cpp-tutorial/pass-by-address-part-2/",
+  "estimatedMinutes": 20,
+  "recap": [
+    "A pointer passed by value can be locally reseated without changing the caller's pointer. A reference to that pointer permits intentional reseating of the caller's pointer variable.",
+    "Address management and pointee mutation are separate operations. This function changes the chosen object without changing the values stored in either object."
+  ],
+  "objectives": [
+    "Implement the stated behavior for multiple inputs.",
+    "Practice pass by address (part 2).",
+    "Run the visible tests and explain one boundary case."
+  ],
+  "warnings": [
+    "The function/type interface is fixed, but implementation syntax is your choice.",
+    "Do not remove the visible tests; the checker keeps an independent copy.",
+    "Respect the stated input domain and lifetime/range rules."
+  ],
+  "challenge": "Implement redirect(active,replacement). active is a reference to the caller's pointer variable: make that pointer store replacement, including nullptr. Do not modify either pointed-to integer. This differs from changing only a local copy of a pointer.",
+  "expectedOutput": [
+    "active=&a; redirect(active,&b); -> active==&b",
+    "redirect(active,nullptr); -> active==nullptr"
+  ],
+  "hints": [
+    "Assign replacement to active itself.",
+    "Do not dereference either pointer.",
+    "nullptr is a valid replacement."
+  ],
+  "sources": [
+    "main.cpp"
+  ],
+  "sourceChecks": [],
+  "behaviorTests": [
+    "tests/lesson_cases/12_11.cpp"
+  ],
+  "visibleTests": true,
+  "lessonNotes": "lesson.md"
+}

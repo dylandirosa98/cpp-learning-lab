@@ -1,0 +1,41 @@
+{
+  "order": 123,
+  "id": "11.7",
+  "title": "Function template instantiation",
+  "url": "https://www.learncpp.com/cpp-tutorial/function-template-instantiation/",
+  "estimatedMinutes": 20,
+  "recap": [
+    "A template definition is a recipe; a call or explicit request causes the needed specialization to be instantiated. Type arguments may be deduced from arguments or supplied explicitly.",
+    "A template that compiles for one type can fail or narrow for another. Test several instantiations, especially a wide integer and a floating-point value."
+  ],
+  "objectives": [
+    "Implement the stated behavior for multiple inputs.",
+    "Practice function template instantiation.",
+    "Run the visible tests and explain one boundary case."
+  ],
+  "warnings": [
+    "The function/type interface is fixed, but implementation syntax is your choice.",
+    "Do not remove the visible tests; the checker keeps an independent copy.",
+    "Respect the stated input domain and lifetime/range rules."
+  ],
+  "challenge": "Implement squared<T>(value) by returning value*value as T. Support explicit and deduced instantiations for int, long long, and double. Tested values and products fit their types. Do not store the result in a fixed int intermediate.",
+  "expectedOutput": [
+    "squared(5) -> 25",
+    "squared<double>(1.5) -> 2.25",
+    "squared<long long>(100000) -> 10000000000"
+  ],
+  "hints": [
+    "Keep arithmetic in the parameter type.",
+    "The result of long long multiplication must not pass through int.",
+    "Return the product directly."
+  ],
+  "sources": [
+    "main.cpp"
+  ],
+  "sourceChecks": [],
+  "behaviorTests": [
+    "tests/lesson_cases/11_07.cpp"
+  ],
+  "visibleTests": true,
+  "lessonNotes": "lesson.md"
+}

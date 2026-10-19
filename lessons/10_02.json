@@ -1,0 +1,41 @@
+{
+  "order": 108,
+  "id": "10.2",
+  "title": "Floating-point and integral promotion",
+  "url": "https://www.learncpp.com/cpp-tutorial/floating-point-and-integral-promotion/",
+  "estimatedMinutes": 20,
+  "recap": [
+    "Small integral types generally promote to int before arithmetic. Promotion is a particular value-preserving conversion, not a general promise that every conversion is safe.",
+    "Keep intermediate and result storage wide enough. Assigning the promoted sum back into a small type can lose the range that promotion gave you."
+  ],
+  "objectives": [
+    "Implement the stated behavior for multiple inputs.",
+    "Practice floating-point and integral promotion.",
+    "Run the visible tests and explain one boundary case."
+  ],
+  "warnings": [
+    "The function/type interface is fixed, but implementation syntax is your choice.",
+    "Do not remove the visible tests; the checker keeps an independent copy.",
+    "Respect the stated input domain and lifetime/range rules."
+  ],
+  "challenge": "Implement addSmall(signed char left, short right), returning their sum as int. Inputs use left in [-100,100] and right in [-30000,30000]. Do not store the result in either small input type. Integral promotion lets the arithmetic use int without losing the sum.",
+  "expectedOutput": [
+    "addSmall(100,30000) -> 30100",
+    "addSmall(-100,-30000) -> -30100",
+    "addSmall(-10,20) -> 10"
+  ],
+  "hints": [
+    "Let the operands promote during addition.",
+    "Return the result directly as int.",
+    "A sum above the signed-char range must still be preserved."
+  ],
+  "sources": [
+    "main.cpp"
+  ],
+  "sourceChecks": [],
+  "behaviorTests": [
+    "tests/lesson_cases/10_02.cpp"
+  ],
+  "visibleTests": true,
+  "lessonNotes": "lesson.md"
+}

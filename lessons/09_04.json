@@ -1,0 +1,42 @@
+{
+  "order": 103,
+  "id": "9.4",
+  "title": "Detecting and handling errors",
+  "url": "https://www.learncpp.com/cpp-tutorial/detecting-and-handling-errors/",
+  "estimatedMinutes": 20,
+  "recap": [
+    "Error handling has separate jobs: detect an invalid situation, report it to the right layer, and recover or stop deliberately. A reusable calculation generally should not decide how the user interface reports its errors.",
+    "Check a dangerous operation before performing it. A sentinel works only when it cannot be confused with a successful value; otherwise use a richer result representation."
+  ],
+  "objectives": [
+    "Implement the stated behavior for multiple inputs.",
+    "Practice detecting and handling errors.",
+    "Run the visible tests and explain one boundary case."
+  ],
+  "warnings": [
+    "The function/type interface is fixed, but implementation syntax is your choice.",
+    "Do not remove the visible tests; the checker keeps an independent copy.",
+    "Respect the stated input domain and lifetime/range rules."
+  ],
+  "challenge": "Implement safeRemainder(value, divisor). For value >= 0 and divisor > 0, return value % divisor. Otherwise return -1 without performing remainder. The sentinel is unambiguous because successful remainders are nonnegative. Do not halt the process or print an error.",
+  "expectedOutput": [
+    "safeRemainder(17,5) -> 2",
+    "safeRemainder(0,5) -> 0",
+    "safeRemainder(4,0) -> -1",
+    "safeRemainder(-4,3) -> -1"
+  ],
+  "hints": [
+    "Both parameters have validity rules.",
+    "Do not use % before checking the divisor.",
+    "Return the sentinel for invalid inputs and the computed remainder otherwise."
+  ],
+  "sources": [
+    "main.cpp"
+  ],
+  "sourceChecks": [],
+  "behaviorTests": [
+    "tests/lesson_cases/09_04.cpp"
+  ],
+  "visibleTests": true,
+  "lessonNotes": "lesson.md"
+}

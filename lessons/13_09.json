@@ -1,0 +1,40 @@
+{
+  "order": 152,
+  "id": "13.9",
+  "title": "Default member initialization",
+  "url": "https://www.learncpp.com/cpp-tutorial/default-member-initialization/",
+  "estimatedMinutes": 20,
+  "recap": [
+    "Default member initializers specify fallback values in the type definition. Aggregate initialization uses those defaults for members not explicitly initialized.",
+    "Create a default-configured object and override only the requested field. This avoids coupling a small override to every default in the type."
+  ],
+  "objectives": [
+    "Implement the stated behavior for multiple inputs.",
+    "Practice default member initialization.",
+    "Run the visible tests and explain one boundary case."
+  ],
+  "warnings": [
+    "The function/type interface is fixed, but implementation syntax is your choice.",
+    "Do not remove the visible tests; the checker keeps an independent copy.",
+    "Respect the stated input domain and lifetime/range rules."
+  ],
+  "challenge": "Implement configured(retries). Return a Connection using its default timeout=30 and secure=true. If retries >= 0 override only retries; for negative retries keep its default of 3. The struct's defaults are already declared and should be used rather than replacing unrelated fields with zero.",
+  "expectedOutput": [
+    "configured(5) -> timeout 30, retries 5, secure true",
+    "configured(-1) -> timeout 30, retries 3, secure true"
+  ],
+  "hints": [
+    "Start with Connection result{}.",
+    "Only nonnegative retry counts override the default.",
+    "Do not change timeout or secure."
+  ],
+  "sources": [
+    "main.cpp"
+  ],
+  "sourceChecks": [],
+  "behaviorTests": [
+    "tests/lesson_cases/13_09.cpp"
+  ],
+  "visibleTests": true,
+  "lessonNotes": "lesson.md"
+}

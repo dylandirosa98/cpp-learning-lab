@@ -1,0 +1,42 @@
+{
+  "order": 104,
+  "id": "9.5",
+  "title": "std::cin and handling invalid input",
+  "url": "https://www.learncpp.com/cpp-tutorial/stdcin-and-handling-invalid-input/",
+  "estimatedMinutes": 20,
+  "recap": [
+    "Formatted extraction reports failure through the stream state. While failbit is set, later extractions will keep failing; clear the state before ignoring a bad line. Ignoring up to newline prevents the same bad token from being retried forever.",
+    "EOF is not ordinary invalid text: if the source has ended there is nothing left to retry. A final successful extraction may set eofbit without failing, so handle successful extraction before treating EOF as failure."
+  ],
+  "objectives": [
+    "Implement the stated behavior for multiple inputs.",
+    "Practice std::cin and handling invalid input.",
+    "Run the visible tests and explain one boundary case."
+  ],
+  "warnings": [
+    "The function/type interface is fixed, but implementation syntax is your choice.",
+    "Do not remove the visible tests; the checker keeps an independent copy.",
+    "Respect the stated input domain and lifetime/range rules."
+  ],
+  "challenge": "Implement readQuantity() using std::cin. Read an integer at the beginning of each attempted line; discard the rest of that line. Return the first integer in [1,20]. On invalid text, an out-of-range number, or integer overflow, discard that line and retry. On end-of-input before a valid value, return -1. A line beginning \"3 extra\" is accepted as 3; this is intentionally not a strict whole-line parser. Do not print prompts. Test scaffolding supplies simulated input automatically.",
+  "expectedOutput": [
+    "input \"hello\\n0\\n8\\n\" -> 8",
+    "input \"21\\n1\\n\" -> 1",
+    "empty input -> -1",
+    "input \"20\" with no final newline -> 20"
+  ],
+  "hints": [
+    "Use an extraction as the condition of an if statement.",
+    "After failure, check eof(), then clear() and ignore through newline.",
+    "After successful extraction, discard the rest of the line before accepting or retrying."
+  ],
+  "sources": [
+    "main.cpp"
+  ],
+  "sourceChecks": [],
+  "behaviorTests": [
+    "tests/lesson_cases/09_05.cpp"
+  ],
+  "visibleTests": true,
+  "lessonNotes": "lesson.md"
+}

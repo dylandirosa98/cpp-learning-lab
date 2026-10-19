@@ -1,0 +1,40 @@
+{
+  "order": 130,
+  "id": "12.3",
+  "title": "Lvalue references",
+  "url": "https://www.learncpp.com/cpp-tutorial/lvalue-references/",
+  "estimatedMinutes": 20,
+  "recap": [
+    "An lvalue reference is an alias bound to an existing object. Reading or assigning through it accesses that object rather than an independent reference-owned value.",
+    "A non-const lvalue reference must bind to an appropriate modifiable lvalue. It cannot be reseated to a different object after initialization."
+  ],
+  "objectives": [
+    "Implement the stated behavior for multiple inputs.",
+    "Practice lvalue references.",
+    "Run the visible tests and explain one boundary case."
+  ],
+  "warnings": [
+    "The function/type interface is fixed, but implementation syntax is your choice.",
+    "Do not remove the visible tests; the checker keeps an independent copy.",
+    "Respect the stated input domain and lifetime/range rules."
+  ],
+  "challenge": "Implement addTo(target,delta). target is an int lvalue reference: change the caller's integer by adding delta. delta may be negative or zero. Inputs and sums fit int. A reference is an alias to the existing object, not a separate copy to return.",
+  "expectedOutput": [
+    "int n=4; addTo(n,3); -> n is 7",
+    "addTo(n,-2) subtracts two"
+  ],
+  "hints": [
+    "Assign through target directly.",
+    "No return value is needed.",
+    "Negative delta is a valid addition."
+  ],
+  "sources": [
+    "main.cpp"
+  ],
+  "sourceChecks": [],
+  "behaviorTests": [
+    "tests/lesson_cases/12_03.cpp"
+  ],
+  "visibleTests": true,
+  "lessonNotes": "lesson.md"
+}

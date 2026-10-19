@@ -1,0 +1,40 @@
+{
+  "order": 141,
+  "id": "12.14",
+  "title": "Type deduction with pointers, references, and const",
+  "url": "https://www.learncpp.com/cpp-tutorial/type-deduction-with-pointers-references-and-const/",
+  "estimatedMinutes": 20,
+  "recap": [
+    "Plain auto often drops reference and top-level const qualifications when deducing a new object. auto& explicitly asks to retain reference behavior.",
+    "Type deduction syntax is part of the API when callers depend on aliasing. Verify both the deduced type and that writes reach the intended original object."
+  ],
+  "objectives": [
+    "Implement the stated behavior for multiple inputs.",
+    "Practice type deduction with pointers, references, and const.",
+    "Run the visible tests and explain one boundary case."
+  ],
+  "warnings": [
+    "The function/type interface is fixed, but implementation syntax is your choice.",
+    "Do not remove the visible tests; the checker keeps an independent copy.",
+    "Respect the stated input domain and lifetime/range rules."
+  ],
+  "challenge": "Implement selectCounter(first,second,chooseFirst), preserving a modifiable lvalue reference in its deduced return type. chooseFirst selects first when true, otherwise second. The signature uses auto&; returning a value copy would break assignment through the result.",
+  "expectedOutput": [
+    "selectCounter(a,b,true)=7; -> a=7",
+    "selectCounter(a,b,false)=9; -> b=9"
+  ],
+  "hints": [
+    "Keep auto& in the return signature.",
+    "Return one of the existing reference parameters.",
+    "Do not make a plain-auto local copy of the selected integer."
+  ],
+  "sources": [
+    "main.cpp"
+  ],
+  "sourceChecks": [],
+  "behaviorTests": [
+    "tests/lesson_cases/12_14.cpp"
+  ],
+  "visibleTests": true,
+  "lessonNotes": "lesson.md"
+}

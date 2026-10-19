@@ -1,0 +1,41 @@
+{
+  "order": 129,
+  "id": "12.2",
+  "title": "Value categories (lvalues and rvalues)",
+  "url": "https://www.learncpp.com/cpp-tutorial/value-categories-lvalues-and-rvalues/",
+  "estimatedMinutes": 20,
+  "recap": [
+    "An expression has both a type and a value category. An lvalue identifies an object with identity; a typical rvalue is a temporary value such as a literal or arithmetic result.",
+    "A value parameter can be initialized from either kind of argument. Once inside the function, its name denotes a local object, so you can modify that object without modifying the caller."
+  ],
+  "objectives": [
+    "Implement the stated behavior for multiple inputs.",
+    "Practice value categories (lvalues and rvalues).",
+    "Run the visible tests and explain one boundary case."
+  ],
+  "warnings": [
+    "The function/type interface is fixed, but implementation syntax is your choice.",
+    "Do not remove the visible tests; the checker keeps an independent copy.",
+    "Respect the stated input domain and lifetime/range rules."
+  ],
+  "challenge": "Implement nextTicket(current), returning the next integer ticket after current without changing the caller. Inputs are between -1000000 and 1000000. Practice incrementing the named local parameter, and compare calls using a named variable, a literal, and an expression. Each caller supplies a value; the parameter itself is a named lvalue inside the function.",
+  "expectedOutput": [
+    "nextTicket(4) -> 5",
+    "nextTicket(2+3) -> 6",
+    "calling nextTicket(ticket) leaves ticket unchanged"
+  ],
+  "hints": [
+    "The return value is one greater than current.",
+    "The parameter is a modifiable local copy.",
+    "Do not introduce global or static ticket state."
+  ],
+  "sources": [
+    "main.cpp"
+  ],
+  "sourceChecks": [],
+  "behaviorTests": [
+    "tests/lesson_cases/12_02.cpp"
+  ],
+  "visibleTests": true,
+  "lessonNotes": "lesson.md"
+}

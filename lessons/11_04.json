@@ -1,0 +1,41 @@
+{
+  "order": 120,
+  "id": "11.4",
+  "title": "Deleting functions",
+  "url": "https://www.learncpp.com/cpp-tutorial/deleting-functions/",
+  "estimatedMinutes": 20,
+  "recap": [
+    "A deleted function participates in overload resolution but cannot be called. Deleting a better-matching overload prevents a call from silently converting to another overload.",
+    "This is an interface property, not a text-matching exercise. The tests ask the compiler whether a particular call is well formed instead of searching for a particular source line."
+  ],
+  "objectives": [
+    "Implement the stated behavior for multiple inputs.",
+    "Practice deleting functions.",
+    "Run the visible tests and explain one boundary case."
+  ],
+  "warnings": [
+    "The function/type interface is fixed, but implementation syntax is your choice.",
+    "Do not remove the visible tests; the checker keeps an independent copy.",
+    "Respect the stated input domain and lifetime/range rules."
+  ],
+  "challenge": "Implement wholeUnits(int units): return units when nonnegative, otherwise 0. Also prohibit calls with a double by declaring the double overload deleted. Add that declaration in the indicated API area, not an implementation that truncates. The visible compile-time tests verify that int calls are valid and double calls are not.",
+  "expectedOutput": [
+    "wholeUnits(7) -> 7",
+    "wholeUnits(-1) -> 0",
+    "wholeUnits(2.5) must not be a valid call"
+  ],
+  "hints": [
+    "The extra declaration has the same name and a double parameter.",
+    "Use = delete rather than a function body.",
+    "A deleted exact-match overload blocks conversion to the int overload."
+  ],
+  "sources": [
+    "main.cpp"
+  ],
+  "sourceChecks": [],
+  "behaviorTests": [
+    "tests/lesson_cases/11_04.cpp"
+  ],
+  "visibleTests": true,
+  "lessonNotes": "lesson.md"
+}

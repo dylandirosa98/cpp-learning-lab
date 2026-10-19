@@ -1,0 +1,41 @@
+{
+  "order": 159,
+  "id": "13.x",
+  "title": "Chapter 13 summary and quiz",
+  "url": "https://www.learncpp.com/cpp-tutorial/chapter-13-summary-and-quiz/",
+  "estimatedMinutes": 40,
+  "recap": [
+    "Use a scoped enum for domain outcomes, a struct for related result data, and a reference for the object being intentionally mutated. Each part of the signature communicates a different responsibility.",
+    "Validate before mutating so failed operations preserve caller state. Tests should inspect both the returned result and the original inventory after every success and failure."
+  ],
+  "objectives": [
+    "Implement the stated behavior for multiple inputs.",
+    "Practice chapter 13 summary and quiz.",
+    "Run the visible tests and explain one boundary case."
+  ],
+  "warnings": [
+    "The function/type interface is fixed, but implementation syntax is your choice.",
+    "Do not remove the visible tests; the checker keeps an independent copy.",
+    "Respect the stated input domain and lifetime/range rules."
+  ],
+  "challenge": "Implement sell(inventory,quantity,unitPrice), returning SaleResult. Invalid quantity <= 0 or unitPrice < 0 returns {SaleError::invalid,0,currentStock}. If quantity exceeds stock return {SaleError::shortStock,0,currentStock}. Otherwise reduce stock, increase cash by quantity*unitPrice, and return {SaleError::ok,total,newStock}. On failure leave inventory unchanged. Initial stock/cash are nonnegative and tested arithmetic fits int. Free items (unitPrice=0) are valid.",
+  "expectedOutput": [
+    "Inventory{5,10}, sell(...,2,3) -> stock 3, cash 16, result {ok,6,3}",
+    "too many items -> shortStock, unchanged inventory",
+    "zero quantity -> invalid, unchanged inventory"
+  ],
+  "hints": [
+    "Invalid arguments take priority over insufficient stock.",
+    "Compute and validate before changing inventory.",
+    "Return the result struct with the enum, total, and remaining stock in declaration order."
+  ],
+  "sources": [
+    "main.cpp"
+  ],
+  "sourceChecks": [],
+  "behaviorTests": [
+    "tests/lesson_cases/13_x.cpp"
+  ],
+  "visibleTests": true,
+  "lessonNotes": "lesson.md"
+}

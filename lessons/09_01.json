@@ -1,0 +1,42 @@
+{
+  "order": 100,
+  "id": "9.1",
+  "title": "Introduction to testing your code",
+  "url": "https://www.learncpp.com/cpp-tutorial/introduction-to-testing-your-code/",
+  "estimatedMinutes": 20,
+  "recap": [
+    "A test compares an actual result against an independently chosen expectation. A successful compilation only proves the program is well formed, not that its answers meet the requirements.",
+    "Partition inputs into meaningful categories, then choose examples and boundaries from each. Write expectations before the implementation so a mistaken implementation cannot define its own answer."
+  ],
+  "objectives": [
+    "Implement the stated behavior for multiple inputs.",
+    "Practice introduction to testing your code.",
+    "Run the visible tests and explain one boundary case."
+  ],
+  "warnings": [
+    "The function/type interface is fixed, but implementation syntax is your choice.",
+    "Do not remove the visible tests; the checker keeps an independent copy.",
+    "Respect the stated input domain and lifetime/range rules."
+  ],
+  "challenge": "Implement isLeapYear(year). A positive year is a leap year when divisible by 400, or divisible by 4 but not by 100. Nonpositive years return false. Before implementing it, predict each visible test and add one example of your own. The test suite is executable documentation, not text you must print.",
+  "expectedOutput": [
+    "isLeapYear(2024) -> true",
+    "isLeapYear(1900) -> false",
+    "isLeapYear(2000) -> true",
+    "isLeapYear(0) -> false"
+  ],
+  "hints": [
+    "Separate invalid years from valid ones.",
+    "Check the 400-year exception before rejecting centuries.",
+    "The ordinary leap-year rule needs both divisibility by 4 and non-divisibility by 100."
+  ],
+  "sources": [
+    "main.cpp"
+  ],
+  "sourceChecks": [],
+  "behaviorTests": [
+    "tests/lesson_cases/09_01.cpp"
+  ],
+  "visibleTests": true,
+  "lessonNotes": "lesson.md"
+}

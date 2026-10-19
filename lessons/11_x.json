@@ -1,0 +1,41 @@
+{
+  "order": 127,
+  "id": "11.x",
+  "title": "Chapter 11 summary and quiz",
+  "url": "https://www.learncpp.com/cpp-tutorial/chapter-11-summary-and-quiz/",
+  "estimatedMinutes": 40,
+  "recap": [
+    "A generic API can combine deduced type parameters with explicit compile-time policy values. Keep the mathematical contract independent of the syntax used at the call site.",
+    "Exercise several specializations and boundary policies rather than a single happy-path instance. This catches accidentally fixed result types and hard-coded template values."
+  ],
+  "objectives": [
+    "Implement the stated behavior for multiple inputs.",
+    "Practice chapter 11 summary and quiz.",
+    "Run the visible tests and explain one boundary case."
+  ],
+  "warnings": [
+    "The function/type interface is fixed, but implementation syntax is your choice.",
+    "Do not remove the visible tests; the checker keeps an independent copy.",
+    "Respect the stated input domain and lifetime/range rules."
+  ],
+  "challenge": "Implement clampValue<T>(value, low, high) and discounted<Percent,T>(price). clampValue returns low below the lower bound, high above the upper bound, or value inside; low <= high is guaranteed. discounted returns price*(100-Percent)/100.0 as double, preserving fractions. Percent is a compile-time integer in [0,100]; prices are finite and nonnegative. Both templates must work with int and double inputs.",
+  "expectedOutput": [
+    "clampValue(12,0,10) -> 10",
+    "clampValue(0.25,0.0,1.0) -> 0.25",
+    "discounted<25>(10) -> 7.5"
+  ],
+  "hints": [
+    "Write the clamp as three possible return paths.",
+    "Percent belongs in the template parameter list.",
+    "Use floating-point arithmetic before division in discounted."
+  ],
+  "sources": [
+    "main.cpp"
+  ],
+  "sourceChecks": [],
+  "behaviorTests": [
+    "tests/lesson_cases/11_x.cpp"
+  ],
+  "visibleTests": true,
+  "lessonNotes": "lesson.md"
+}

@@ -1,0 +1,40 @@
+{
+  "order": 139,
+  "id": "12.12",
+  "title": "Return by reference and return by address",
+  "url": "https://www.learncpp.com/cpp-tutorial/return-by-reference-and-return-by-address/",
+  "estimatedMinutes": 20,
+  "recap": [
+    "Returning a reference exposes an existing object instead of making a value copy. The referenced object must remain alive for every subsequent use by the caller.",
+    "Returning a reference to a local variable creates a dangling reference. Borrowing one of the caller's lvalue arguments is safe here because the caller retains those objects."
+  ],
+  "objectives": [
+    "Implement the stated behavior for multiple inputs.",
+    "Practice return by reference and return by address.",
+    "Run the visible tests and explain one boundary case."
+  ],
+  "warnings": [
+    "The function/type interface is fixed, but implementation syntax is your choice.",
+    "Do not remove the visible tests; the checker keeps an independent copy.",
+    "Respect the stated input domain and lifetime/range rules."
+  ],
+  "challenge": "Implement largerRef(first,second), returning an int reference to the larger caller-owned integer. On a tie return first. Do not return a local copy or a temporary. The caller may assign through the returned reference; tests check object identity, not just equal values.",
+  "expectedOutput": [
+    "a=3,b=8; largerRef(a,b)=20; -> b=20",
+    "equal values -> reference to first"
+  ],
+  "hints": [
+    "Select one of the reference parameters directly.",
+    "Use strict < so ties choose first.",
+    "Do not create a local result integer and return a reference to it."
+  ],
+  "sources": [
+    "main.cpp"
+  ],
+  "sourceChecks": [],
+  "behaviorTests": [
+    "tests/lesson_cases/12_12.cpp"
+  ],
+  "visibleTests": true,
+  "lessonNotes": "lesson.md"
+}

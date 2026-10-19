@@ -1,0 +1,41 @@
+{
+  "order": 107,
+  "id": "10.1",
+  "title": "Implicit type conversion",
+  "url": "https://www.learncpp.com/cpp-tutorial/implicit-type-conversion/",
+  "estimatedMinutes": 20,
+  "recap": [
+    "C++ can convert values automatically when initializing objects, passing arguments, returning values, or mixing types in expressions. The destination type does not retroactively change how an earlier subexpression was evaluated.",
+    "Making an operand floating-point before division preserves a fractional result; converting an already-truncated integer quotient cannot restore the lost fraction."
+  ],
+  "objectives": [
+    "Implement the stated behavior for multiple inputs.",
+    "Practice implicit type conversion.",
+    "Run the visible tests and explain one boundary case."
+  ],
+  "warnings": [
+    "The function/type interface is fixed, but implementation syntax is your choice.",
+    "Do not remove the visible tests; the checker keeps an independent copy.",
+    "Respect the stated input domain and lifetime/range rules."
+  ],
+  "challenge": "Implement metersFromCentimeters(cm). Return centimeters divided by 100 as a double, preserving fractions. Negative distances return -1.0. Test distances are at most one million centimeters. Think about when conversion happens, not just the return type.",
+  "expectedOutput": [
+    "metersFromCentimeters(125) -> 1.25",
+    "metersFromCentimeters(1) -> 0.01",
+    "metersFromCentimeters(-1) -> -1.0"
+  ],
+  "hints": [
+    "Handle negative inputs first.",
+    "Use a floating-point divisor.",
+    "Check the 1-centimeter example to catch truncation."
+  ],
+  "sources": [
+    "main.cpp"
+  ],
+  "sourceChecks": [],
+  "behaviorTests": [
+    "tests/lesson_cases/10_01.cpp"
+  ],
+  "visibleTests": true,
+  "lessonNotes": "lesson.md"
+}

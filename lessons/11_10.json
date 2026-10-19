@@ -1,0 +1,42 @@
+{
+  "order": 126,
+  "id": "11.10",
+  "title": "Using function templates in multiple files",
+  "url": "https://www.learncpp.com/cpp-tutorial/using-function-templates-in-multiple-files/",
+  "estimatedMinutes": 20,
+  "recap": [
+    "Call sites normally need to see a template definition to instantiate it. A declaration alone in a header with the generic definition hidden in an unrelated source file is not enough.",
+    "Header guards prevent repeated inclusion in one translation unit; template definitions in headers can then be used consistently by multiple translation units."
+  ],
+  "objectives": [
+    "Implement the stated behavior for multiple inputs.",
+    "Practice using function templates in multiple files.",
+    "Run the visible tests and explain one boundary case."
+  ],
+  "warnings": [
+    "The function/type interface is fixed, but implementation syntax is your choice.",
+    "Do not remove the visible tests; the checker keeps an independent copy.",
+    "Respect the stated input domain and lifetime/range rules."
+  ],
+  "challenge": "Implement minOf<T>(left,right) in numeric.h, returning the smaller value (first on equality). Keep the full template definition visible in the header. main.cpp and the supplied probe.cpp both instantiate it; Alt+R through the provided CMake target builds both files. Do not edit the probe or put an int-only replacement in main.cpp.",
+  "expectedOutput": [
+    "minOf(3,8) -> 3",
+    "minOf(1.5,1.25) -> 1.25",
+    "minimumFromOtherFile(8,3) -> 3"
+  ],
+  "hints": [
+    "Edit numeric.h, not probe.cpp.",
+    "Put the whole generic minOf body in the header.",
+    "Compare the two T values and return the selected original value."
+  ],
+  "sources": [
+    "main.cpp",
+    "probe.cpp"
+  ],
+  "sourceChecks": [],
+  "behaviorTests": [
+    "tests/lesson_cases/11_10.cpp"
+  ],
+  "visibleTests": true,
+  "lessonNotes": "lesson.md"
+}

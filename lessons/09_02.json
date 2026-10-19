@@ -1,0 +1,42 @@
+{
+  "order": 101,
+  "id": "9.2",
+  "title": "Code coverage",
+  "url": "https://www.learncpp.com/cpp-tutorial/code-coverage/",
+  "estimatedMinutes": 20,
+  "recap": [
+    "Statement coverage asks whether a statement ran; branch coverage asks whether every decision outcome ran. Testing one ordinary order cannot establish behavior for invalid, express, or boundary orders.",
+    "Even full branch coverage does not prove correctness: a wrong threshold may execute every branch. Boundary tests just below, at, and just above a threshold help catch those errors."
+  ],
+  "objectives": [
+    "Implement the stated behavior for multiple inputs.",
+    "Practice code coverage.",
+    "Run the visible tests and explain one boundary case."
+  ],
+  "warnings": [
+    "The function/type interface is fixed, but implementation syntax is your choice.",
+    "Do not remove the visible tests; the checker keeps an independent copy.",
+    "Respect the stated input domain and lifetime/range rules."
+  ],
+  "challenge": "Implement shippingFee(weight, express). Weight <= 0 is invalid and returns -1, even for express. Valid weights 1..5 cost 5, weights 6..20 cost 10, and larger weights cost 20. Express adds 7 only to valid orders. Test both express choices in every weight category and directly on the 5/6 and 20/21 boundaries.",
+  "expectedOutput": [
+    "shippingFee(5,false) -> 5",
+    "shippingFee(6,true) -> 17",
+    "shippingFee(21,false) -> 20",
+    "shippingFee(0,true) -> -1"
+  ],
+  "hints": [
+    "Return the invalid result before adding express fees.",
+    "Choose a base fee from the three valid weight brackets.",
+    "Test both sides of each threshold, not just one value per branch."
+  ],
+  "sources": [
+    "main.cpp"
+  ],
+  "sourceChecks": [],
+  "behaviorTests": [
+    "tests/lesson_cases/09_02.cpp"
+  ],
+  "visibleTests": true,
+  "lessonNotes": "lesson.md"
+}

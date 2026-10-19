@@ -1,0 +1,40 @@
+{
+  "order": 128,
+  "id": "12.1",
+  "title": "Introduction to compound data types",
+  "url": "https://www.learncpp.com/cpp-tutorial/introduction-to-compound-data-types/",
+  "estimatedMinutes": 20,
+  "recap": [
+    "Compound types build on or relate to other types; examples include functions, references, pointers, arrays, and class types such as std::string. A compound type has its own rules for copying and lifetime.",
+    "A value parameter is a local object initialized from its argument. Modifying an owned string value changes that local copy, not the caller."
+  ],
+  "objectives": [
+    "Implement the stated behavior for multiple inputs.",
+    "Practice introduction to compound data types.",
+    "Run the visible tests and explain one boundary case."
+  ],
+  "warnings": [
+    "The function/type interface is fixed, but implementation syntax is your choice.",
+    "Do not remove the visible tests; the checker keeps an independent copy.",
+    "Respect the stated input domain and lifetime/range rules."
+  ],
+  "challenge": "Implement appendTag(name,tag), returning an owned std::string containing name + \"[\" + tag + \"]\". name is passed by value, so editing the local copy must not change the caller. Empty names and tags are valid. This builds on the string class type you already know while introducing the idea of compound types.",
+  "expectedOutput": [
+    "appendTag(\"Ada\",\"cpp\") -> \"Ada[cpp]\"",
+    "appendTag(\"\",\"\") -> \"[]\""
+  ],
+  "hints": [
+    "Append each piece to the local name.",
+    "Return an owned string, not a view of a destroyed local.",
+    "Do not modify the caller or add extra spaces."
+  ],
+  "sources": [
+    "main.cpp"
+  ],
+  "sourceChecks": [],
+  "behaviorTests": [
+    "tests/lesson_cases/12_01.cpp"
+  ],
+  "visibleTests": true,
+  "lessonNotes": "lesson.md"
+}

@@ -10,11 +10,12 @@ from tools.course import SOLUTIONS, STARTERS, compile_and_run, load_lessons  # n
 
 
 class BehavioralLessonTest(unittest.TestCase):
-    def test_only_remaining_chapter_eight_lessons_use_behavior_drivers(self):
+    def test_function_challenges_use_behavior_drivers(self):
         for lesson in load_lessons():
             revised = lesson['key'].startswith('08_') and lesson['key'] not in {
                 '08_01', '08_02', '08_03', '08_04'
             }
+            revised = revised or lesson['id'].split('.')[0] in {'9', '10', '11', '12', '13'}
             with self.subTest(lesson=lesson['id']):
                 self.assertEqual(bool(lesson.get('behaviorTests')), revised)
                 if revised:
@@ -32,7 +33,7 @@ class BehavioralLessonTest(unittest.TestCase):
                 self.assertTrue(passed, message)
                 passed, message = compile_and_run(lesson, STARTERS / lesson['key'])
                 self.assertFalse(passed, 'Unimplemented starter incorrectly passed')
-                self.assertIn('Behavioral tests failed', message)
+                self.assertTrue('Behavioral tests failed' in message or 'Compilation failed' in message, message)
 
     @unittest.skipUnless(shutil.which('g++'), 'g++ is required')
     def test_alternative_implementation_and_console_text_are_not_rejected(self):

@@ -1,0 +1,40 @@
+{
+  "order": 131,
+  "id": "12.4",
+  "title": "Lvalue references to const",
+  "url": "https://www.learncpp.com/cpp-tutorial/lvalue-references-to-const/",
+  "estimatedMinutes": 20,
+  "recap": [
+    "A reference to const allows read-only access through that reference and can bind to const lvalues and many temporary values. It does not necessarily make the original object globally immutable.",
+    "Returning by value here avoids exposing a reference tied to an argument that may be a temporary. Read-only access and return lifetime are separate design choices."
+  ],
+  "objectives": [
+    "Implement the stated behavior for multiple inputs.",
+    "Practice lvalue references to const.",
+    "Run the visible tests and explain one boundary case."
+  ],
+  "warnings": [
+    "The function/type interface is fixed, but implementation syntax is your choice.",
+    "Do not remove the visible tests; the checker keeps an independent copy.",
+    "Respect the stated input domain and lifetime/range rules."
+  ],
+  "challenge": "Implement maxReadOnly(left,right), returning the larger int by value. The parameters are references to const, so the function must not alter either argument and must also accept const objects and temporary integers.",
+  "expectedOutput": [
+    "maxReadOnly(3,8) -> 8",
+    "maxReadOnly(-2,-4) -> -2"
+  ],
+  "hints": [
+    "Compare without modifying either parameter.",
+    "Return the selected integer by value.",
+    "A conditional expression is sufficient."
+  ],
+  "sources": [
+    "main.cpp"
+  ],
+  "sourceChecks": [],
+  "behaviorTests": [
+    "tests/lesson_cases/12_04.cpp"
+  ],
+  "visibleTests": true,
+  "lessonNotes": "lesson.md"
+}

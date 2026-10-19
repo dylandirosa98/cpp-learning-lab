@@ -1,0 +1,40 @@
+{
+  "order": 155,
+  "id": "13.12",
+  "title": "Member selection with pointers and references",
+  "url": "https://www.learncpp.com/cpp-tutorial/member-selection-with-pointers-and-references/",
+  "estimatedMinutes": 20,
+  "recap": [
+    "The dot operator selects a member of an object or a reference to an object. The arrow operator selects a member through a pointer and corresponds to dereferencing then using dot.",
+    "Member selection through a null pointer is invalid. Establish pointer validity before accessing any of its members."
+  ],
+  "objectives": [
+    "Implement the stated behavior for multiple inputs.",
+    "Practice member selection with pointers and references.",
+    "Run the visible tests and explain one boundary case."
+  ],
+  "warnings": [
+    "The function/type interface is fixed, but implementation syntax is your choice.",
+    "Do not remove the visible tests; the checker keeps an independent copy.",
+    "Respect the stated input domain and lifetime/range rules."
+  ],
+  "challenge": "Implement incrementCounter(counter,delta). Return false for nullptr and do nothing. Otherwise add delta to the pointed-to Counter's value and return true. delta may be negative or zero and results fit int. Practice the -> operator for pointer member selection.",
+  "expectedOutput": [
+    "Counter{4} incremented by 3 -> value 7, true",
+    "nullptr -> false"
+  ],
+  "hints": [
+    "Check the pointer before using ->.",
+    "Update counter->value, not a local copy.",
+    "A zero delta still counts as a successful operation."
+  ],
+  "sources": [
+    "main.cpp"
+  ],
+  "sourceChecks": [],
+  "behaviorTests": [
+    "tests/lesson_cases/13_12.cpp"
+  ],
+  "visibleTests": true,
+  "lessonNotes": "lesson.md"
+}

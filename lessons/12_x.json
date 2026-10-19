@@ -1,0 +1,41 @@
+{
+  "order": 143,
+  "id": "12.x",
+  "title": "Chapter 12 summary and quiz",
+  "url": "https://www.learncpp.com/cpp-tutorial/chapter-12-summary-and-quiz/",
+  "estimatedMinutes": 40,
+  "recap": [
+    "An optional result can describe a mutation that may fail, while pointers identify optional caller-owned objects. Treat validation as a transaction boundary: do not change state until every precondition passes.",
+    "Aliasing matters when multiple parameters identify writable objects. Explicitly rejecting identical accounts makes the contract predictable and keeps validation independent of mutation order."
+  ],
+  "objectives": [
+    "Implement the stated behavior for multiple inputs.",
+    "Practice chapter 12 summary and quiz.",
+    "Run the visible tests and explain one boundary case."
+  ],
+  "warnings": [
+    "The function/type interface is fixed, but implementation syntax is your choice.",
+    "Do not remove the visible tests; the checker keeps an independent copy.",
+    "Respect the stated input domain and lifetime/range rules."
+  ],
+  "challenge": "Implement transfer(from,to,amount), returning optional<int> with the new source balance on success. Both pointers must be non-null and distinct, both balances nonnegative, amount nonnegative, and source must have enough funds. On any invalid condition return nullopt and change neither balance. A zero transfer succeeds. Starting balances and amount are at most 10000, so sums fit int. Do not allocate or own the pointed-to accounts.",
+  "expectedOutput": [
+    "from=10,to=3,amount=4 -> from=6,to=7,result=6",
+    "amount greater than balance -> nullopt, unchanged",
+    "same account pointer -> nullopt"
+  ],
+  "hints": [
+    "Validate null and identical pointers before dereferencing.",
+    "Validate balances and amount before changing either balance.",
+    "Return the new source balance, including an engaged optional containing zero."
+  ],
+  "sources": [
+    "main.cpp"
+  ],
+  "sourceChecks": [],
+  "behaviorTests": [
+    "tests/lesson_cases/12_x.cpp"
+  ],
+  "visibleTests": true,
+  "lessonNotes": "lesson.md"
+}

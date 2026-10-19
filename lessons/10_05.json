@@ -1,0 +1,41 @@
+{
+  "order": 111,
+  "id": "10.5",
+  "title": "Arithmetic conversions",
+  "url": "https://www.learncpp.com/cpp-tutorial/arithmetic-conversions/",
+  "estimatedMinutes": 20,
+  "recap": [
+    "Mixed arithmetic and comparisons use common-type rules. Mixing signed and unsigned values can convert a negative signed operand into a large unsigned value.",
+    "Validate the signed domain before converting it to unsigned. An explicit cast after the guard makes the intended comparison clear."
+  ],
+  "objectives": [
+    "Implement the stated behavior for multiple inputs.",
+    "Practice arithmetic conversions.",
+    "Run the visible tests and explain one boundary case."
+  ],
+  "warnings": [
+    "The function/type interface is fixed, but implementation syntax is your choice.",
+    "Do not remove the visible tests; the checker keeps an independent copy.",
+    "Respect the stated input domain and lifetime/range rules."
+  ],
+  "challenge": "Implement fitsInBudget(cost, budget). Negative signed costs are invalid and return false. Otherwise return whether cost is at most the unsigned budget, including equality. Tested costs fit int and budgets may include the maximum unsigned int value.",
+  "expectedOutput": [
+    "fitsInBudget(-1,100u) -> false",
+    "fitsInBudget(100,100u) -> true",
+    "fitsInBudget(101,100u) -> false"
+  ],
+  "hints": [
+    "Reject negative cost before an unsigned comparison.",
+    "After validation, cost can safely convert to unsigned int.",
+    "Equality should fit the budget."
+  ],
+  "sources": [
+    "main.cpp"
+  ],
+  "sourceChecks": [],
+  "behaviorTests": [
+    "tests/lesson_cases/10_05.cpp"
+  ],
+  "visibleTests": true,
+  "lessonNotes": "lesson.md"
+}

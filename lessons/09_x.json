@@ -1,0 +1,42 @@
+{
+  "order": 106,
+  "id": "9.x",
+  "title": "Chapter 9 summary and quiz",
+  "url": "https://www.learncpp.com/cpp-tutorial/chapter-9-summary-and-quiz/",
+  "estimatedMinutes": 40,
+  "recap": [
+    "A reliable workflow separates input recovery from domain calculations. The reader decides whether a value is syntactically valid and in range; the pricing function applies the business rules without touching a stream.",
+    "Test each unit and then the whole sequence. Include invalid-first attempts, endpoint values, and EOF at every stage so the program cannot silently loop forever or reuse stale data."
+  ],
+  "objectives": [
+    "Implement the stated behavior for multiple inputs.",
+    "Practice chapter 9 summary and quiz.",
+    "Run the visible tests and explain one boundary case."
+  ],
+  "warnings": [
+    "The function/type interface is fixed, but implementation syntax is your choice.",
+    "Do not remove the visible tests; the checker keeps an independent copy.",
+    "Respect the stated input domain and lifetime/range rules."
+  ],
+  "challenge": "Build a resilient order workflow. readBounded(low,high) follows 9.5 line-reading rules but accepts the inclusive bounds; return -1 on EOF or low > high. orderTotal(code,quantity) accepts product codes 1/2/3 priced at 5/8/12 and quantities 1..20; invalid values return -1. placeOrder() reads a product in [1,3], then quantity in [1,20], and returns the total, or -1 if input ends. Do not print prompts or totals; return the result. Retrying a quantity must not reread the product.",
+  "expectedOutput": [
+    "orderTotal(2,3) -> 24",
+    "orderTotal(4,3) -> -1",
+    "placeOrder with \"bad\\n2\\n0\\n3\\n\" -> 24",
+    "placeOrder with \"1\\n\" -> -1"
+  ],
+  "hints": [
+    "Reuse the extraction/recovery pattern in a bounds-parameterized reader.",
+    "Validate both pricing arguments before calculating.",
+    "In placeOrder, stop immediately if either read returns the EOF sentinel."
+  ],
+  "sources": [
+    "main.cpp"
+  ],
+  "sourceChecks": [],
+  "behaviorTests": [
+    "tests/lesson_cases/09_x.cpp"
+  ],
+  "visibleTests": true,
+  "lessonNotes": "lesson.md"
+}

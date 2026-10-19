@@ -1,0 +1,42 @@
+{
+  "order": 121,
+  "id": "11.5",
+  "title": "Default arguments",
+  "url": "https://www.learncpp.com/cpp-tutorial/default-arguments/",
+  "estimatedMinutes": 20,
+  "recap": [
+    "Default arguments supply omitted trailing call arguments; they do not create extra overloads. Once a parameter has a default, later parameters in that declaration must also have defaults.",
+    "Defaults belong where callers can see them and should not be repeated across declarations and definitions. Callers can override earlier defaults only by supplying the needed preceding arguments."
+  ],
+  "objectives": [
+    "Implement the stated behavior for multiple inputs.",
+    "Practice default arguments.",
+    "Run the visible tests and explain one boundary case."
+  ],
+  "warnings": [
+    "The function/type interface is fixed, but implementation syntax is your choice.",
+    "Do not remove the visible tests; the checker keeps an independent copy.",
+    "Respect the stated input domain and lifetime/range rules."
+  ],
+  "challenge": "Implement shippingCost(distance, packages, rate). Return distance*packages*rate, or -1 if distance < 0, packages < 1, or rate < 0. Add defaults so packages is 1 and rate is 2 when omitted. The stub deliberately has no defaults yet: adding the defaults is part of the exercise. All tested products fit int.",
+  "expectedOutput": [
+    "shippingCost(5) -> 10",
+    "shippingCost(5,3) -> 30",
+    "shippingCost(5,3,4) -> 60",
+    "shippingCost(5,0) -> -1"
+  ],
+  "hints": [
+    "Add = 1 to packages and = 2 to rate in the visible function signature.",
+    "Validate the fully supplied values inside the body.",
+    "Keep the zero-rate case valid."
+  ],
+  "sources": [
+    "main.cpp"
+  ],
+  "sourceChecks": [],
+  "behaviorTests": [
+    "tests/lesson_cases/11_05.cpp"
+  ],
+  "visibleTests": true,
+  "lessonNotes": "lesson.md"
+}

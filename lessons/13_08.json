@@ -1,0 +1,40 @@
+{
+  "order": 151,
+  "id": "13.8",
+  "title": "Struct aggregate initialization",
+  "url": "https://www.learncpp.com/cpp-tutorial/struct-aggregate-initialization/",
+  "estimatedMinutes": 20,
+  "recap": [
+    "Aggregate initialization supplies member values in declaration order. Braces express a complete value directly and can help avoid uninitialized member state.",
+    "Returning a newly constructed aggregate keeps a transformation separate from mutation. Check both coordinates, because swapped initializer order can still compile."
+  ],
+  "objectives": [
+    "Implement the stated behavior for multiple inputs.",
+    "Practice struct aggregate initialization.",
+    "Run the visible tests and explain one boundary case."
+  ],
+  "warnings": [
+    "The function/type interface is fixed, but implementation syntax is your choice.",
+    "Do not remove the visible tests; the checker keeps an independent copy.",
+    "Respect the stated input domain and lifetime/range rules."
+  ],
+  "challenge": "Implement translated(point,dx,dy), returning a new Point with x+dx and y+dy. The caller's point is unchanged. Use aggregate initialization for the returned Point and keep member order in mind. Coordinates and sums fit int.",
+  "expectedOutput": [
+    "translated(Point{2,3},4,-1) -> Point{6,2}",
+    "zero offsets preserve coordinates"
+  ],
+  "hints": [
+    "Add dx to x and dy to y.",
+    "Return a Point aggregate in x,y order.",
+    "Do not reuse x for both result fields."
+  ],
+  "sources": [
+    "main.cpp"
+  ],
+  "sourceChecks": [],
+  "behaviorTests": [
+    "tests/lesson_cases/13_08.cpp"
+  ],
+  "visibleTests": true,
+  "lessonNotes": "lesson.md"
+}

@@ -1,0 +1,41 @@
+{
+  "order": 148,
+  "id": "13.5",
+  "title": "Introduction to overloading the I/O operators",
+  "url": "https://www.learncpp.com/cpp-tutorial/introduction-to-overloading-the-i-o-operators/",
+  "estimatedMinutes": 20,
+  "recap": [
+    "Overloaded stream operators let program-defined types participate in ordinary extraction and insertion syntax. Return the same stream reference to preserve chaining and its error state.",
+    "Extraction should not silently invent a valid value when parsing fails. Read into temporary storage, validate it, and only then assign the caller's object."
+  ],
+  "objectives": [
+    "Implement the stated behavior for multiple inputs.",
+    "Practice introduction to overloading the i/o operators.",
+    "Run the visible tests and explain one boundary case."
+  ],
+  "warnings": [
+    "The function/type interface is fixed, but implementation syntax is your choice.",
+    "Do not remove the visible tests; the checker keeps an independent copy.",
+    "Respect the stated input domain and lifetime/range rules."
+  ],
+  "challenge": "Implement operator<< and operator>> for Color. Output exactly the lowercase color name with no newline. Input extracts one whitespace-delimited word; recognized names update color, unknown words set failbit and leave color unchanged. Failed extraction also leaves color unchanged. Return the original stream reference from both operators so chaining works. Unlike most challenges, text format is the actual API being exercised here.",
+  "expectedOutput": [
+    "out << red << \" \" << blue -> \"red blue\"",
+    "input \"green\" -> green and success",
+    "input \"purple\" -> failbit, old value preserved"
+  ],
+  "hints": [
+    "Use the passed stream, never hard-coded std::cin or std::cout.",
+    "Read a temporary string before changing color.",
+    "Set failbit on an unknown name and return the original stream."
+  ],
+  "sources": [
+    "main.cpp"
+  ],
+  "sourceChecks": [],
+  "behaviorTests": [
+    "tests/lesson_cases/13_05.cpp"
+  ],
+  "visibleTests": true,
+  "lessonNotes": "lesson.md"
+}

@@ -1,0 +1,41 @@
+{
+  "order": 113,
+  "id": "10.7",
+  "title": "Typedefs and type aliases",
+  "url": "https://www.learncpp.com/cpp-tutorial/typedefs-and-type-aliases/",
+  "estimatedMinutes": 20,
+  "recap": [
+    "A type alias gives an existing type another name; it does not create a distinct type. A domain name such as Cents can clarify what a number represents without changing arithmetic rules.",
+    "Units and rounding remain part of your contract. Keep money in integer minor units when that is the required representation, and specify what happens to fractional minor units."
+  ],
+  "objectives": [
+    "Implement the stated behavior for multiple inputs.",
+    "Practice typedefs and type aliases.",
+    "Run the visible tests and explain one boundary case."
+  ],
+  "warnings": [
+    "The function/type interface is fixed, but implementation syntax is your choice.",
+    "Do not remove the visible tests; the checker keeps an independent copy.",
+    "Respect the stated input domain and lifetime/range rules."
+  ],
+  "challenge": "The Cents alias names long long. Implement discountedPrice(price, percent): return price times (100-percent) / 100 in integer cents, discarding any fractional cent. Return -1 for negative price or percent outside [0,100]. Prices are at most 1000000, so multiplication fits Cents.",
+  "expectedOutput": [
+    "discountedPrice(999,10) -> 899",
+    "discountedPrice(500,100) -> 0",
+    "discountedPrice(-1,10) -> -1"
+  ],
+  "hints": [
+    "Use Cents for the result and intermediate price arithmetic.",
+    "Subtract the discount from 100 to find the kept percentage.",
+    "Multiply before dividing to avoid unnecessary truncation."
+  ],
+  "sources": [
+    "main.cpp"
+  ],
+  "sourceChecks": [],
+  "behaviorTests": [
+    "tests/lesson_cases/10_07.cpp"
+  ],
+  "visibleTests": true,
+  "lessonNotes": "lesson.md"
+}

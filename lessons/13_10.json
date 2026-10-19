@@ -1,0 +1,41 @@
+{
+  "order": 153,
+  "id": "13.10",
+  "title": "Passing and returning structs",
+  "url": "https://www.learncpp.com/cpp-tutorial/passing-and-returning-structs/",
+  "estimatedMinutes": 20,
+  "recap": [
+    "Functions can borrow structs through const references and return newly computed structs by value. This keeps related results together rather than spreading them across unrelated outputs.",
+    "Read-only inputs and new result values make composition straightforward. Avoid integer division when turning integer counters into a fractional summary."
+  ],
+  "objectives": [
+    "Implement the stated behavior for multiple inputs.",
+    "Practice passing and returning structs.",
+    "Run the visible tests and explain one boundary case."
+  ],
+  "warnings": [
+    "The function/type interface is fixed, but implementation syntax is your choice.",
+    "Do not remove the visible tests; the checker keeps an independent copy.",
+    "Respect the stated input domain and lifetime/range rules."
+  ],
+  "challenge": "Implement combine(left,right), returning Stats with summed wins and losses without changing inputs, and winRate(stats), returning wins/(wins+losses) as double. Empty stats have rate 0.0. Supplied counts are nonnegative and their sums fit int. Rate is a fraction, not a percentage.",
+  "expectedOutput": [
+    "combine(Stats{2,1},Stats{1,3}) -> Stats{3,4}",
+    "winRate(Stats{1,3}) -> 0.25",
+    "winRate(Stats{}) -> 0.0"
+  ],
+  "hints": [
+    "Sum corresponding members into a new Stats.",
+    "Guard the empty total before division.",
+    "Convert before dividing to preserve fractions."
+  ],
+  "sources": [
+    "main.cpp"
+  ],
+  "sourceChecks": [],
+  "behaviorTests": [
+    "tests/lesson_cases/13_10.cpp"
+  ],
+  "visibleTests": true,
+  "lessonNotes": "lesson.md"
+}

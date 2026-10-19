@@ -1,0 +1,39 @@
+{
+  "order": 154,
+  "id": "13.11",
+  "title": "Struct miscellany",
+  "url": "https://www.learncpp.com/cpp-tutorial/struct-miscellany/",
+  "estimatedMinutes": 20,
+  "recap": [
+    "Structs can contain other struct objects, creating a hierarchy of related data. Chained member selection follows those nested objects.",
+    "Avoid assuming an object's memory size equals the sum of member sizes: implementations may add padding. Access members by name rather than by raw offsets."
+  ],
+  "objectives": [
+    "Implement the stated behavior for multiple inputs.",
+    "Practice struct miscellany.",
+    "Run the visible tests and explain one boundary case."
+  ],
+  "warnings": [
+    "The function/type interface is fixed, but implementation syntax is your choice.",
+    "Do not remove the visible tests; the checker keeps an independent copy.",
+    "Respect the stated input domain and lifetime/range rules."
+  ],
+  "challenge": "Implement movePlayer(player,dx,dy), changing only the nested position coordinates of the caller's Player. Preserve name and health exactly. Position is a nested program-defined member type, not an independent global position variable. Sums fit int.",
+  "expectedOutput": [
+    "Player{\"Ada\",{2,3},90} moved by (4,-1) -> position {6,2}, name/health unchanged"
+  ],
+  "hints": [
+    "Select player.position before its x or y member.",
+    "Mutate only those two coordinates.",
+    "Do not reconstruct Player and accidentally reset name or health."
+  ],
+  "sources": [
+    "main.cpp"
+  ],
+  "sourceChecks": [],
+  "behaviorTests": [
+    "tests/lesson_cases/13_11.cpp"
+  ],
+  "visibleTests": true,
+  "lessonNotes": "lesson.md"
+}

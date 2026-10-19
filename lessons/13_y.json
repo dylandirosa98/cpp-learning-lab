@@ -1,0 +1,41 @@
+{
+  "order": 160,
+  "id": "13.y",
+  "title": "Using a language reference",
+  "url": "https://www.learncpp.com/cpp-tutorial/using-a-language-reference/",
+  "estimatedMinutes": 20,
+  "recap": [
+    "A language reference is organized for precise lookup: headers, signatures, version availability, preconditions, return values, and invalidation or lifetime notes matter more than a quick example alone.",
+    "std::clamp assumes ordered bounds and returns a reference to one of its arguments. This wrapper normalizes the bounds and returns an int by value, so no reference to a local parameter escapes."
+  ],
+  "objectives": [
+    "Implement the stated behavior for multiple inputs.",
+    "Practice using a language reference.",
+    "Run the visible tests and explain one boundary case."
+  ],
+  "warnings": [
+    "The function/type interface is fixed, but implementation syntax is your choice.",
+    "Do not remove the visible tests; the checker keeps an independent copy.",
+    "Respect the stated input domain and lifetime/range rules."
+  ],
+  "challenge": "Use the standard-library reference linked in lesson.md to implement boundedTemperature(reading,low,high). If low > high, swap the bounds first. Then return reading clamped to the inclusive interval. Practice finding std::clamp requirements, return type, and header rather than copying an unrelated example. All values are ints.",
+  "expectedOutput": [
+    "boundedTemperature(20,0,10) -> 10",
+    "boundedTemperature(-3,10,0) -> 0",
+    "boundedTemperature(5,0,10) -> 5"
+  ],
+  "hints": [
+    "Read the precondition on std::clamp before using it.",
+    "Normalize reversed bounds with a temporary or std::swap.",
+    "Return an int value rather than storing a reference to a temporary result."
+  ],
+  "sources": [
+    "main.cpp"
+  ],
+  "sourceChecks": [],
+  "behaviorTests": [
+    "tests/lesson_cases/13_y.cpp"
+  ],
+  "visibleTests": true,
+  "lessonNotes": "lesson.md"
+}

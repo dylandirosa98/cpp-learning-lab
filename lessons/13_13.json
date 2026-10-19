@@ -1,0 +1,40 @@
+{
+  "order": 156,
+  "id": "13.13",
+  "title": "Class templates",
+  "url": "https://www.learncpp.com/cpp-tutorial/class-templates/",
+  "estimatedMinutes": 20,
+  "recap": [
+    "A class template describes a family of types, not just a family of functions. Pair<int> and Pair<double> are different types with correspondingly typed members.",
+    "Use the template parameter for the stored data, not just for a function's return type. Hard-coding int members would lose fractional values before pairSum could preserve them."
+  ],
+  "objectives": [
+    "Implement the stated behavior for multiple inputs.",
+    "Practice class templates.",
+    "Run the visible tests and explain one boundary case."
+  ],
+  "warnings": [
+    "The function/type interface is fixed, but implementation syntax is your choice.",
+    "Do not remove the visible tests; the checker keeps an independent copy.",
+    "Respect the stated input domain and lifetime/range rules."
+  ],
+  "challenge": "Complete the Pair<T> struct with two value-initialized members, T first{} and T second{}, then implement pairSum(pair), returning their sum as T. The member declarations are intentionally left for you. Support Pair<int> and Pair<double>; template arguments choose the member types as well as the function instance.",
+  "expectedOutput": [
+    "Pair<int>{2,3} has sum 5",
+    "Pair<double>{1.25,2.5} has sum 3.75"
+  ],
+  "hints": [
+    "Add both members inside Pair, using T rather than int.",
+    "Value-initialize members with braces.",
+    "Return the sum without converting through a fixed numeric type."
+  ],
+  "sources": [
+    "main.cpp"
+  ],
+  "sourceChecks": [],
+  "behaviorTests": [
+    "tests/lesson_cases/13_13.cpp"
+  ],
+  "visibleTests": true,
+  "lessonNotes": "lesson.md"
+}

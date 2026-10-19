@@ -1,0 +1,40 @@
+{
+  "order": 135,
+  "id": "12.8",
+  "title": "Null pointers",
+  "url": "https://www.learncpp.com/cpp-tutorial/null-pointers/",
+  "estimatedMinutes": 20,
+  "recap": [
+    "nullptr expresses the absence of an address. Testing a pointer checks whether it is null; testing the pointed-to integer checks an entirely different thing.",
+    "A non-null check is necessary before indirection but does not prove that an arbitrary pointer is otherwise valid. These tests supply either live objects or nullptr."
+  ],
+  "objectives": [
+    "Implement the stated behavior for multiple inputs.",
+    "Practice null pointers.",
+    "Run the visible tests and explain one boundary case."
+  ],
+  "warnings": [
+    "The function/type interface is fixed, but implementation syntax is your choice.",
+    "Do not remove the visible tests; the checker keeps an independent copy.",
+    "Respect the stated input domain and lifetime/range rules."
+  ],
+  "challenge": "Implement valueOr(value,fallback), returning the pointed-to integer when value is non-null, otherwise fallback. Do not dereference a null pointer. The pointee is read-only through this pointer.",
+  "expectedOutput": [
+    "valueOr(nullptr,7) -> 7",
+    "n=0; valueOr(&n,7) -> 0"
+  ],
+  "hints": [
+    "Check the pointer itself before reading *value.",
+    "A pointer to integer zero is still non-null.",
+    "Return fallback only for nullptr."
+  ],
+  "sources": [
+    "main.cpp"
+  ],
+  "sourceChecks": [],
+  "behaviorTests": [
+    "tests/lesson_cases/12_08.cpp"
+  ],
+  "visibleTests": true,
+  "lessonNotes": "lesson.md"
+}

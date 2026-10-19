@@ -1,0 +1,40 @@
+{
+  "order": 144,
+  "id": "13.1",
+  "title": "Introduction to program-defined (user-defined) types",
+  "url": "https://www.learncpp.com/cpp-tutorial/introduction-to-program-defined-user-defined-types/",
+  "estimatedMinutes": 20,
+  "recap": [
+    "A program-defined type gives a domain concept its own identity rather than only another name for a built-in type. Structs and enumerations are two important ways to define such types.",
+    "A small value type can make units explicit in an API. Passing and returning Money communicates cents without relying solely on parameter names."
+  ],
+  "objectives": [
+    "Implement the stated behavior for multiple inputs.",
+    "Practice introduction to program-defined (user-defined) types.",
+    "Run the visible tests and explain one boundary case."
+  ],
+  "warnings": [
+    "The function/type interface is fixed, but implementation syntax is your choice.",
+    "Do not remove the visible tests; the checker keeps an independent copy.",
+    "Respect the stated input domain and lifetime/range rules."
+  ],
+  "challenge": "The supplied Money struct represents integer cents. Implement addMoney(left,right), returning a new Money containing the sum. Negative amounts are allowed. Do not mutate either input. Tested sums fit int. Return the program-defined type, not a plain int.",
+  "expectedOutput": [
+    "addMoney(Money{125},Money{75}).cents -> 200",
+    "adding -50 cents subtracts 50 cents"
+  ],
+  "hints": [
+    "Read each cents member.",
+    "Construct a Money result from the sum.",
+    "The value parameters are copies; callers should remain unchanged."
+  ],
+  "sources": [
+    "main.cpp"
+  ],
+  "sourceChecks": [],
+  "behaviorTests": [
+    "tests/lesson_cases/13_01.cpp"
+  ],
+  "visibleTests": true,
+  "lessonNotes": "lesson.md"
+}

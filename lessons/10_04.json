@@ -1,0 +1,41 @@
+{
+  "order": 110,
+  "id": "10.4",
+  "title": "Narrowing conversions, list initialization, and constexpr initializers",
+  "url": "https://www.learncpp.com/cpp-tutorial/narrowing-conversions-list-initialization-and-constexpr-initializers/",
+  "estimatedMinutes": 20,
+  "recap": [
+    "Brace initialization rejects many narrowing conversions because they can lose information. Some constant-expression conversions are allowed when the compiler can prove the exact value is representable.",
+    "An explicit cast acknowledges a conversion but does not make an invalid value valid. Validate runtime values first, then convert the known-safe result."
+  ],
+  "objectives": [
+    "Implement the stated behavior for multiple inputs.",
+    "Practice narrowing conversions, list initialization, and constexpr initializers.",
+    "Run the visible tests and explain one boundary case."
+  ],
+  "warnings": [
+    "The function/type interface is fixed, but implementation syntax is your choice.",
+    "Do not remove the visible tests; the checker keeps an independent copy.",
+    "Respect the stated input domain and lifetime/range rules."
+  ],
+  "challenge": "Implement clampChannel(value), returning an unsigned char in [0,255]. Negative inputs become 0, inputs above 255 become 255, and in-range values are preserved. Do not allow wraparound. This challenge uses runtime range validation followed by an explicit narrowing conversion.",
+  "expectedOutput": [
+    "clampChannel(-1) -> 0",
+    "clampChannel(256) -> 255",
+    "clampChannel(128) -> 128"
+  ],
+  "hints": [
+    "Clamp using the int parameter before casting.",
+    "Do not cast a negative or too-large value and then try to fix it.",
+    "The return type is part of the function interface."
+  ],
+  "sources": [
+    "main.cpp"
+  ],
+  "sourceChecks": [],
+  "behaviorTests": [
+    "tests/lesson_cases/10_04.cpp"
+  ],
+  "visibleTests": true,
+  "lessonNotes": "lesson.md"
+}

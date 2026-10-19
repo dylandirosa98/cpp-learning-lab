@@ -1,0 +1,41 @@
+{
+  "order": 102,
+  "id": "9.3",
+  "title": "Common semantic errors in C++",
+  "url": "https://www.learncpp.com/cpp-tutorial/common-semantic-errors-in-c/",
+  "estimatedMinutes": 20,
+  "recap": [
+    "A semantic error is valid C++ that does the wrong thing: integer division, an off-by-one bound, an uninitialized value, or a condition using the wrong operator can all survive compilation.",
+    "Trace a concrete failing input through the program. Change one suspected cause at a time and rerun the failing test along with earlier passing cases."
+  ],
+  "objectives": [
+    "Implement the stated behavior for multiple inputs.",
+    "Practice common semantic errors in c++.",
+    "Run the visible tests and explain one boundary case."
+  ],
+  "warnings": [
+    "The function/type interface is fixed, but implementation syntax is your choice.",
+    "Do not remove the visible tests; the checker keeps an independent copy.",
+    "Respect the stated input domain and lifetime/range rules."
+  ],
+  "challenge": "Implement averageScore(total, count), returning a floating-point average. Return -1.0 if total < 0 or count <= 0. Inputs are at most 10000. In particular, 5 / 2 must produce 2.5 rather than 2.0. This challenge targets integer division, incorrect guards, and forgotten return paths.",
+  "expectedOutput": [
+    "averageScore(5,2) -> 2.5",
+    "averageScore(0,3) -> 0.0",
+    "averageScore(5,0) -> -1.0"
+  ],
+  "hints": [
+    "Guard count before dividing.",
+    "Convert an operand before division, not the truncated result afterward.",
+    "A total of zero is valid; only negative totals are invalid."
+  ],
+  "sources": [
+    "main.cpp"
+  ],
+  "sourceChecks": [],
+  "behaviorTests": [
+    "tests/lesson_cases/09_03.cpp"
+  ],
+  "visibleTests": true,
+  "lessonNotes": "lesson.md"
+}

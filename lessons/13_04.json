@@ -1,0 +1,41 @@
+{
+  "order": 147,
+  "id": "13.4",
+  "title": "Converting an enumeration to and from a string",
+  "url": "https://www.learncpp.com/cpp-tutorial/converting-an-enumeration-to-and-from-a-string/",
+  "estimatedMinutes": 20,
+  "recap": [
+    "Enum-to-text conversion gives a domain value a user-facing name; text-to-enum conversion must also describe invalid input. An optional makes an unrecognized string distinct from every valid color.",
+    "Keep a precise normalization policy. Case sensitivity and whitespace rules must be stated rather than guessed by callers."
+  ],
+  "objectives": [
+    "Implement the stated behavior for multiple inputs.",
+    "Practice converting an enumeration to and from a string.",
+    "Run the visible tests and explain one boundary case."
+  ],
+  "warnings": [
+    "The function/type interface is fixed, but implementation syntax is your choice.",
+    "Do not remove the visible tests; the checker keeps an independent copy.",
+    "Respect the stated input domain and lifetime/range rules."
+  ],
+  "challenge": "Implement colorName(color) and parseColor(text). Names are exactly lowercase \"red\", \"green\", \"blue\". parseColor returns an engaged optional<Color> for those names, otherwise nullopt; no whitespace trimming or case folding. colorName receives valid enumerators only. Returning string_view literals is safe because their storage lasts for the program.",
+  "expectedOutput": [
+    "colorName(green) -> \"green\"",
+    "parseColor(\"blue\") -> blue",
+    "parseColor(\"Blue\") -> nullopt"
+  ],
+  "hints": [
+    "A switch can map enumerators to static string literals.",
+    "Compare text contents against each accepted name.",
+    "Do not use a valid color as the parse-error result."
+  ],
+  "sources": [
+    "main.cpp"
+  ],
+  "sourceChecks": [],
+  "behaviorTests": [
+    "tests/lesson_cases/13_04.cpp"
+  ],
+  "visibleTests": true,
+  "lessonNotes": "lesson.md"
+}

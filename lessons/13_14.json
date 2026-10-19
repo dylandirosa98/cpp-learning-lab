@@ -1,0 +1,41 @@
+{
+  "order": 157,
+  "id": "13.14",
+  "title": "Class template argument deduction (CTAD) and deduction guides",
+  "url": "https://www.learncpp.com/cpp-tutorial/class-template-argument-deduction-ctad-and-deduction-guides/",
+  "estimatedMinutes": 20,
+  "recap": [
+    "CTAD uses initialization arguments to deduce class template arguments. A deduction guide specifies how argument types map to a specialization; it is not a function body.",
+    "Deducing a common type for mixed numeric arguments prevents accidental truncation. The resulting object must really store that type, not merely cast during a later calculation."
+  ],
+  "objectives": [
+    "Implement the stated behavior for multiple inputs.",
+    "Practice class template argument deduction (ctad) and deduction guides.",
+    "Run the visible tests and explain one boundary case."
+  ],
+  "warnings": [
+    "The function/type interface is fixed, but implementation syntax is your choice.",
+    "Do not remove the visible tests; the checker keeps an independent copy.",
+    "Respect the stated input domain and lifetime/range rules."
+  ],
+  "challenge": "Add a deduction guide so Pair{left,right} deduces Pair<std::common_type_t<T,U>> from possibly mixed numeric arguments. Then implement spanOf(pair), returning the absolute difference of its two members as T. Pair{2,5.5} must store two doubles, not truncate. std::common_type_t is provided by <type_traits>; it names the common arithmetic type. Inputs and differences fit their types.",
+  "expectedOutput": [
+    "Pair{2,5.5} has type Pair<double>",
+    "spanOf(Pair{2,5.5}) -> 3.5",
+    "spanOf(Pair{8,3}) -> 5"
+  ],
+  "hints": [
+    "The guide begins template <typename T, typename U>.",
+    "Its target is Pair<std::common_type_t<T,U>>.",
+    "Compute a nonnegative difference using the stored member type."
+  ],
+  "sources": [
+    "main.cpp"
+  ],
+  "sourceChecks": [],
+  "behaviorTests": [
+    "tests/lesson_cases/13_14.cpp"
+  ],
+  "visibleTests": true,
+  "lessonNotes": "lesson.md"
+}

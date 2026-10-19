@@ -1,0 +1,41 @@
+{
+  "order": 118,
+  "id": "11.2",
+  "title": "Function overload differentiation",
+  "url": "https://www.learncpp.com/cpp-tutorial/function-overload-differentiation/",
+  "estimatedMinutes": 20,
+  "recap": [
+    "Overloads can differ by parameter number or parameter types. Renaming a parameter, changing only its default, or changing only the return type does not create a distinct overload.",
+    "The same operation can serve different domains while retaining domain-appropriate comparisons. For strings, compare text values rather than raw storage addresses."
+  ],
+  "objectives": [
+    "Implement the stated behavior for multiple inputs.",
+    "Practice function overload differentiation.",
+    "Run the visible tests and explain one boundary case."
+  ],
+  "warnings": [
+    "The function/type interface is fixed, but implementation syntax is your choice.",
+    "Do not remove the visible tests; the checker keeps an independent copy.",
+    "Respect the stated input domain and lifetime/range rules."
+  ],
+  "challenge": "Implement sameValue(int,int) and sameValue(std::string_view,std::string_view). Return exact equality for each pair. Text comparison is case-sensitive and compares contents, not addresses. Empty text equals empty text. Parameter names and return types are not what distinguish these overloads.",
+  "expectedOutput": [
+    "sameValue(2,2) -> true",
+    "sameValue(\"cat\",\"Cat\") -> false",
+    "sameValue(\"\",\"\") -> true"
+  ],
+  "hints": [
+    "Use the equality operator on the typed arguments.",
+    "A string_view comparison examines its characters.",
+    "Do not make the text overload case-insensitive."
+  ],
+  "sources": [
+    "main.cpp"
+  ],
+  "sourceChecks": [],
+  "behaviorTests": [
+    "tests/lesson_cases/11_02.cpp"
+  ],
+  "visibleTests": true,
+  "lessonNotes": "lesson.md"
+}

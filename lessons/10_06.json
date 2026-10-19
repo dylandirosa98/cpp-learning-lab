@@ -1,0 +1,41 @@
+{
+  "order": 112,
+  "id": "10.6",
+  "title": "Explicit type conversion (casting) and static_cast",
+  "url": "https://www.learncpp.com/cpp-tutorial/explicit-type-conversion-casting-and-static-cast/",
+  "estimatedMinutes": 20,
+  "recap": [
+    "static_cast requests an explicit conversion between compatible types. It makes an intentional numeric change visible but does not perform range validation for you.",
+    "Apply the cast before the operation that needs the wider type. A cast around an integer-division expression happens too late to preserve its fraction."
+  ],
+  "objectives": [
+    "Implement the stated behavior for multiple inputs.",
+    "Practice explicit type conversion (casting) and static_cast.",
+    "Run the visible tests and explain one boundary case."
+  ],
+  "warnings": [
+    "The function/type interface is fixed, but implementation syntax is your choice.",
+    "Do not remove the visible tests; the checker keeps an independent copy.",
+    "Respect the stated input domain and lifetime/range rules."
+  ],
+  "challenge": "Implement successRate(successes, attempts) as a percentage in [0,100]. Return -1.0 when attempts <= 0, successes < 0, or successes > attempts. Preserve fractional percentages. Counts are at most 100000.",
+  "expectedOutput": [
+    "successRate(1,4) -> 25.0",
+    "successRate(1,8) -> 12.5",
+    "successRate(0,0) -> -1.0"
+  ],
+  "hints": [
+    "Validate all three invalid conditions before dividing.",
+    "Convert successes to double before division.",
+    "Multiply the fraction by 100 to obtain a percentage."
+  ],
+  "sources": [
+    "main.cpp"
+  ],
+  "sourceChecks": [],
+  "behaviorTests": [
+    "tests/lesson_cases/10_06.cpp"
+  ],
+  "visibleTests": true,
+  "lessonNotes": "lesson.md"
+}

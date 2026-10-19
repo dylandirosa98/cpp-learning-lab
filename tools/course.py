@@ -38,8 +38,8 @@ def normalize_lesson_id(value: str) -> str:
     parts = compact.replace("_", ".").split(".")
     if len(parts) == 2 and (parts[0].isdigit() or len(parts[0]) == 1 and parts[0].isalpha()):
         chapter = f"{int(parts[0]):02d}" if parts[0].isdigit() else parts[0]
-        if parts[1] == "x":
-            return f"{chapter}_x"
+        if parts[1] in {"x", "y"}:
+            return f"{chapter}_{parts[1]}"
         if parts[1].isdigit():
             return f"{chapter}_{int(parts[1]):02d}"
     if compact.endswith("x") and compact[:-1].isdigit():
@@ -335,7 +335,10 @@ def show_lesson(lesson: dict) -> None:
     if lesson.get("behaviorTests"):
         print("\nTesting")
         print("The checker calls your functions with multiple inputs and checks their results.")
-        print("No source-token checks or console formatting requirements apply.")
+        print("No source-token checks apply; stream formatting is checked only when part of the API.")
+        if lesson.get("visibleTests"):
+            print("Alt+R runs the visible tests in main.cpp without submitting.")
+            print(f"Walkthrough: {workspace_path(lesson) / lesson['lessonNotes']}")
     else:
         print("\nExpected output")
         print("```text")
@@ -586,6 +589,8 @@ def build_parser() -> argparse.ArgumentParser:
     subparsers.add_parser("open")
     subparsers.add_parser("verify-solutions")
     subparsers.add_parser("sync")
+    web = subparsers.add_parser("web", help="Open the local Chapter 9 browser companion")
+    web.add_argument("--port", type=int, default=8765)
     for name in ("lesson", "read", "check", "solution"):
         command = subparsers.add_parser(name)
         command.add_argument("lesson_id")
@@ -622,6 +627,11 @@ def main() -> None:
         verify_solutions()
     elif args.command == "sync":
         sync_repository()
+    elif args.command == "web":
+        from tools.course_web import serve
+        if not 0 <= args.port <= 65535:
+            raise SystemExit("Port must be between 0 and 65535.")
+        serve(args.port)
     else:
         lesson = lesson_by_id(args.lesson_id)
         if args.command == "lesson":

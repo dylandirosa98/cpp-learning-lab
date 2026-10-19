@@ -1,0 +1,41 @@
+{
+  "order": 117,
+  "id": "11.1",
+  "title": "Introduction to function overloading",
+  "url": "https://www.learncpp.com/cpp-tutorial/introduction-to-function-overloading/",
+  "estimatedMinutes": 20,
+  "recap": [
+    "An overload set contains functions sharing a name but accepting different parameter types. A call selects an overload from its argument types, letting one operation have appropriately typed implementations.",
+    "Return type alone cannot distinguish two overloads with identical parameter lists. The caller must be able to choose before using the return value."
+  ],
+  "objectives": [
+    "Implement the stated behavior for multiple inputs.",
+    "Practice introduction to function overloading.",
+    "Run the visible tests and explain one boundary case."
+  ],
+  "warnings": [
+    "The function/type interface is fixed, but implementation syntax is your choice.",
+    "Do not remove the visible tests; the checker keeps an independent copy.",
+    "Respect the stated input domain and lifetime/range rules."
+  ],
+  "challenge": "Implement both doubleValue overloads: int -> int and double -> double. Each returns twice its argument, preserving the appropriate result type. Integer inputs are at most one million in magnitude. Do not convert the double overload through int.",
+  "expectedOutput": [
+    "doubleValue(3) -> 6",
+    "doubleValue(1.25) -> 2.5",
+    "doubleValue(-2) -> -4"
+  ],
+  "hints": [
+    "Implement each body separately.",
+    "The double overload needs double arithmetic.",
+    "The tests check the result types as part of the public API."
+  ],
+  "sources": [
+    "main.cpp"
+  ],
+  "sourceChecks": [],
+  "behaviorTests": [
+    "tests/lesson_cases/11_01.cpp"
+  ],
+  "visibleTests": true,
+  "lessonNotes": "lesson.md"
+}

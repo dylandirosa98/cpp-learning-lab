@@ -1,0 +1,41 @@
+{
+  "order": 109,
+  "id": "10.3",
+  "title": "Numeric conversions",
+  "url": "https://www.learncpp.com/cpp-tutorial/numeric-conversions/",
+  "estimatedMinutes": 20,
+  "recap": [
+    "Numeric conversions may change range or precision. Converting a finite floating value to an integer discards its fractional part toward zero rather than rounding to the nearest integer.",
+    "The source value must fit the destination range. Checking or clamping the source before conversion avoids an out-of-range floating-to-integer conversion."
+  ],
+  "objectives": [
+    "Implement the stated behavior for multiple inputs.",
+    "Practice numeric conversions.",
+    "Run the visible tests and explain one boundary case."
+  ],
+  "warnings": [
+    "The function/type interface is fixed, but implementation syntax is your choice.",
+    "Do not remove the visible tests; the checker keeps an independent copy.",
+    "Respect the stated input domain and lifetime/range rules."
+  ],
+  "challenge": "Implement wholeDegrees(temperature). Clamp a finite double to [-100,100], then return its integer part truncated toward zero. Tested values are finite and between -10000 and 10000. Clamp before converting so the target integer conversion is always in range.",
+  "expectedOutput": [
+    "wholeDegrees(9.9) -> 9",
+    "wholeDegrees(-9.9) -> -9",
+    "wholeDegrees(120.5) -> 100"
+  ],
+  "hints": [
+    "Handle values outside the allowed range first.",
+    "Use an explicit conversion only after the range is safe.",
+    "Negative fractions truncate toward zero too."
+  ],
+  "sources": [
+    "main.cpp"
+  ],
+  "sourceChecks": [],
+  "behaviorTests": [
+    "tests/lesson_cases/10_03.cpp"
+  ],
+  "visibleTests": true,
+  "lessonNotes": "lesson.md"
+}

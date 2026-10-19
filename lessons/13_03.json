@@ -1,0 +1,41 @@
+{
+  "order": 146,
+  "id": "13.3",
+  "title": "Unscoped enumerator integral conversions",
+  "url": "https://www.learncpp.com/cpp-tutorial/unscoped-enumerator-integral-conversions/",
+  "estimatedMinutes": 20,
+  "recap": [
+    "Unscoped enumerations can convert to integral types, while conversion from an arbitrary integer back to an enumeration needs explicit care. Named enumerators need not have consecutive values.",
+    "An integer matching the underlying representation is not automatically a recognized domain choice. Validate the accepted codes instead of treating every integer as an enum value."
+  ],
+  "objectives": [
+    "Implement the stated behavior for multiple inputs.",
+    "Practice unscoped enumerator integral conversions.",
+    "Run the visible tests and explain one boundary case."
+  ],
+  "warnings": [
+    "The function/type interface is fixed, but implementation syntax is your choice.",
+    "Do not remove the visible tests; the checker keeps an independent copy.",
+    "Respect the stated input domain and lifetime/range rules."
+  ],
+  "challenge": "Implement permissionValue(permission), returning its integer code, and permissionFromCode(code), accepting exactly codes 0/1/2/4 and returning none/readPermission/writePermission/admin respectively. Unknown codes return none. Do not cast unchecked arbitrary integers into the enum. The enumerators use explicit nonconsecutive values.",
+  "expectedOutput": [
+    "permissionValue(admin) -> 4",
+    "permissionFromCode(2) -> writePermission",
+    "permissionFromCode(3) -> none"
+  ],
+  "hints": [
+    "Use the explicit values assigned in the enum declaration.",
+    "Only three nonzero codes are recognized.",
+    "Use none as the fallback, not a cast of the unknown input."
+  ],
+  "sources": [
+    "main.cpp"
+  ],
+  "sourceChecks": [],
+  "behaviorTests": [
+    "tests/lesson_cases/13_03.cpp"
+  ],
+  "visibleTests": true,
+  "lessonNotes": "lesson.md"
+}

@@ -1,0 +1,40 @@
+{
+  "order": 137,
+  "id": "12.10",
+  "title": "Pass by address",
+  "url": "https://www.learncpp.com/cpp-tutorial/pass-by-address/",
+  "estimatedMinutes": 20,
+  "recap": [
+    "Pass by address passes a pointer value into a function. The function receives a copy of the address but can still modify the caller-owned object by indirection.",
+    "A nullable parameter can communicate optional participation. Document whether null is accepted and what it means instead of relying on accidental behavior."
+  ],
+  "objectives": [
+    "Implement the stated behavior for multiple inputs.",
+    "Practice pass by address.",
+    "Run the visible tests and explain one boundary case."
+  ],
+  "warnings": [
+    "The function/type interface is fixed, but implementation syntax is your choice.",
+    "Do not remove the visible tests; the checker keeps an independent copy.",
+    "Respect the stated input domain and lifetime/range rules."
+  ],
+  "challenge": "Implement resetIfPresent(value). A non-null pointer means reset that caller-owned integer to zero. A null pointer means no action. Do not allocate, delete, or retain the address.",
+  "expectedOutput": [
+    "n=9; resetIfPresent(&n); -> n=0",
+    "resetIfPresent(nullptr) is a safe no-op"
+  ],
+  "hints": [
+    "Make null an early return or condition.",
+    "Only the pointee should be set to zero.",
+    "No ownership is transferred by this call."
+  ],
+  "sources": [
+    "main.cpp"
+  ],
+  "sourceChecks": [],
+  "behaviorTests": [
+    "tests/lesson_cases/12_10.cpp"
+  ],
+  "visibleTests": true,
+  "lessonNotes": "lesson.md"
+}

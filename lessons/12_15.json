@@ -1,0 +1,41 @@
+{
+  "order": 142,
+  "id": "12.15",
+  "title": "std::optional",
+  "url": "https://www.learncpp.com/cpp-tutorial/stdoptional/",
+  "estimatedMinutes": 20,
+  "recap": [
+    "std::optional<T> represents either a T value or no value. It avoids sentinel ambiguity, especially when every ordinary T value could be a valid result.",
+    "Check engagement before dereferencing or use value_or when a fallback is appropriate. An engaged optional containing zero is still engaged."
+  ],
+  "objectives": [
+    "Implement the stated behavior for multiple inputs.",
+    "Practice std::optional.",
+    "Run the visible tests and explain one boundary case."
+  ],
+  "warnings": [
+    "The function/type interface is fixed, but implementation syntax is your choice.",
+    "Do not remove the visible tests; the checker keeps an independent copy.",
+    "Respect the stated input domain and lifetime/range rules."
+  ],
+  "challenge": "Implement parseDigit(character). For ASCII characters 0..9 return an engaged std::optional<int> containing the numeric digit. For any other character return std::nullopt. An engaged zero is a valid result and is different from an empty optional.",
+  "expectedOutput": [
+    "parseDigit('0') -> optional containing 0",
+    "parseDigit('9') -> optional containing 9",
+    "parseDigit('x') -> nullopt"
+  ],
+  "hints": [
+    "Use character bounds to recognize digits.",
+    "Subtract the character zero, not numeric zero.",
+    "Return std::nullopt for invalid characters."
+  ],
+  "sources": [
+    "main.cpp"
+  ],
+  "sourceChecks": [],
+  "behaviorTests": [
+    "tests/lesson_cases/12_15.cpp"
+  ],
+  "visibleTests": true,
+  "lessonNotes": "lesson.md"
+}

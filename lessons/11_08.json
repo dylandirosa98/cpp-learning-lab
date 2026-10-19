@@ -1,0 +1,41 @@
+{
+  "order": 124,
+  "id": "11.8",
+  "title": "Function templates with multiple template types",
+  "url": "https://www.learncpp.com/cpp-tutorial/function-templates-with-multiple-template-types/",
+  "estimatedMinutes": 20,
+  "recap": [
+    "Independent template parameters permit heterogeneous arguments. A single T parameter for both arguments normally requires compatible deduction of one T, not arbitrary mixed arguments.",
+    "Multiple type parameters do not disable arithmetic conversions. Convert at the intended stage when the domain calls for floating-point mathematical addition."
+  ],
+  "objectives": [
+    "Implement the stated behavior for multiple inputs.",
+    "Practice function templates with multiple template types.",
+    "Run the visible tests and explain one boundary case."
+  ],
+  "warnings": [
+    "The function/type interface is fixed, but implementation syntax is your choice.",
+    "Do not remove the visible tests; the checker keeps an independent copy.",
+    "Respect the stated input domain and lifetime/range rules."
+  ],
+  "challenge": "Implement sumAsDouble<T,U>(left,right), returning the mathematical sum as double. Convert each operand to double BEFORE adding so mixed signed/unsigned inputs do not wrap. Tested values are small integers or finite doubles and are exactly representable or checked within 1e-9.",
+  "expectedOutput": [
+    "sumAsDouble(-3,2u) -> -1.0",
+    "sumAsDouble(2,0.5) -> 2.5",
+    "sumAsDouble(1.25,2) -> 3.25"
+  ],
+  "hints": [
+    "Keep T and U independent.",
+    "Cast both operands before the + operation.",
+    "Casting the final sum would be too late for a mixed-sign wraparound."
+  ],
+  "sources": [
+    "main.cpp"
+  ],
+  "sourceChecks": [],
+  "behaviorTests": [
+    "tests/lesson_cases/11_08.cpp"
+  ],
+  "visibleTests": true,
+  "lessonNotes": "lesson.md"
+}

@@ -1,0 +1,40 @@
+{
+  "order": 134,
+  "id": "12.7",
+  "title": "Introduction to pointers",
+  "url": "https://www.learncpp.com/cpp-tutorial/introduction-to-pointers/",
+  "estimatedMinutes": 20,
+  "recap": [
+    "A pointer stores an address. The address-of operator obtains an object's address, while indirection accesses the object at a valid pointed-to address.",
+    "Changing a value through a pointer differs from changing which address the local pointer stores. Pointers do not own an object merely because they point to it."
+  ],
+  "objectives": [
+    "Implement the stated behavior for multiple inputs.",
+    "Practice introduction to pointers.",
+    "Run the visible tests and explain one boundary case."
+  ],
+  "warnings": [
+    "The function/type interface is fixed, but implementation syntax is your choice.",
+    "Do not remove the visible tests; the checker keeps an independent copy.",
+    "Respect the stated input domain and lifetime/range rules."
+  ],
+  "challenge": "Implement doublePointed(value), doubling the caller's integer through a pointer. For this lesson the pointer is guaranteed non-null and the product fits int. Use indirection to access the pointed-to object rather than modifying the local pointer value.",
+  "expectedOutput": [
+    "n=4; doublePointed(&n); -> n=8",
+    "n=-3 -> n=-6"
+  ],
+  "hints": [
+    "Dereference value with *.",
+    "Multiply the pointed-to integer, not an address.",
+    "No allocation or deletion is needed."
+  ],
+  "sources": [
+    "main.cpp"
+  ],
+  "sourceChecks": [],
+  "behaviorTests": [
+    "tests/lesson_cases/12_07.cpp"
+  ],
+  "visibleTests": true,
+  "lessonNotes": "lesson.md"
+}

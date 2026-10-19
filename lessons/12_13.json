@@ -1,0 +1,41 @@
+{
+  "order": 140,
+  "id": "12.13",
+  "title": "In and out parameters",
+  "url": "https://www.learncpp.com/cpp-tutorial/in-and-out-parameters/",
+  "estimatedMinutes": 20,
+  "recap": [
+    "Input parameters supply data; output parameters receive calculated results; in/out parameters do both. Non-const references can represent output destinations, but the contract must specify what happens on failure.",
+    "Validate before changing any output when failure promises to preserve state. This makes callers able to inspect the status without recovering partially updated results."
+  ],
+  "objectives": [
+    "Implement the stated behavior for multiple inputs.",
+    "Practice in and out parameters.",
+    "Run the visible tests and explain one boundary case."
+  ],
+  "warnings": [
+    "The function/type interface is fixed, but implementation syntax is your choice.",
+    "Do not remove the visible tests; the checker keeps an independent copy.",
+    "Respect the stated input domain and lifetime/range rules."
+  ],
+  "challenge": "Implement divideWithRemainder(numerator,denominator,quotient,remainder). If denominator is zero, return false and leave both output integers unchanged. Otherwise write the C++ integer quotient and remainder, and return true. Output references refer to distinct objects. Inputs are small, avoiding division overflow.",
+  "expectedOutput": [
+    "17 / 5 -> quotient=3, remainder=2, true",
+    "-17 / 5 -> quotient=-3, remainder=-2, true",
+    "denominator=0 -> false; outputs unchanged"
+  ],
+  "hints": [
+    "Check denominator before either operation.",
+    "Write both outputs only on success.",
+    "C++ remainder follows the numerator sign for these inputs."
+  ],
+  "sources": [
+    "main.cpp"
+  ],
+  "sourceChecks": [],
+  "behaviorTests": [
+    "tests/lesson_cases/12_13.cpp"
+  ],
+  "visibleTests": true,
+  "lessonNotes": "lesson.md"
+}

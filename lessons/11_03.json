@@ -1,0 +1,42 @@
+{
+  "order": 119,
+  "id": "11.3",
+  "title": "Function overload resolution and ambiguous matches",
+  "url": "https://www.learncpp.com/cpp-tutorial/function-overload-resolution-and-ambiguous-matches/",
+  "estimatedMinutes": 20,
+  "recap": [
+    "Overload resolution prefers better matches, such as exact matches and then promotions over ordinary numeric conversions. If no unique best viable overload exists, compilation fails with ambiguity.",
+    "Inspect argument types rather than just their displayed numeric values. A float literal and an integer literal can select different operations even when both look like four."
+  ],
+  "objectives": [
+    "Implement the stated behavior for multiple inputs.",
+    "Practice function overload resolution and ambiguous matches.",
+    "Run the visible tests and explain one boundary case."
+  ],
+  "warnings": [
+    "The function/type interface is fixed, but implementation syntax is your choice.",
+    "Do not remove the visible tests; the checker keeps an independent copy.",
+    "Respect the stated input domain and lifetime/range rules."
+  ],
+  "challenge": "Implement scale(int) to return twice the input as double, and scale(double) to return 1.5 times the input. The visible tests also call scale with a char and a float: reason about which overload is selected by promotion. All values are small and finite.",
+  "expectedOutput": [
+    "scale(4) -> 8.0",
+    "scale(4.0) -> 6.0",
+    "scale(char{4}) -> 8.0",
+    "scale(4.0f) -> 6.0"
+  ],
+  "hints": [
+    "The two overloads intentionally have different factors.",
+    "A char promotes to int.",
+    "A float promotes to double; no explicit cast is needed at the call."
+  ],
+  "sources": [
+    "main.cpp"
+  ],
+  "sourceChecks": [],
+  "behaviorTests": [
+    "tests/lesson_cases/11_03.cpp"
+  ],
+  "visibleTests": true,
+  "lessonNotes": "lesson.md"
+}

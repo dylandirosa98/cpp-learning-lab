@@ -1,0 +1,41 @@
+{
+  "order": 149,
+  "id": "13.6",
+  "title": "Scoped enumerations (enum classes)",
+  "url": "https://www.learncpp.com/cpp-tutorial/scoped-enumerations-enum-classes/",
+  "estimatedMinutes": 20,
+  "recap": [
+    "Scoped enumerations keep enumerator names inside the enum scope and do not implicitly convert to integers. This reduces name collisions and accidental mixed-domain comparisons.",
+    "Use the domain alternatives directly when expressing policy. Explicit scope qualification documents which kind of access a branch is discussing."
+  ],
+  "objectives": [
+    "Implement the stated behavior for multiple inputs.",
+    "Practice scoped enumerations (enum classes).",
+    "Run the visible tests and explain one boundary case."
+  ],
+  "warnings": [
+    "The function/type interface is fixed, but implementation syntax is your choice.",
+    "Do not remove the visible tests; the checker keeps an independent copy.",
+    "Respect the stated input domain and lifetime/range rules."
+  ],
+  "challenge": "Implement canEdit(access, ownsDocument). Admins can edit every document; members can edit only their own; guests can never edit. Use the scoped Access enumerators rather than treating access as an integer.",
+  "expectedOutput": [
+    "canEdit(Access::admin,false) -> true",
+    "canEdit(Access::member,false) -> false",
+    "canEdit(Access::member,true) -> true"
+  ],
+  "hints": [
+    "Admin permission does not depend on ownership.",
+    "Member permission does depend on ownership.",
+    "Guest must remain denied even when ownsDocument is true."
+  ],
+  "sources": [
+    "main.cpp"
+  ],
+  "sourceChecks": [],
+  "behaviorTests": [
+    "tests/lesson_cases/13_06.cpp"
+  ],
+  "visibleTests": true,
+  "lessonNotes": "lesson.md"
+}

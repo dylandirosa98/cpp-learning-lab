@@ -1,0 +1,41 @@
+{
+  "order": 115,
+  "id": "10.9",
+  "title": "Type deduction for functions",
+  "url": "https://www.learncpp.com/cpp-tutorial/type-deduction-for-functions/",
+  "estimatedMinutes": 20,
+  "recap": [
+    "An auto return type is deduced from the function definition. Ordinary return statements in the same deduced-return function must agree on the deduced type.",
+    "Return-type deduction does not replace thinking about the API. Decide the type callers should receive, then ensure all paths produce it."
+  ],
+  "objectives": [
+    "Implement the stated behavior for multiple inputs.",
+    "Practice type deduction for functions.",
+    "Run the visible tests and explain one boundary case."
+  ],
+  "warnings": [
+    "The function/type interface is fixed, but implementation syntax is your choice.",
+    "Do not remove the visible tests; the checker keeps an independent copy.",
+    "Respect the stated input domain and lifetime/range rules."
+  ],
+  "challenge": "Implement auto absoluteGap(left, right), returning the nonnegative integer distance between two integers. Every return path must deduce the same type, int. Inputs lie between -1000000 and 1000000. Keep the definition before callers so its return type can be deduced.",
+  "expectedOutput": [
+    "absoluteGap(3,8) -> 5",
+    "absoluteGap(8,3) -> 5",
+    "absoluteGap(-4,2) -> 6"
+  ],
+  "hints": [
+    "Subtract the smaller value from the larger one.",
+    "Both branches should return int expressions.",
+    "No conversion to double is needed here."
+  ],
+  "sources": [
+    "main.cpp"
+  ],
+  "sourceChecks": [],
+  "behaviorTests": [
+    "tests/lesson_cases/10_09.cpp"
+  ],
+  "visibleTests": true,
+  "lessonNotes": "lesson.md"
+}

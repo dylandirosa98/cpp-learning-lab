@@ -1,0 +1,10 @@
+# Standalone Alt+R target, also usable from the course root.
+cmake_minimum_required(VERSION 3.16)
+if(CMAKE_SOURCE_DIR STREQUAL CMAKE_CURRENT_SOURCE_DIR)
+    project(lesson_13_x LANGUAGES CXX)
+endif()
+add_executable(lesson_13_x main.cpp )
+target_compile_features(lesson_13_x PRIVATE cxx_std_20)
+if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
+    target_compile_options(lesson_13_x PRIVATE -Wall -Wextra -Wpedantic -UNDEBUG)
+endif()

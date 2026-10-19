@@ -1,0 +1,42 @@
+{
+  "order": 105,
+  "id": "9.6",
+  "title": "Assert and static_assert",
+  "url": "https://www.learncpp.com/cpp-tutorial/assert-and-static_assert/",
+  "estimatedMinutes": 20,
+  "recap": [
+    "assert checks a runtime invariant in assertion-enabled builds and aborts on violation. It can disappear when NDEBUG is defined, so do not hide necessary assignments or input validation inside its argument.",
+    "static_assert checks a constant expression during compilation. It does not run later, and it can reject a broken compile-time assumption before an executable exists."
+  ],
+  "objectives": [
+    "Implement the stated behavior for multiple inputs.",
+    "Practice assert and static_assert.",
+    "Run the visible tests and explain one boundary case."
+  ],
+  "warnings": [
+    "The function/type interface is fixed, but implementation syntax is your choice.",
+    "Do not remove the visible tests; the checker keeps an independent copy.",
+    "Respect the stated input domain and lifetime/range rules."
+  ],
+  "challenge": "Implement constexpr validPercent(percent), true exactly for [0,100], and checkedPercent(percent), which asserts that precondition then returns the input. validPercent must work in constant expressions. checkedPercent must abort on invalid values in a debug build, not return a sentinel. The provided tests isolate invalid calls in child processes so Alt+R still reports results. Run these tests with assertions enabled (no NDEBUG, and a Debug CMake build). Assertions document programmer mistakes; they are not user-input validation.",
+  "expectedOutput": [
+    "validPercent(0) -> true",
+    "validPercent(101) -> false",
+    "checkedPercent(45) -> 45",
+    "checkedPercent(-1) -> assertion abort"
+  ],
+  "hints": [
+    "Make validPercent a constexpr range predicate.",
+    "Use assert(validPercent(percent)) before returning the value.",
+    "Assertions are intentionally tested in subprocesses; do not replace them with an ordinary return."
+  ],
+  "sources": [
+    "main.cpp"
+  ],
+  "sourceChecks": [],
+  "behaviorTests": [
+    "tests/lesson_cases/09_06.cpp"
+  ],
+  "visibleTests": true,
+  "lessonNotes": "lesson.md"
+}
