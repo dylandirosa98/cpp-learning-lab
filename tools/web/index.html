@@ -115,7 +115,7 @@
           </div>
 
           <div class="quiz-card">
-            <p id="question-context" class="question-context"></p>
+            <div id="question-context" class="question-context"></div>
             <pre id="question-code" class="question-code" hidden></pre>
             <div class="quiz-meta">
               <span id="quiz-counter">Question 1</span>
@@ -155,10 +155,12 @@
             <textarea id="code-editor" aria-label="C++ challenge source" spellcheck="false"></textarea>
           </div>
 
-          <details class="file-details">
-            <summary>Assignment contract &amp; external terminal Neovim command</summary>
-            <p id="challenge-brief" class="challenge-brief"></p>
+          <details id="file-details" class="file-details">
+            <summary id="contract-label">Assignment contract &amp; external terminal Neovim command</summary>
+            <div id="challenge-brief" class="challenge-brief"></div>
             <div id="challenge-examples" class="examples-mini"></div>
+            <div id="practice-hints" hidden></div>
+            <p id="practice-source" class="practice-note" hidden></p>
             <div class="cmd-row">
               <code id="open-command">nvim workspaces/09/09_01/main.cpp</code>
               <button id="copy" class="text-button" type="button">Copy command</button>
@@ -182,7 +184,7 @@
             </div>
             <div class="action-status">
               <span id="run-status" class="status">READY</span>
-              <span class="submit-cli-pill" title="Run from terminal to record completion">CLI Submit: <code id="submit-command">./course check 9.1</code></span>
+              <span id="submit-badge" class="submit-cli-pill" title="Run from terminal to record completion"><span id="submit-label">CLI Submit: </span><code id="submit-command">./course check 9.1</code></span>
             </div>
           </div>
 
@@ -190,6 +192,9 @@
             <pre id="test-output" class="test-output" aria-live="polite" tabindex="0">Press Alt+R or Run to save your browser code and run the C++20 behavioral tests.</pre>
             <pre id="solution-view" class="solution-output" hidden tabindex="0"></pre>
           </div>
+        </div>
+        <div class="code-continuation">
+          <button id="code-continue" class="pill-btn gold" type="button">Continue to next step →</button>
         </div>
       </div>
     </section>

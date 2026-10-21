@@ -4,6 +4,7 @@ import argparse
 import hashlib
 import json
 import os
+import resource
 import secrets
 import subprocess
 import sys
@@ -29,6 +30,58 @@ class SaveConflict(ValueError):
     pass
 
 
+def activities():
+    return chapter9_steps.steps_for(chapter_lessons(), include_practice=True)
+
+
+def practice_activity(activity_id):
+    return next((step for step in activities()
+                 if step['id'] == activity_id and step.get('practice')), None)
+
+
+def source_path(lesson):
+    if lesson.get('practice'):
+        parent = course.lesson_by_id(lesson['lessonId'])
+        return course.workspace_path(parent) / 'practice' / lesson['suffix'] / 'main.cpp'
+    return course.workspace_path(lesson) / 'main.cpp'
+
+
+def practice_descriptor(step):
+    return {'id': step['id'], 'lessonId': step['lessonId'],
+            'suffix': step['id'][len(step['lessonId']) + 1:], 'practice': True}
+
+
+def ensure_practice(step):
+    path = source_path(practice_descriptor(step))
+    if path.is_symlink() or not path.resolve().is_relative_to(course.WORKSPACES.resolve()):
+        raise ValueError('Practice files must stay inside workspaces.')
+    path.parent.mkdir(parents=True, exist_ok=True)
+    # Exclusive creation preserves saved work, including simultaneous requests.
+    try:
+        with path.open('x') as handle:
+            handle.write(step['practice']['starter'])
+    except FileExistsError:
+        pass
+    return path
+
+
+def activity_content(step):
+    parent = course.lesson_by_id(step['lessonId'])
+    path = ensure_practice(step)
+    source = path.read_bytes()
+    practice = step['practice']
+    return {
+        **practice_descriptor(step), 'title': step['title'],
+        'minutes': parent['estimatedMinutes'], 'challenge': step['explanation'],
+        'examples': practice.get('examples', []), 'hints': practice.get('hints', []),
+        'url': parent['url'], 'notes': step['explanation'],
+        'source': source.decode('utf-8'), 'revision': revision(source),
+        'solution': practice['solution'], 'path': str(path.relative_to(course.ROOT)),
+        'completed': parent['key'] in course.load_progress().get('completed', []),
+        'quizzes': [],
+    }
+
+
 def save_source(lesson, payload):
     """Save only the fixed main.cpp, with optimistic locking against outside edits."""
     source, base = payload.get('source'), payload.get('revision')
@@ -37,7 +90,7 @@ def save_source(lesson, payload):
     encoded = source.encode('utf-8')
     if len(encoded) > 1_000_000:
         raise ValueError('Challenge source is too large (limit: 1 MB).')
-    path = course.workspace_path(lesson) / 'main.cpp'
+    path = source_path(lesson)
     if path.is_symlink() or not path.resolve().is_relative_to(course.WORKSPACES.resolve()):
         raise ValueError('The browser can save only regular challenge files inside workspaces.')
     current = path.read_bytes()
@@ -101,6 +154,40 @@ def run_saved_tests(lesson_id):
     if result.returncode != 0:
         return {'passed': False, 'message': 'Could not run tests.\n' + result.stderr[-24000:]}
     return json.loads(result.stdout)
+
+
+def run_practice_tests(step):
+    """Compile the saved mini-challenge against its independent trusted driver."""
+    source = source_path(practice_descriptor(step))
+    with tempfile.TemporaryDirectory(prefix='practice-tests-') as directory:
+        build = Path(directory)
+        # Snapshot the learner source: concurrent external edits cannot change
+        # what the compiler reads halfway through this particular run.
+        (build / 'main.cpp').write_bytes(source.read_bytes())
+        driver = build / 'driver.cpp'
+        driver.write_text(step['practice']['tests'])
+        executable = build / 'check'
+        try:
+            outputs = []
+            for mode in step['practice'].get('buildModes', ['debug']):
+                compiled = subprocess.run(
+                    ['g++', '-std=c++20', '-Wall', '-Wextra', '-pedantic',
+                     '-DNDEBUG' if mode == 'release' else '-UNDEBUG',
+                     str(driver), '-o', str(executable)],
+                    capture_output=True, text=True, timeout=25)
+                if compiled.returncode:
+                    return {'passed': False, 'message': f'Compilation failed ({mode}):\n' + compiled.stderr[-24000:]}
+                def no_core_dumps():
+                    resource.setrlimit(resource.RLIMIT_CORE, (0, 0))
+                ran = subprocess.run([str(executable)], cwd=build, capture_output=True,
+                                     text=True, timeout=5, preexec_fn=no_core_dumps)
+                output = (ran.stdout + ran.stderr)[-24000:]
+                if ran.returncode:
+                    return {'passed': False, 'message': f'Practice tests failed ({mode}, exit {ran.returncode}).\n' + output}
+                outputs.append(f'{mode}: passed\n' + output)
+        except subprocess.TimeoutExpired:
+            return {'passed': False, 'message': 'Practice exceeded its time limit. Check for a loop that never stops.'}
+        return {'passed': True, 'message': 'All mini-challenge tests passed.\n' + '\n'.join(outputs)}
 
 
 class CourseServer(ThreadingHTTPServer):
@@ -187,6 +274,17 @@ class CourseHandler(BaseHTTPRequestHandler):
                 self.respond(200, lesson_content(lesson))
             except OSError:
                 self.respond(409, {'error': 'Lesson files are missing. Run ./course setup and refresh.'})
+        elif path.startswith('/api/activities/'):
+            step = practice_activity(path[len('/api/activities/'):])
+            if step is None:
+                self.respond(404, {'error': 'Unknown Chapter 9 practice activity.'})
+                return
+            try:
+                with self.server.source_lock:
+                    content = activity_content(step)
+                self.respond(200, content)
+            except (OSError, ValueError):
+                self.respond(409, {'error': 'Could not open the practice file inside workspaces.'})
         else:
             assets = {'/': ('index.html', 'text/html; charset=utf-8'),
                       '/app.js': ('app.js', 'text/javascript; charset=utf-8'),
@@ -214,6 +312,9 @@ class CourseHandler(BaseHTTPRequestHandler):
         if path.startswith('/api/save/'):
             lesson_id = path[len('/api/save/'):]
             lesson = next((item for item in chapter_lessons() if item['id'] == lesson_id), None)
+            step = practice_activity(lesson_id)
+            if step is not None:
+                lesson = practice_descriptor(step)
             if lesson is None:
                 self.respond(404, {'error': 'Unknown Chapter 9 save route.'})
                 return
@@ -230,7 +331,11 @@ class CourseHandler(BaseHTTPRequestHandler):
                 self.respond(500, {'error': 'Could not save the challenge. Your browser draft is intact.'})
             return
 
-        lesson = next((item for item in chapter_lessons() if path == '/api/test/' + item['id']), None)
+        activity_id = path[len('/api/test/'):] if path.startswith('/api/test/') else ''
+        lesson = next((item for item in chapter_lessons() if item['id'] == activity_id), None)
+        step = practice_activity(activity_id)
+        if step is not None:
+            lesson = practice_descriptor(step)
         if lesson is None:
             self.respond(404, {'error': 'Unknown Chapter 9 test route.'})
             return
@@ -241,7 +346,7 @@ class CourseHandler(BaseHTTPRequestHandler):
             payload = self.read_json()
             if 'revision' in payload:
                 with self.server.source_lock:
-                    current = (course.workspace_path(lesson) / 'main.cpp').read_bytes()
+                    current = source_path(lesson).read_bytes()
                 if payload['revision'] != revision(current):
                     self.respond(409, {'error': 'The file changed after saving; tests were not run. Reconcile your draft with the disk file first.'})
                     return
@@ -275,6 +380,10 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--test', required=True)
     args = parser.parse_args()
+    step = practice_activity(args.test)
+    if step is not None:
+        print(json.dumps(run_practice_tests(step)))
+        raise SystemExit(0)
     lesson = next((item for item in chapter_lessons() if item['id'] == args.test), None)
     if lesson is None:
         raise SystemExit('Only Chapter 9 is supported.')

@@ -1,0 +1,99 @@
+{
+  "lessonId": "9.3",
+  "sourceUrl": "https://www.learncpp.com/cpp-tutorial/common-semantic-errors-in-c/",
+  "coverage": [
+    {"concept": "Source inline quiz: unsigned countdown, wraparound, and an always-true termination condition", "steps": ["unsigned-countdown", "repair-loops"]},
+    {"concept": "Semantic versus syntax errors, symptoms, warnings, and testing", "steps": ["unsigned-countdown", "code"]},
+    {"concept": "Conditional logic errors in branches and loop entry conditions", "steps": ["repair-loops"]},
+    {"concept": "Infinite loops from missing progress and off-by-one endpoints", "steps": ["repair-loops"]},
+    {"concept": "Incorrect precedence: logical NOT with comparison, and AND with OR", "steps": ["expression-traps"]},
+    {"concept": "Floating-point storage precision, display rounding, accumulated arithmetic error, and equality/inequality comparisons", "steps": ["types-and-math"]},
+    {"concept": "Integer division and conversion before versus after division", "steps": ["types-and-math", "code"]},
+    {"concept": "Accidental null statements", "steps": ["brace-the-decision"]},
+    {"concept": "Missing compound statements and dangling else", "steps": ["brace-the-decision"]},
+    {"concept": "Assignment instead of equality inside a conditional and compiler warnings", "steps": ["expression-traps"]},
+    {"concept": "Omitted function-call operator, function pointers, and Boolean conversion", "steps": ["expression-traps"]},
+    {"concept": "Workspace safety: invalid divisors, uninitialized reads, missing returns, and regression checks", "steps": ["code"]}
+  ],
+  "steps": [
+    {
+      "suffix": "unsigned-countdown",
+      "kind": "predict",
+      "title": "Why does the countdown keep going?",
+      "objective": "Diagnose the source's inline countdown quiz without running an unbounded loop.",
+      "explanation": "Syntax errors violate language grammar; semantic errors violate your intended behavior, often while compiling successfully. They can cause wrong results, erratic behavior, data corruption, crashes, or no visible symptom on tested inputs. Warnings and testing help, but neither proves correctness.\n\nThe source's inline quiz intends to count five through one, announce launch at zero, then stop. Unsigned decrement at zero wraps to the type's maximum: defined arithmetic, but the wrong algorithm. Reason about this unbounded listing without running it or assuming an unsigned width.\n\nAdapted from [LearnCpp 9.3, Infinite loops](https://www.learncpp.com/cpp-tutorial/common-semantic-errors-in-c/), Alex; published December 21, 2020, updated November 10, 2024. This is the page's inline diagnosis quiz; it has no formal end quiz or coding assignment.",
+      "sourceExercise": "adapted source inline quiz — Infinite loops: diagnose the unsigned countdown that should print five through one and a launch message, then stop",
+      "code": "#include <iostream>\nint main()\n{\n    // Read only: intentionally nonterminating.\n    for (unsigned int remaining{5}; remaining >= 0; --remaining)\n    {\n        if (remaining == 0) std::cout << \"Launch! \";\n        else std::cout << remaining << ' ';\n    }\n    return 0;\n}\n",
+      "questions": [
+        {
+          "question": "After the first launch message, why does the loop continue?",
+          "options": ["Unsigned decrement at zero must crash.", "The counter wraps to its maximum value, and every unsigned value satisfies >= 0.", "The loop condition is checked only once.", "Zero is not representable by unsigned int."],
+          "answer": 1,
+          "explanation": "The comparison never becomes false. Wraparound is defined for unsigned arithmetic, but defeats this termination design. The maximum value depends on the type's width."
+        }
+      ]
+    },
+    {
+      "suffix": "repair-loops",
+      "kind": "code",
+      "title": "Make progress and include the endpoint",
+      "objective": "Implement two finite loops with correct first, last, and zero cases.",
+      "explanation": "Trace entry, progress, and endpoint. For strictly above four, `x >= 4` wrongly admits equality. With n == 4, `for (int i{1}; i > n; ++i)` never enters; `i < n` misses the endpoint; forgetting `++i` can repeat forever. Test the boundary itself, not just a typical interior value.\n\nImplement both functions for 0 <= n <= 20: ascending(n) returns one through n, each followed by a space (empty at zero). countdown(n) returns n through one, each followed by a space, then Launch! with no trailing space (just Launch! at zero). Use a signed downward counter and stop at zero. The placeholder starter is finite.\n\nNew repair practice based on [LearnCpp 9.3, Conditional logic errors, Infinite loops, and Off-by-one errors](https://www.learncpp.com/cpp-tutorial/common-semantic-errors-in-c/).",
+      "sourceExercise": "supplementary coding task — missing-update and endpoint demonstrations, plus a finite repair of the source inline countdown quiz",
+      "practice": {
+        "starter": "#include <string>\n\nstd::string ascending(int n)\n{\n    (void)n;\n    return {}; // TODO: include n and advance each iteration.\n}\n\nstd::string countdown(int n)\n{\n    (void)n;\n    return \"Launch!\"; // TODO: prepend the descending numbers.\n}\n\nint main()\n{\n    return 0;\n}\n",
+        "solution": "#include <string>\n\nstd::string ascending(int n)\n{\n    std::string result;\n    for (int i{1}; i <= n; ++i)\n        result += std::to_string(i) + ' ';\n    return result;\n}\n\nstd::string countdown(int n)\n{\n    std::string result;\n    for (int i{n}; i > 0; --i)\n        result += std::to_string(i) + ' ';\n    return result + \"Launch!\";\n}\n\nint main()\n{\n    return 0;\n}\n",
+        "tests": "#define main learner_main\n#include \"main.cpp\"\n#undef main\n#include <iostream>\n\nint main()\n{\n    struct Case { int n; const char* up; const char* down; };\n    const Case cases[]{\n        {0, \"\", \"Launch!\"},\n        {1, \"1 \", \"1 Launch!\"},\n        {2, \"1 2 \", \"2 1 Launch!\"},\n        {5, \"1 2 3 4 5 \", \"5 4 3 2 1 Launch!\"},\n        {20, \"1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 \", \"20 19 18 17 16 15 14 13 12 11 10 9 8 7 6 5 4 3 2 1 Launch!\"}\n    };\n    int failures{};\n    for (const auto& c : cases)\n    {\n        if (ascending(c.n) != c.up)\n        {\n            std::cerr << \"Ascending boundary/progress failure for \" << c.n << '\\n';\n            ++failures;\n        }\n        if (countdown(c.n) != c.down)\n        {\n            std::cerr << \"Countdown boundary/progress failure for \" << c.n << '\\n';\n            ++failures;\n        }\n    }\n    return failures == 0 ? 0 : 1;\n}\n",
+        "hints": ["For ascending, start at one, admit n, and increment the counter.", "For countdown, a signed counter can test > 0; append the launch text after the loop.", "Trace n == 0 and n == 1 before trying larger inputs."],
+        "examples": ["ascending(0) -> empty string", "ascending(2) -> \"1 2 \"", "countdown(2) -> \"2 1 Launch!\"", "countdown(0) -> \"Launch!\""]
+      }
+    },
+    {
+      "suffix": "expression-traps",
+      "kind": "quiz",
+      "title": "Read the expression the compiler sees",
+      "objective": "Distinguish grouping, assignment, and function reference from the intended operations.",
+      "explanation": "- Grouping: `!x > y` means `(!x) > y`, not `!(x > y)`. Likewise, `member || guest && open` groups guest with open; require `(member || guest) && open` when opening hours apply to everyone.\n- Mutation: `if (permission = 'y')` assigns a nonzero character, then converts it to true; `==` compares without overwriting input. Investigate assignment warnings rather than hiding them with parentheses.\n- Invocation: for a function returning 6, `readLevel()` produces 6; `readLevel` instead yields a function pointer here. Its explicit Boolean conversion is true (printed as 1 by default), and does not call the function. Direct streaming commonly also selects Boolean output.\n\nNew diagnosis question based on [LearnCpp 9.3, Incorrect operator precedence, Using assignment instead of equality, and Forgetting the function call operator](https://www.learncpp.com/cpp-tutorial/common-semantic-errors-in-c/).",
+      "sourceExercise": "supplementary — grouped reasoning activity from three source demonstrations; not a source quiz",
+      "questions": [
+        {"question": "Which review correctly fixes all three intentions: negate the whole comparison, compare permission, and obtain the function's result?", "options": ["Use !x > y, (permission = 'y'), and readLevel.", "Use !(x > y), permission == 'y', and readLevel().", "Use (!x) > y, permission == 'y', and static_cast<bool>(readLevel)."], "answer": 1, "explanation": "Parentheses select the comparison to negate; == avoids mutation; () invokes the function instead of converting its address."}
+      ]
+    },
+    {
+      "suffix": "types-and-math",
+      "kind": "predict",
+      "title": "Trace the types before trusting the number",
+      "objective": "Explain integer truncation and floating-point approximation as distinct sources of numeric error.",
+      "explanation": "Two int operands perform integer division, discarding the fraction before assignment or a later cast. Convert an operand first: `static_cast<double>(7) / 2` retains the fraction; `static_cast<double>(7 / 2)` cannot recover it. Validate the divisor before calculating.\n\nFloating-point storage is finite too: `float f{0.123456789f};` may lose digits on storage, and printing may round further. More output digits cannot restore lost information. On ordinary binary floating point, repeated additions of 0.1 can accumulate error, so an expected 1.0 may fail ==; != has the corresponding problem. Choose sufficient storage precision and an application-scaled tolerance for approximate comparisons, rather than replacing every equality mechanically.\n\nNew activity based on [LearnCpp 9.3, Precision issues with floating point types and Integer division](https://www.learncpp.com/cpp-tutorial/common-semantic-errors-in-c/).",
+      "sourceExercise": "supplementary — combined numeric demonstrations, with portable division output and a floating-point reasoning question",
+      "code": "#include <iostream>\nint main()\n{\n    const int total{7};\n    const int count{2};\n    const double first{static_cast<double>(total / count)};\n    const double second{static_cast<double>(total) / count};\n    std::cout << first << ' ' << second << '\\n';\n    return 0;\n}\n",
+      "questions": [
+        {"question": "What is printed?", "options": ["3.5 3.5", "3 3.5", "3 3"], "answer": 1, "explanation": "The first expression converts the already-truncated quotient 3. The second converts total first, so the division retains the fraction."},
+        {"question": "A measurement sums ten 0.1 terms. Which policy addresses possible rounding error when comparing the result with 1.0?", "options": ["Print more digits, then require exact equality.", "Use a tolerance chosen for the measurement's scale and acceptable error.", "Replace == with != to eliminate the rounding error."], "answer": 1, "explanation": "Formatting does not change the stored approximation, and != only negates equality. A suitable tolerance reflects the measurement requirement."}
+      ]
+    },
+    {
+      "suffix": "brace-the-decision",
+      "kind": "code",
+      "title": "Keep both actions behind the permission check",
+      "objective": "Use one compound statement to control two related actions.",
+      "explanation": "Without braces, if controls one statement regardless of indentation. In `if (allowed); launch();`, that statement is an empty semicolon, so launch runs unconditionally. In `if (allowed) prepare(); launch();`, only prepare is guarded. Also, `if (allowed) if (ready) launch(); else deny();` attaches else to the inner if; brace the outer body before else when denial belongs to the outer decision.\n\nRepair launchMessage(char permission): only lowercase 'y' authorizes it. Return exactly `Preparing\\nSimulated launch\\n` when authorized, otherwise an empty string. Group both appends in the permission branch. The starter safely constructs a string; test rejected as well as accepted inputs.\n\nNew repair practice based on [LearnCpp 9.3, Accidental null statements and Not using a compound statement when one is required](https://www.learncpp.com/cpp-tutorial/common-semantic-errors-in-c/), including its dangling-else warning.",
+      "sourceExercise": "supplementary coding task — missing compound-statement demonstration adapted to returned messages; explanation also covers null statements and dangling else",
+      "practice": {
+        "starter": "#include <string>\n\nstd::string launchMessage(char permission)\n{\n    std::string message;\n    if (permission == 'y')\n        message += \"Preparing\\n\";\n        message += \"Simulated launch\\n\";\n    return message;\n}\n\nint main()\n{\n    return 0;\n}\n",
+        "solution": "#include <string>\n\nstd::string launchMessage(char permission)\n{\n    std::string message;\n    if (permission == 'y')\n    {\n        message += \"Preparing\\n\";\n        message += \"Simulated launch\\n\";\n    }\n    return message;\n}\n\nint main()\n{\n    return 0;\n}\n",
+        "tests": "#define main learner_main\n#include \"main.cpp\"\n#undef main\n#include <iostream>\n\nint main()\n{\n    if (launchMessage('y') != \"Preparing\\nSimulated launch\\n\")\n    {\n        std::cerr << \"Authorized path must contain both messages in order\\n\";\n        return 1;\n    }\n    for (char rejected : {'n', 'Y', 'x', ' ', '\\0'})\n    {\n        if (!launchMessage(rejected).empty())\n        {\n            std::cerr << \"Rejected permission must produce no message\\n\";\n            return 1;\n        }\n    }\n    return 0;\n}\n",
+        "hints": ["Inspect which one statement the unbraced if currently controls.", "A compound statement groups both appends as a single branch body.", "Check 'n' as well as 'y'; the bug is visible on the rejected path."],
+        "examples": ["launchMessage('y') -> \"Preparing\\nSimulated launch\\n\"", "launchMessage('n') -> empty string", "launchMessage('Y') -> empty string"]
+      }
+    },
+    {
+      "suffix": "code",
+      "kind": "code",
+      "title": "Repair the average-score calculation",
+      "objective": "Apply guards, floating-point division, and complete return paths in the existing workspace.",
+      "explanation": "Open the [workspace notes](workspaces/09/09_03/lesson.md) and [source](workspaces/09/09_03/main.cpp). Implement averageScore(total, count), with inputs at most 10000: return -1.0 for total < 0 or count <= 0; otherwise return the floating-point quotient. Predict (5, 2) -> 2.5, (0, 3) -> 0.0, and (5, 0) -> -1.0 before running.\n\nReason first: what output is guaranteed if code divides integers by zero, reads an uninitialized automatic int, or falls off a double-returning function? None: those paths have undefined behavior in C++20. Guard before dividing, convert an operand first, initialize before reading, and return on every path. Keep the supplied tests, add (0, 0) -> -1.0, and explain why invalid count overrides valid zero total. Change one cause at a time and rerun earlier passing cases.\n\nRun the existing workspace tests, then submit with `./course check 9.3`. This is the [repository assignment](lessons/09_03.json), supplementing [LearnCpp 9.3](https://www.learncpp.com/cpp-tutorial/common-semantic-errors-in-c/), not a source-page coding task.",
+      "sourceExercise": "supplementary — existing repository final workspace assignment from lessons/09_03.json and workspaces/09/09_03/lesson.md"
+    }
+  ]
+}

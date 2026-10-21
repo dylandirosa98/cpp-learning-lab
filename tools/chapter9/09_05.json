@@ -1,0 +1,125 @@
+{
+  "lessonId": "9.5",
+  "sourceUrl": "https://www.learncpp.com/cpp-tutorial/stdcin-and-handling-invalid-input/",
+  "coverage": [
+    {"concept": "Robustness and validation strategies: inline filtering, string parsing, and formatted extraction with checks", "steps": ["classify-input"]},
+    {"concept": "Formatted extraction skips leading whitespace, consumes a valid prefix, leaves delimiters, and uses buffered input before waiting", "steps": ["follow-the-buffer"]},
+    {"concept": "Four input problem categories: meaningless values, extra characters, parse failure, and numeric overflow", "steps": ["classify-input", "unstick-extraction"]},
+    {"concept": "Application-level validation and retry loops for calculator operators; successful extraction is not sufficient", "steps": ["classify-input"]},
+    {"concept": "Discard through newline with ignore and numeric_limits<streamsize>::max; fixed counts can leave input behind", "steps": ["discard-a-line"]},
+    {"concept": "Alternative strict trailing-input policy, eof and non-consuming peek, whitespace consequences, and De Morgan equivalent", "steps": ["follow-the-buffer"]},
+    {"concept": "Persistent failure state, fail() and Boolean conversion, invalid conversion values, and clear-before-ignore recovery", "steps": ["unstick-extraction", "recover-a-number"]},
+    {"concept": "EOF is a state rather than a character; terminal requests, disconnected input, termination, and successful final tokens", "steps": ["recover-a-number", "code"]},
+    {"concept": "Numeric overflow saturates the destination and sets failbit; recover without trusting the stored value", "steps": ["unstick-extraction", "recover-a-number"]},
+    {"concept": "Integrated calculator validation, rejecting zero denominators, and defensive handling of unexpected operations", "steps": ["classify-input"]},
+    {"concept": "Workspace integration: quantity range, permissive trailing text, overflow recovery, EOF sentinel, and automated input", "steps": ["code"]}
+  ],
+  "steps": [
+    {
+      "suffix": "follow-the-buffer",
+      "kind": "predict",
+      "title": "Trace buffered input and choose a suffix policy",
+      "objective": "Predict prefix extraction and distinguish discarding a suffix from rejecting it.",
+      "explanation": "Formatted operator>> skips leading spaces, tabs, and newlines, consumes a convertible prefix, and leaves unrelated characters buffered. Later reads use those characters before waiting for new input; printing prompts does not empty the buffer. Thus a calculator can consume an entire expression entered at its first prompt, making subsequent prompts run together.\n\nChoose a policy: accept the prefix and discard the suffix, or reject extra input. After successful extraction, the source's strict test is !input.eof() && input.peek() != '\\n', equivalently !(input.eof() || input.peek() == '\\n'). peek observes without consuming. This rejects even trailing spaces, accepts a newline or already-reached EOF, and must follow the extraction-success check. The workspace uses the permissive policy.\n\nSource: [LearnCpp 9.5, extraction recap, sample calculator, and Error case 2](https://www.learncpp.com/cpp-tutorial/stdcin-and-handling-invalid-input/). Alex's article (updated January 29, 2025) has demonstrations but no quiz or explicit coding assignments; these activities are supplementary.",
+      "sourceExercise": "supplementary — extraction recap, calculator buffered-expression demonstration, and strict hasUnextractedInput variation including De Morgan equivalence",
+      "code": "#include <iostream>\n#include <sstream>\nint main()\n{\n    std::istringstream input{\" \\t6*9\\n\"};\n    double left{}, right{};\n    char operation{};\n    input >> left;\n    std::cout << left << ' ' << static_cast<char>(input.peek()) << '\\n';\n    input >> operation >> right;\n    std::cout << operation << ' ' << right << '\\n';\n    return 0;\n}\n",
+      "questions": [
+        {
+          "question": "Which two lines are printed?",
+          "options": ["6 * then * 9", "6 9 then * 0", "0 * then * 9"],
+          "answer": 0,
+          "explanation": "The first extraction leaves *9 and the newline buffered. peek observes * without consuming it; the next two extractions obtain * and 9."
+        }
+      ]
+    },
+    {
+      "suffix": "classify-input",
+      "kind": "quiz",
+      "title": "Separate conversion from meaning",
+      "objective": "Choose validation checks for conversion, application rules, and a complete calculation.",
+      "explanation": "Robust programs give unexpected input a defined outcome. Validation can filter keystrokes in a suitable interface, read text then parse it, or attempt formatted extraction and check the result. std::cin does not provide per-keystroke filtering. Extracting a string avoids numeric conversion but still needs parsing and stream checks; operator>> reads a word, not a whole line, and can fail at EOF.\n\nConsider four problems: meaningless values, leftovers, conversion failure, and numeric overflow. A successfully extracted k still fails the calculator's +, -, *, / rule: reject it, explain, and retry unless input ends. Likewise, zero is convertible but invalid as a division denominator: request another denominator, not another numerator. Keep a defensive result-function fallback for unexpected operators or invalid division even when the normal input path validates them.\n\nSource: [LearnCpp 9.5, Validating input, Types of invalid text input, Error case 1, and Putting it all together](https://www.learncpp.com/cpp-tutorial/stdcin-and-handling-invalid-input/). Later source examples may omit validation for focus; that does not establish robust behavior.",
+      "sourceExercise": "supplementary — validation strategies, four error categories, getOperator retry loop, integrated calculator's denominator check and defensive fallback, and concluding author's note",
+      "questions": [
+        {
+          "question": "Match these attempts to their main problem: k as an operator; 7extra as an integer prefix; hello as an integer; a hundred-digit positive integer as int.",
+          "options": ["Meaningless value; leftovers; conversion failure; numeric overflow.", "Conversion failure; numeric overflow; leftovers; meaningless value.", "All four must set failbit immediately."],
+          "answer": 0,
+          "explanation": "The first two can convert successfully. Invalid numeric syntax and an unrepresentable numeric value require stream-failure handling."
+        }
+      ]
+    },
+    {
+      "suffix": "discard-a-line",
+      "kind": "code",
+      "title": "Make the next read start after this line",
+      "objective": "Implement a reusable line-discard helper without a fragile character limit.",
+      "explanation": "Implement discardLine(std::istream& input) for a stream that is not in failure state. Remove everything through the next newline, including that newline, or through end-of-input. Preserve the following line.\n\nUse ignore with std::numeric_limits<std::streamsize>::max() from <limits>; this special count disables the count limit, whereas a fixed 100 can leave a long suffix behind. std::istream& lets the helper accept std::cin or simulated input; this mini uses only simulated input.\n\nSource: [LearnCpp 9.5, Error case 2 and ignoreLine demonstration](https://www.learncpp.com/cpp-tutorial/stdcin-and-handling-invalid-input/).",
+      "sourceExercise": "supplementary — new implementation activity based on the ignoreLine demonstration",
+      "practice": {
+        "starter": "#include <iostream>\n#include <limits>\n#include <sstream>\n\nvoid discardLine(std::istream& input)\n{\n    (void)input; // TODO: remove the remainder of this line.\n}\n\nint main()\n{\n    std::istringstream input{\"old suffix\\n42\\n\"};\n    discardLine(input);\n    int next{};\n    input >> next;\n    std::cout << next << '\\n';\n    return 0;\n}\n",
+        "solution": "#include <iostream>\n#include <limits>\n#include <sstream>\n\nvoid discardLine(std::istream& input)\n{\n    input.ignore(std::numeric_limits<std::streamsize>::max(), '\\n');\n}\n\nint main()\n{\n    std::istringstream input{\"old suffix\\n42\\n\"};\n    discardLine(input);\n    int next{};\n    input >> next;\n    std::cout << next << '\\n';\n    return 0;\n}\n",
+        "tests": "#define main learner_main\n#include \"main.cpp\"\n#undef main\n#include <string>\n\nint main()\n{\n    int failures{};\n    for (const std::string& suffix : {std::string{}, std::string{\"junk 17\"}, std::string(12000, 'x')})\n    {\n        std::istringstream input{suffix + \"\\n42\\n73\\n\"};\n        discardLine(input);\n        if (input.peek() != '4')\n        {\n            std::cerr << \"Must consume newline but preserve following line; suffix length \" << suffix.size() << '\\n';\n            ++failures;\n        }\n        int first{}, second{};\n        if (!(input >> first >> second) || first != 42 || second != 73)\n        {\n            std::cerr << \"Next two tokens were not preserved\\n\";\n            ++failures;\n        }\n    }\n    std::istringstream finalLine{\"tail without newline\"};\n    discardLine(finalLine);\n    if (!finalLine.eof() || finalLine.rdbuf()->sgetc() != std::char_traits<char>::eof())\n    {\n        std::cerr << \"Unterminated suffix must be consumed to EOF\\n\";\n        ++failures;\n    }\n    std::istringstream empty{};\n    discardLine(empty);\n    if (!empty.eof())\n    {\n        std::cerr << \"Empty source must reach EOF\\n\";\n        ++failures;\n    }\n    return failures == 0 ? 0 : 1;\n}\n",
+        "hints": [
+          "ignore(count, delimiter) removes the delimiter too when it finds one.",
+          "Use std::streamsize for the numeric_limits type, not int.",
+          "The helper operates on input, not on the global std::cin."
+        ],
+        "examples": [
+          "Input \"trailing words\\n42\\n\": after discardLine, the next integer is 42.",
+          "Input \"\\n42\": remove just the initial newline, leaving 42.",
+          "Input \"trailing words\" with no newline: consume it all and reach EOF."
+        ]
+      }
+    },
+    {
+      "suffix": "unstick-extraction",
+      "kind": "predict",
+      "title": "Repair state before removing bad input",
+      "objective": "Recover from invalid text and overflow without trusting failed destinations.",
+      "explanation": "An integer conversion encountering a letter stores zero, leaves the letter buffered, and sets failbit. input.fail() or !input detects failure; subsequent reads and ignore cannot proceed. For recoverable failures, clear() first, then ignore through newline. Clearing alone leaves the bad input; ignoring first leaves it too. Check EOF before clearing, and remember conversion success before unconditional cleanup changes the state.\n\nNumeric overflow uses the same failure path: extraction clamps to the nearest representable boundary and sets failbit, rather than wrapping or accepting the value. The source's 16-bit example reads 40000 as 32767 and blocks later reads, despite its misleading 'extraction succeeds' heading. A later blocked extraction leaves its destination unchanged. By contrast, 21 fits int but violates the workspace's [1,20] rule without stream failure.\n\nSource: [LearnCpp 9.5, Error cases 3 and 4](https://www.learncpp.com/cpp-tutorial/stdcin-and-handling-invalid-input/).",
+      "sourceExercise": "supplementary — failed-extraction, saved-success cleanup, clear-before-ignore, and numeric-overflow demonstrations",
+      "code": "#include <iostream>\n#include <limits>\n#include <sstream>\nint main()\n{\n    std::istringstream input{\"oops\\n17\\n\"};\n    int value{99};\n    input >> value;\n    std::cout << value << ' ' << input.fail() << '\\n';\n    input.ignore(std::numeric_limits<std::streamsize>::max(), '\\n');\n    input.clear();\n    std::cout << static_cast<char>(input.peek()) << '\\n';\n    input.ignore(std::numeric_limits<std::streamsize>::max(), '\\n');\n    input >> value;\n    std::cout << value << '\\n';\n    return 0;\n}\n",
+      "questions": [
+        {
+          "question": "Which three lines are printed?",
+          "options": ["99 0 then 1 then 17", "0 1 then o then 17", "0 1 then 1 then 0"],
+          "answer": 1,
+          "explanation": "The failed conversion stores zero. The first ignore cannot act on the failed stream. After clear(), o is still present. The second ignore removes the bad line so the next read gets 17."
+        }
+      ]
+    },
+    {
+      "suffix": "recover-a-number",
+      "kind": "code",
+      "title": "Build a finite, reusable number reader",
+      "objective": "Combine success-first handling, recoverable failure cleanup, suffix discard, and EOF termination.",
+      "explanation": "EOF is a state, not a character; a live terminal normally waits for input. End-of-input requests commonly use Ctrl-D on Unix or Ctrl-Z then Enter on Windows, with terminal-specific behavior for pending text. eof() reports an operation reaching the end, not future read success. Clearing an exhausted or disconnected source cannot create data. Crucially, a final integer without a newline can set eofbit without failbit: Boolean conversion stays true, so process that value before any failed-read EOF path.\n\nImplement bool readNumber(std::istream& input, int& result), without prompts. Read into a temporary; on success, discard the suffix, assign result, and return true. Accept every representable int, including zero, negatives, and final tokens without newlines. On failed extraction at EOF, return false with result unchanged; otherwise clear, discard the failed line, and retry. Use ordinary streams with default exception settings and recoverable text/overflow failures.\n\nSource: [LearnCpp 9.5, Error cases 2–4, Checking for EOF, and Putting it all together](https://www.learncpp.com/cpp-tutorial/stdcin-and-handling-invalid-input/), plus the [workspace's final-token requirement](workspaces/09/09_05/lesson.md). The source helper exits on failed-read EOF; this reusable reader reports false instead.",
+      "sourceExercise": "supplementary — EOF discussion and new reader activity combining ignoreLine, clearFailedExtraction, and getDouble demonstrations; bool return replaces process exit; final-token semantics follow workspace notes",
+      "practice": {
+        "starter": "#include <iostream>\n#include <limits>\n#include <sstream>\n\nbool readNumber(std::istream& input, int& result)\n{\n    (void)input;\n    (void)result;\n    return false; // TODO: read, recover, or report exhausted input.\n}\n\nint main()\n{\n    std::istringstream input{\"bad\\n-6 extra\\n\"};\n    int result{};\n    if (readNumber(input, result)) std::cout << result << '\\n';\n    return 0;\n}\n",
+        "solution": "#include <iostream>\n#include <limits>\n#include <sstream>\n\nbool readNumber(std::istream& input, int& result)\n{\n    while (true)\n    {\n        int candidate{};\n        if (input >> candidate)\n        {\n            input.ignore(std::numeric_limits<std::streamsize>::max(), '\\n');\n            result = candidate;\n            return true;\n        }\n        if (input.eof()) return false;\n        input.clear();\n        input.ignore(std::numeric_limits<std::streamsize>::max(), '\\n');\n    }\n}\n\nint main()\n{\n    std::istringstream input{\"bad\\n-6 extra\\n\"};\n    int result{};\n    if (readNumber(input, result)) std::cout << result << '\\n';\n    return 0;\n}\n",
+        "tests": "#define main learner_main\n#include \"main.cpp\"\n#undef main\n#include <string>\n\nint main()\n{\n    int failures{};\n    auto check = [&](const std::string& text, bool expectedSuccess, int expectedValue, const char* label)\n    {\n        std::istringstream input{text};\n        int result{314};\n        const bool success{readNumber(input, result)};\n        if (success != expectedSuccess || result != expectedValue)\n        {\n            std::cerr << label << \": success=\" << success << \", result=\" << result << '\\n';\n            ++failures;\n        }\n    };\n    check(\"bad\\n-6 extra\\n\", true, -6, \"recover from text, keep negative\");\n    check(\"0\\n\", true, 0, \"zero is valid\");\n    check(\"20\", true, 20, \"successful final token\");\n    check(\" \\t\\n+8tail\\n\", true, 8, \"skip whitespace and accept prefix\");\n    check(std::to_string(std::numeric_limits<int>::max()) + \"0\\n11\\n\", true, 11, \"positive overflow\");\n    check(std::to_string(std::numeric_limits<int>::min()) + \"0\\n12\\n\", true, 12, \"negative overflow\");\n    check(std::to_string(std::numeric_limits<int>::max()), true, std::numeric_limits<int>::max(), \"maximum valid int at EOF\");\n    check(std::to_string(std::numeric_limits<int>::min()), true, std::numeric_limits<int>::min(), \"minimum valid int at EOF\");\n    check(\"\", false, 314, \"empty input preserves output\");\n    check(\" \\t\\n\", false, 314, \"whitespace only\");\n    check(\"bad\\nmore bad\", false, 314, \"EOF after invalid attempts\");\n    check(std::to_string(std::numeric_limits<int>::max()) + \"0\", false, 314, \"overflow ending at EOF\");\n    std::istringstream sequence{\"bad 99\\n5 \" + std::string(12000, 'x') + \" 88\\n9\\n\"};\n    int first{}, second{};\n    if (!readNumber(sequence, first) || first != 5 || !readNumber(sequence, second) || second != 9)\n    {\n        std::cerr << \"Discard complete bad and successful suffixes, preserving next line\\n\";\n        ++failures;\n    }\n    int untouched{271};\n    if (readNumber(sequence, untouched) || untouched != 271)\n    {\n        std::cerr << \"Repeated call after exhaustion must return false without overwriting output\\n\";\n        ++failures;\n    }\n    return failures == 0 ? 0 : 1;\n}\n",
+        "hints": [
+          "Use if (input >> candidate) to handle success before considering EOF.",
+          "On failed extraction, stop at EOF. Otherwise clear() before ignore(max, '\\n'), then retry.",
+          "Only assign result after a successful conversion. Do not decide whether it succeeded by checking state after ignore().",
+          "Discard the successful line's suffix too, so another call starts on the next line."
+        ],
+        "examples": [
+          "Input \"oops\\n-6 extra\\n\": return true and set result to -6.",
+          "Input \"0\" with no final newline: return true and set result to 0.",
+          "Empty input with result initially 314: return false and leave result equal to 314.",
+          "An overflowing integer followed by a line containing 11: recover and return 11, not the clamped boundary."
+        ]
+      }
+    },
+    {
+      "suffix": "code",
+      "kind": "code",
+      "title": "Finish the workspace quantity reader",
+      "objective": "Implement the existing quantity contract with finite recovery and correct EOF behavior.",
+      "explanation": "Open the [workspace notes](workspaces/09/09_05/lesson.md) and [main.cpp](workspaces/09/09_05/main.cpp). Implement readQuantity() with std::cin and no prompts: return the first integer in [1,20], discarding each attempt's suffix. Retry after invalid text, overflow, or out-of-range values; return -1 if input ends before a valid quantity. Accept 3 extra as 3 and final 20 without a newline as 20. Formatted extraction may skip blank leading whitespace.\n\nPredict hello\\n0\\n8\\n → 8, 21\\n1\\n → 1, empty input → -1, and final 20 → 20. Run the retained tests before and after implementation, then add one boundary case, such as final out-of-range input without a newline. Explain clear-before-ignore and success-before-EOF. The scaffold supplies simulated input; submit with ./course check 9.5.\n\nProvenance: the existing [repository assignment](lessons/09_05.json), applying [LearnCpp 9.5](https://www.learncpp.com/cpp-tutorial/stdcin-and-handling-invalid-input/).",
+      "sourceExercise": "supplementary — existing repository final workspace assignment from lessons/09_05.json and workspaces/09/09_05/lesson.md"
+    }
+  ]
+}

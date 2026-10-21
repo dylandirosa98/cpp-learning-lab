@@ -43,10 +43,14 @@ class CourseWebTest(unittest.TestCase):
         self.assertEqual(status, 200)
         data = json.loads(body)
         self.assertEqual([item['id'] for item in data['lessons']], ['9.1', '9.2', '9.3', '9.4', '9.5', '9.6', '9.x'])
-        self.assertEqual(len(data['steps']), 29)
-        self.assertEqual(data['steps'][0]['id'], '9.1-idea')
-        self.assertEqual(data['steps'][0]['kind'], 'read')
-        self.assertEqual(data['steps'][1]['id'], '9.1-quiz')
+        self.assertEqual(data['steps'], course_web.chapter9_steps.steps_for(course_web.chapter_lessons()))
+        self.assertEqual(data['steps'][0]['id'], '9.1-start-small')
+        self.assertEqual(data['steps'][0]['kind'], 'quiz')
+        self.assertTrue(any(step.get('practice') is True for step in data['steps']))
+        for step in data['steps']:
+            self.assertNotIn('starter', step)
+            self.assertNotIn('tests', step)
+            self.assertNotIn('solution', step)
         self.assertTrue(data['lessons'][0]['completed'])
         self.assertFalse(data['lessons'][1]['completed'])
         self.assertEqual(data['token'], self.server.token)
@@ -58,7 +62,7 @@ class CourseWebTest(unittest.TestCase):
         self.assertEqual(status, 200)
         self.assertEqual(data['source'], (ROOT / data['path']).read_text())
         self.assertEqual(data['url'], 'https://www.learncpp.com/cpp-tutorial/introduction-to-testing-your-code/')
-        self.assertEqual(len(data['quizzes']), 2)
+        self.assertGreater(len(data['quizzes']), 2)
         self.assertIn('Worked example', data['notes'])
         self.assertIn('isLeapYear', data['challenge'])
         self.assertEqual(len(data['hints']), 3)
@@ -132,10 +136,10 @@ class CourseWebTest(unittest.TestCase):
         from tools.chapter9_steps import steps_for
         steps = steps_for(course_web.chapter_lessons())
         self.assertEqual(len({step['id'] for step in steps}), len(steps))
-        self.assertEqual({step['kind'] for step in steps}, {'read', 'quiz', 'predict', 'debug', 'code'})
-        self.assertEqual([step['kind'] for step in steps if step['lessonId'] == '9.5'],
-                         ['read', 'predict', 'read', 'debug', 'read', 'predict', 'code'])
-        self.assertEqual(len([step for step in steps if step['lessonId'] == '9.4']), 3)
+        self.assertEqual({step['kind'] for step in steps}, {'quiz', 'predict', 'code'})
+        lengths = {sum(step['lessonId'] == lesson['id'] for step in steps)
+                   for lesson in course_web.chapter_lessons()}
+        self.assertGreater(len(lengths), 1)
         for step in steps:
             with self.subTest(step=step['id']):
                 self.assertTrue(step['objective'])
@@ -206,3 +210,31 @@ class CourseWebTest(unittest.TestCase):
             status, _, _ = self.request('/vendor/codemirror-5.65.16/' + name)
             self.assertEqual(status, 200, name)
         self.assertEqual(self.request('/vendor/codemirror-5.65.16/../../course.py')[0], 404)
+
+    def test_mini_activity_open_save_and_run_use_its_own_identity(self):
+        step = next(step for step in course_web.activities() if step.get('practice'))
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            with patch.object(course, 'ROOT', root), patch.object(course, 'WORKSPACES', root / 'workspaces'), \
+                    patch.object(course, 'save_progress') as progress, patch.object(course, 'sync_repository') as sync:
+                status, _, body = self.request('/api/activities/' + step['id'])
+                self.assertEqual(status, 200, body)
+                content = json.loads(body)
+                self.assertEqual(content['id'], step['id'])
+                self.assertEqual(content['source'], step['practice']['starter'])
+                status, _, body = self.request('/api/save/' + step['id'], 'POST',
+                    {'X-Course-Token': self.server.token},
+                    {'source': step['practice']['solution'], 'revision': content['revision']})
+                self.assertEqual(status, 200, body)
+                saved = json.loads(body)
+                self.assertEqual((root / content['path']).read_text(), step['practice']['solution'])
+                status, _, body = self.request('/api/test/' + step['id'], 'POST',
+                    {'X-Course-Token': self.server.token}, {'revision': saved['revision']})
+                self.assertEqual(status, 200, body)
+                self.runner.assert_called_once_with(step['id'])
+                self.assertTrue(json.loads(body)['passed'])
+                progress.assert_not_called()
+                sync.assert_not_called()
+        for route in ['/api/activities/9.1-code', '/api/activities/10.1-anything',
+                      '/api/activities/9.1-../../etc/passwd']:
+            self.assertEqual(self.request(route)[0], 404, route)

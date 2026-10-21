@@ -95,6 +95,10 @@ function parseRouteHash(raw) {
     const firstCheck = state.steps.find((s) => s.lessonId === clean.slice(0, -5) && ['quiz', 'predict', 'debug'].includes(s.kind));
     if (firstCheck) return firstCheck.id;
   }
+  if (clean.endsWith('-code')) {
+    const assignment = state.steps.find((s) => s.lessonId === clean.slice(0, -5) && s.kind === 'code' && !s.practice);
+    if (assignment) return assignment.id;
+  }
   // A topic link now starts its sequence, not its final assignment.
   if (state.lessons.some((l) => l.id === clean)) return state.steps.find((s) => s.lessonId === clean)?.id;
   return null;
@@ -139,8 +143,9 @@ function drawLeftPane() {
 
   const step = state.step;
   $('#reading').innerHTML = `<h2>${escapeHTML(step.title)}</h2><p><strong>Goal:</strong> ${inline(step.objective)}</p>${markdown(step.explanation)}
-    ${step.kind === 'code' ? `<h3>Assignment contract</h3><p>${inline(lesson.challenge)}</p><div class="examples">${lesson.examples.map((ex) => `<div><span>→</span><code>${escapeHTML(ex)}</code></div>`).join('')}</div>` : ''}
-    <details><summary>Full original companion notes for ${escapeHTML(lesson.id)}</summary>${markdown(lesson.notes)}</details>`;
+    ${step.kind === 'code' ? `<h3>${step.practice ? 'Practice contract' : 'Assignment contract'}</h3>${lesson.challenge === step.explanation ? '' : markdown(lesson.challenge)}<div class="examples">${lesson.examples.map((ex) => `<div><span>→</span><code>${escapeHTML(ex)}</code></div>`).join('')}</div>` : ''}
+    ${step.sourceExercise ? `<p class="practice-note">${inline(step.sourceExercise)} · ${inline(`[LearnCpp source](${lesson.url})`)}</p>` : ''}
+    <details><summary>Full original companion notes for ${escapeHTML(step.lessonId)}</summary>${markdown(lesson.notes)}</details>`;
 }
 
 function currentQuestions() {
@@ -180,7 +185,7 @@ function drawQuizPane() {
   $('#quiz-prev').disabled = state.quizIndex === 0;
   $('#quiz-next').disabled = state.quizIndex === quizzes.length - 1;
   $('#quiz-counter').textContent = `${state.step.kind === 'debug' ? 'Repair' : state.step.kind === 'predict' ? 'Prediction' : 'Question'} ${state.quizIndex + 1} of ${quizzes.length}`;
-  $('#question-context').textContent = state.step.explanation;
+  $('#question-context').innerHTML = markdown(state.step.explanation);
   $('#question-code').hidden = !state.step.code;
   $('#question-code').innerHTML = highlight(state.step.code || '');
   $('#quiz-to-code').textContent = 'Continue to next step →';
@@ -326,7 +331,7 @@ function drawRunner() {
 function drawRightPane() {
   if (!state.step || !state.lesson) return;
   const kind = state.step.kind;
-  $('#activity-kind').textContent = { read: 'EXPLANATION', quiz: 'KNOWLEDGE CHECK', predict: 'PREDICT THE BEHAVIOR', debug: 'REPAIR DRILL', code: 'CODING ASSIGNMENT' }[kind];
+  $('#activity-kind').textContent = state.step.practice ? 'MINI CHALLENGE · PRACTICE ONLY' : { read: 'EXPLANATION', quiz: 'KNOWLEDGE CHECK', predict: 'PREDICT THE BEHAVIOR', debug: 'REPAIR DRILL', code: 'CODING ASSIGNMENT' }[kind];
   $('#activity-title').textContent = state.step.title;
   $('#activity-objective').textContent = state.step.objective;
   $('#read-pane').hidden = kind !== 'read';
@@ -348,7 +353,7 @@ async function refreshCourse() {
   state.steps = data.steps || [];
   state.token = data.token;
   if (state.lesson) {
-    const current = state.lessons.find((lesson) => lesson.id === state.lesson.id);
+    const current = state.lessons.find((lesson) => lesson.id === state.step?.lessonId);
     $('#completion').textContent = current?.completed ? '✓ Submitted' : 'Not submitted';
   }
 }
@@ -362,7 +367,9 @@ async function loadStep(stepId) {
   showError();
 
   try {
-    const lesson = await api(`/api/lessons/${encodeURIComponent(step.lessonId)}`);
+    const lesson = await api(step.practice
+      ? `/api/activities/${encodeURIComponent(step.id)}`
+      : `/api/lessons/${encodeURIComponent(step.lessonId)}`);
     if (request !== state.request) return;
     state.lesson = lesson;
     if (state.results.get(lesson.id)?.source !== lesson.source) state.results.delete(lesson.id);
@@ -371,27 +378,38 @@ async function loadStep(stepId) {
     state.showSolution = false;
 
     state.lessons.forEach((item) => {
-      if (item.id === lesson.id) item.completed = lesson.completed;
+      if (item.id === step.lessonId && !step.practice) item.completed = lesson.completed;
     });
 
-    document.title = `${lesson.id} · ${step.title} · C++ Learning Lab`;
+    document.title = `${step.lessonId} · ${step.title} · C++ Learning Lab`;
     $('#title').textContent = step.title;
-    $('#lesson-number').textContent = `CH 09 · ${lesson.id}`;
+    $('#lesson-number').textContent = `CH 09 · ${step.lessonId}`;
     $('#duration').textContent = `~${lesson.minutes} min`;
-    $('#completion').textContent = lesson.completed ? '✓ Submitted' : 'Not submitted';
+    const parent = state.lessons.find((item) => item.id === step.lessonId);
+    $('#completion').textContent = parent?.completed ? '✓ Submitted' : 'Not submitted';
     $('#file-path-label').textContent = lesson.path;
-    $('#challenge-brief').textContent = lesson.challenge;
+    $('#challenge-brief').innerHTML = markdown(lesson.challenge);
     $('#challenge-examples').innerHTML = lesson.examples.map((ex) => `<code>${escapeHTML(ex)}</code>`).join('');
+    $('#file-details').open = Boolean(step.practice);
+    $('#contract-label').textContent = step.practice ? 'Practice challenge & examples' : 'Assignment contract & external terminal Neovim command';
+    $('#practice-hints').hidden = !step.practice;
+    $('#practice-hints').innerHTML = lesson.hints.map((hint, index) => `<details><summary>Hint ${index + 1}</summary>${markdown(hint)}</details>`).join('');
+    $('#practice-source').hidden = !step.practice || !step.sourceExercise;
+    $('#practice-source').innerHTML = step.sourceExercise ? `${inline(step.sourceExercise)} · ${inline(`[LearnCpp source](${lesson.url})`)}` : '';
 
     $('#open-command').textContent = `nvim ${lesson.path}`;
     $('#copy').textContent = 'Copy command';
-    $('#submit-command').textContent = `./course check ${lesson.id}`;
+    $('#submit-label').textContent = step.practice ? 'Practice run · Alt+R' : 'CLI Submit: ';
+    $('#submit-command').hidden = Boolean(step.practice);
+    $('#submit-command').textContent = step.practice ? '' : `./course check ${step.lessonId}`;
+    $('#submit-badge').title = step.practice ? 'Practice runs do not record lesson completion' : 'Run from terminal to record completion';
     $('#reference').href = lesson.url;
     $('#hints').innerHTML = lesson.hints.map((hint, index) => `<details><summary>Hint ${index + 1}<span>+</span></summary><p>${escapeHTML(hint)}</p></details>`).join('');
 
     const index = state.steps.findIndex((item) => item.id === step.id);
     $('#previous').disabled = index === 0;
     $('#next').disabled = index === state.steps.length - 1;
+    $('#code-continue').disabled = index === state.steps.length - 1;
     $('#position').textContent = `${index + 1} of ${state.steps.length}`;
 
     drawNavigation();
@@ -455,6 +473,7 @@ $('#quiz-explain-btn').addEventListener('click', () => {
 
 $('#quiz-to-code').addEventListener('click', nextStep);
 $('#read-continue').addEventListener('click', nextStep);
+$('#code-continue').addEventListener('click', nextStep);
 
 $('#editor-save').addEventListener('click', () => {
   showError();
@@ -484,7 +503,8 @@ $('#copy').addEventListener('click', async () => {
 });
 
 async function executeRun() {
-  if (!state.lesson || state.step?.kind !== 'code' || state.lesson.id !== state.step.lessonId || state.running) return;
+  const activityId = state.step?.practice ? state.step.id : state.step?.lessonId;
+  if (!state.lesson || state.step?.kind !== 'code' || state.lesson.id !== activityId || state.running) return;
   const id = state.lesson.id;
   state.running = id;
   showError();

@@ -129,27 +129,42 @@ Open **http://127.0.0.1:8765** in your browser. Only Chapter 9 appears in this
 experimental split-pane UI. The live LearnCpp page stays on the left; focused
 activities appear on the right. Nothing from the live page is mirrored in the repo.
 
-The chapter has **29 curated steps**, not a fixed quiz/challenge pair per page:
-short explanations, code predictions, knowledge checks, choose-a-repair debugging
-drills, and the existing coding assignments. For example, 9.5 has seven steps:
-extraction → failed-stream prediction → recovery → repair drill → EOF → final-token
-prediction → combined reader challenge. Shorter 9.4 has three steps. Each step
-states one learning objective, and explanation steps do not force a quiz.
+The chapter has **34 focused activities**, each pairing related concepts with a
+quiz, prediction, or coding task: **24 questions and 12 runnable
+mini-challenges**, plus the seven existing topic submissions. Each LearnCpp page
+was researched separately. Its own quiz assignments take priority: 9.1's testing
+question, both 9.2 coverage questions, 9.3's unsigned countdown question, and the
+9.x Hi-Lo input-handling project are adapted in original wording with source links.
+Pages 9.4–9.6 have demonstrations rather than explicit assignments; supplementary
+activities exercise their concepts. Activity counts and formats vary by topic.
+Related details share an activity rather than receiving a separate quiz for every
+fact: 9.1 and 9.2 have four activities each, 9.3 has six, 9.4 has five, 9.5 has six,
+9.6 has five, and 9.x has four. The total includes the seven topic submissions.
 
-Repair drills update only their displayed example, not your C++ files. Practice
-answers stay in browser memory; they do not record lesson completion. Existing
-quiz/challenge links and all seven main.cpp assignments remain accessible.
+For example, 9.5 moves through buffered input, validation policy, trailing text,
+failed extraction, executable recovery, overflow, and EOF before the combined
+reader. The 9.x source assignment has separate reader and full Hi-Lo game stages.
+The game is tested with controlled targets, not implementation-specific random draws.
+Every activity identifies its source exercise or labels itself supplementary.
+The per-page source coverage maps and editable lesson definitions are in
+[`tools/chapter9/`](tools/chapter9/).
 
 Use the browser editor with **Vim keybindings** for file challenges, or keep
 editing the same files externally. **Alt+R** (in Normal or Insert mode) and the
 **Run** button save the current buffer before testing. **:w** and **Save** also
 write it to disk. This is not Neovim and does not load your plugins or configuration.
+Each mini-challenge has its own file under
+`workspaces/09/<lesson>/practice/<activity>/main.cpp`, created when first opened.
+Each has independent tests, hints, a reference solution, and a separate editor draft.
+Saved practice files participate in the usual Git sync. The assertion side-effect
+exercise automatically tests both assertion-enabled and `NDEBUG` builds.
 Unsaved drafts survive step navigation in the current page; refreshing or closing
 the page warns before discarding them. If the file changes externally, saving
 refuses to overwrite it: copy your draft before reloading and reconciling changes.
 **Submit from the terminal as usual** with
 `./course check 9.1`. Browser tests never mark lessons complete, commit, or push.
 The progress bar reflects submitted topics only, not individual practice steps.
+Quiz answers stay in the current browser session; saved practice code stays on disk.
 Chapter 9's browser presentation and normal file workflow share the same lessons
 and progress, rather than creating duplicate exercises. Chapters 10–13 are unchanged.
 

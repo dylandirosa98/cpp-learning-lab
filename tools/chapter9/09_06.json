@@ -1,0 +1,116 @@
+{
+  "lessonId": "9.6",
+  "sourceUrl": "https://www.learncpp.com/cpp-tutorial/assert-and-static_assert/",
+  "coverage": [
+    {"concept": "Semantic parameter errors; preconditions, early-return bouncer pattern, invariants, and postconditions", "steps": ["locate-the-contract"]},
+    {"concept": "Runtime assert macro, cassert, true/false behavior, abort diagnostics and debugging near the cause; executable documentation", "steps": ["guard-gravity"]},
+    {"concept": "Descriptive condition && string messages and assertions marking unimplemented cases", "steps": ["guard-gravity"]},
+    {"concept": "NDEBUG, debug/release build settings, translation-unit control before includes, and runtime checking cost", "steps": ["keep-work-outside"]},
+    {"concept": "Side-effect-free assertion expressions and identical required work with assertions disabled", "steps": ["keep-work-outside"]},
+    {"concept": "static_assert keyword, constant expressions, diagnostic messages optional since C++17, scope, type-size assumptions, no runtime cost, unaffected by NDEBUG, prefer when possible", "steps": ["compile-time-contract"]},
+    {"concept": "Programming errors versus expected operational/input errors; using assertions with persistent error handling; incorrect assertions and abort cleanup limitations", "steps": ["locate-the-contract", "guard-gravity"]},
+    {"concept": "Existing workspace: constexpr percentage predicate, runtime precondition, valid boundaries, isolated assertion-abort checks", "steps": ["code"]}
+  ],
+  "steps": [
+    {
+      "suffix": "locate-the-contract",
+      "kind": "quiz",
+      "title": "Choose a contract check or a recovery path",
+      "objective": "Identify contract boundaries and distinguish programmer mistakes from expected operational errors.",
+      "explanation": "A valid C++ argument can be semantically invalid: an int divisor may be zero. A precondition holds before an operation; an invariant remains true during the relevant execution; a postcondition holds afterward. Check parameters at the entrance. For recoverable errors, an early return (bouncer pattern) keeps detection and handling together with less nesting.\n\nAssertions expose programmer mistakes; ordinary error handling handles expected bad input, missing resources, recovery, or orderly shutdown. Both may be useful: assert an internal inverse helper's nonzero argument, then retain a separate zero-case handler for release builds. Handling has development/runtime costs, but disabled assertions cannot replace it. An assertion can itself be wrong: a percentage range needs &&, not ||; review and test both boundaries.\n\nSource: [LearnCpp 9.6, contracts, Asserts vs error handling, and limitations](https://www.learncpp.com/cpp-tutorial/assert-and-static_assert/).",
+      "sourceExercise": "supplementary — source contract definitions, inverse-function both-checks demonstration, and limitations; the full page by Alex (updated November 2, 2024) contains demonstrations but no quiz or coding assignments",
+      "questions": [
+        {
+          "question": "An internal division function requires a nonzero divisor, a loop maintains 0 <= used <= capacity, and a sort promises ordered output. Which classification fits in order?",
+          "options": ["Postcondition, precondition, invariant", "Precondition, invariant, postcondition", "Invariant, postcondition, precondition"],
+          "answer": 1,
+          "explanation": "The divisor requirement precedes division, the capacity relationship is maintained during the loop, and sorted order describes the completed operation."
+        },
+        {
+          "question": "Users may enter a zero divisor, but an internal helper assumes validation already happened. Which design preserves recovery in release builds and exposes broken internal calls during debugging?",
+          "options": ["Assert on user input and omit ordinary validation.", "Use static_assert on the entered value.", "Validate user input with ordinary control flow; assert the helper's precondition, with a separate error handler if graceful release failure is required."],
+          "answer": 2,
+          "explanation": "Bad user input is expected and needs persistent handling. A broken internal promise is a programming error; an assertion exposes it early, while a separate handler can remain when assertions are disabled."
+        }
+      ]
+    },
+    {
+      "suffix": "guard-gravity",
+      "kind": "code",
+      "title": "Enforce the falling-object contract",
+      "objective": "Implement an internal precondition before handling normal boundary cases.",
+      "explanation": "assert from <cassert> is an accepted macro, not std::assert: true continues; false reports the expression/file/line (wording varies) and calls std::abort. It documents and enforces assumptions near their cause, where a debugger can inspect state, rather than hiding errors in output or losing that abort point via std::exit. Abort does not unwind normally or guarantee cleanup: do not rely on it to save files or close transactions.\n\nImplement fallSeconds(height, gravity): assert gravity > 0.0 first, even for nonpositive height; then return 0.0 for height <= 0.0, otherwise sqrt(2 * height / gravity). Use condition && \"message\" for context: the literal converts to true, preserving the condition (|| would mask failure). Assertions can similarly flag unsupported paths, e.g. !relocated && \"Relocation not implemented\", but cannot implement the feature.\n\nBuild with C++20 and -UNDEBUG. The Linux driver isolates invalid calls, disables child core dumps, and requires SIGABRT. Adapted from [LearnCpp 9.6, Assertions and descriptive/unimplemented-case checks](https://www.learncpp.com/cpp-tutorial/assert-and-static_assert/).",
+      "sourceExercise": "supplementary — source calculateTimeUntilObjectHitsGround demonstration adapted as fallSeconds, preserving positive gravity, nonpositive-height zero result, and square-root formula; descriptive assertions, unsupported cases, and abort limitations folded into the activity",
+      "practice": {
+        "starter": "#include <cassert>\n#include <cmath>\n#include <iostream>\n\ndouble fallSeconds(double height, double gravity)\n{\n    (void)height;\n    (void)gravity;\n    return 0.0; // TODO: enforce the contract, then compute.\n}\n\nint main()\n{\n    std::cout << fallSeconds(20.0, 10.0) << '\\n';\n    return 0;\n}\n",
+        "solution": "#include <cassert>\n#include <cmath>\n#include <iostream>\n\ndouble fallSeconds(double height, double gravity)\n{\n    assert(gravity > 0.0 && \"Gravity must point toward the ground\");\n    if (height <= 0.0) return 0.0;\n    return std::sqrt(2.0 * height / gravity);\n}\n\nint main()\n{\n    std::cout << fallSeconds(20.0, 10.0) << '\\n';\n    return 0;\n}\n",
+        "tests": "#define main learner_main\n#include \"main.cpp\"\n#undef main\n#include <cerrno>\n#include <csignal>\n#include <iostream>\n#include <sys/resource.h>\n#include <sys/wait.h>\n#include <unistd.h>\n\nbool aborts(double height, double gravity)\n{\n    const pid_t child{fork()};\n    if (child == -1) { std::cerr << \"fork failed\\n\"; return false; }\n    if (child == 0)\n    {\n        const rlimit limit{0, 0};\n        if (setrlimit(RLIMIT_CORE, &limit) != 0) _exit(120);\n        (void)fallSeconds(height, gravity);\n        _exit(0);\n    }\n    int status{};\n    pid_t result;\n    do { result = waitpid(child, &status, 0); } while (result == -1 && errno == EINTR);\n    return result == child && WIFSIGNALED(status) && WTERMSIG(status) == SIGABRT;\n}\n\nint main()\n{\n#ifdef NDEBUG\n    std::cerr << \"This test requires -UNDEBUG\\n\";\n    return 1;\n#endif\n    int failures{};\n    const double heights[]{20.0, 45.0, 5.0, 0.0, -7.0};\n    const double gravities[]{10.0, 10.0, 10.0, 10.0, 2.0};\n    const double expected[]{2.0, 3.0, 1.0, 0.0, 0.0};\n    for (int i{}; i < 5; ++i)\n    {\n        const double actual{fallSeconds(heights[i], gravities[i])};\n        if (!std::isfinite(actual) || std::abs(actual - expected[i]) > 1e-10)\n        { std::cerr << \"Wrong fall time at case \" << i << '\\n'; ++failures; }\n    }\n    for (double height : {20.0, 0.0, -7.0})\n        for (double gravity : {0.0, -10.0})\n            if (!aborts(height, gravity))\n            { std::cerr << \"Expected assertion abort for height \" << height << \" gravity \" << gravity << '\\n'; ++failures; }\n    return failures == 0 ? 0 : 1;\n}\n",
+        "hints": [
+          "The gravity requirement applies to every call, so check it before the height early return.",
+          "Use assert(gravity > 0.0) from <cassert>; returning a sentinel does not enforce this contract.",
+          "After the precondition, handle height <= 0.0 and then use std::sqrt from <cmath>."
+        ],
+        "examples": [
+          "fallSeconds(20.0, 10.0) -> 2.0",
+          "fallSeconds(-7.0, 2.0) -> 0.0",
+          "fallSeconds(0.0, 0.0) -> assertion abort with assertions enabled"
+        ]
+      }
+    },
+    {
+      "suffix": "keep-work-outside",
+      "kind": "code",
+      "title": "Make the counter independent of assertions",
+      "objective": "Move required mutation out of an assertion while retaining a pure contract check.",
+      "explanation": "Runtime checks cost work, so release builds commonly define NDEBUG; debug builds commonly do not. Inspect project/compiler definitions rather than trusting the label: -DNDEBUG disables assert, -UNDEBUG enables it; option order matters. Locally, put #define NDEBUG or #undef NDEBUG before all includes, without a semicolon. Even #define NDEBUG 0 disables checks; a later source definition overrides an earlier command-line undefinition.\n\nRepair recordVisit(visits): assert the starting domain 0 <= visits < 1000 without side effects, increment once outside assert, and return the new value. The starter hides ++visits in an argument that disappears with NDEBUG. Required assignments, reads, and other work must stay outside assertions. This internal contract is not arbitrary-input overflow handling.\n\nRun both C++20 builds (-UNDEBUG and -DNDEBUG): valid-input behavior must match; debug additionally requires SIGABRT for -1 and 1000 in isolated, core-disabled children. New exercise for [LearnCpp 9.6, NDEBUG and assertion limitations](https://www.learncpp.com/cpp-tutorial/assert-and-static_assert/).",
+      "sourceExercise": "supplementary — source NDEBUG configuration advice and side-effect warning combined in an original repair exercise",
+      "practice": {
+        "buildModes": ["debug", "release"],
+        "starter": "#include <cassert>\n#include <iostream>\n\nint recordVisit(int& visits)\n{\n    assert(visits >= 0 && ++visits <= 1000); // TODO: separate checking from required work.\n    return visits;\n}\n\nint main()\n{\n    int visits{4};\n    std::cout << recordVisit(visits) << '\\n';\n    return 0;\n}\n",
+        "solution": "#include <cassert>\n#include <iostream>\n\nint recordVisit(int& visits)\n{\n    assert(visits >= 0 && visits < 1000);\n    ++visits;\n    return visits;\n}\n\nint main()\n{\n    int visits{4};\n    std::cout << recordVisit(visits) << '\\n';\n    return 0;\n}\n",
+        "tests": "#define main learner_main\n#include \"main.cpp\"\n#undef main\n#include <iostream>\n#ifndef NDEBUG\n#include <cerrno>\n#include <csignal>\n#include <sys/resource.h>\n#include <sys/wait.h>\n#include <unistd.h>\n\nbool aborts(int initial)\n{\n    const pid_t child{fork()};\n    if (child == -1) { std::cerr << \"fork failed\\n\"; return false; }\n    if (child == 0)\n    {\n        const rlimit limit{0, 0};\n        if (setrlimit(RLIMIT_CORE, &limit) != 0) _exit(120);\n        int visits{initial};\n        (void)recordVisit(visits);\n        _exit(0);\n    }\n    int status{};\n    pid_t result;\n    do { result = waitpid(child, &status, 0); } while (result == -1 && errno == EINTR);\n    return result == child && WIFSIGNALED(status) && WTERMSIG(status) == SIGABRT;\n}\n#endif\n\nint main()\n{\n    int failures{};\n    for (int initial : {0, 4, 57, 998, 999})\n    {\n        int visits{initial};\n        const int returned{recordVisit(visits)};\n        if (visits != initial + 1 || returned != initial + 1)\n        { std::cerr << \"Expected exactly one visit after \" << initial << '\\n'; ++failures; }\n    }\n    int visits{};\n    for (int expected{1}; expected <= 1000; ++expected)\n    {\n        const int returned{recordVisit(visits)};\n        if (visits != expected || returned != expected)\n        { std::cerr << \"Sequence failed at \" << expected << '\\n'; ++failures; break; }\n    }\n#ifndef NDEBUG\n    for (int initial : {-1, 1000})\n        if (!aborts(initial))\n        { std::cerr << \"Expected assertion abort for starting visits \" << initial << '\\n'; ++failures; }\n#endif\n    return failures == 0 ? 0 : 1;\n}\n",
+        "hints": [
+          "With NDEBUG defined the entire assert argument disappears, including ++visits.",
+          "Check the original count with visits >= 0 && visits < 1000, then increment in an ordinary statement.",
+          "Run both builds. A successful debug run alone does not reveal the starter's bug."
+        ],
+        "examples": [
+          "Starting visits = 4: recordVisit returns 5 and leaves visits = 5 in both builds.",
+          "Starting visits = 999: recordVisit returns 1000 in both builds.",
+          "The starter passes valid debug cases but fails the -DNDEBUG run because it never increments."
+        ]
+      }
+    },
+    {
+      "suffix": "compile-time-contract",
+      "kind": "predict",
+      "title": "Reject a broken assumption before running",
+      "objective": "Choose static_assert for constant-expression requirements and distinguish compile failure from runtime abort.",
+      "explanation": "static_assert is a keyword needing no header. Its condition must be a constant expression; false rejects compilation with a diagnostic, not a runtime abort. It works at namespace or function scope, costs nothing at runtime, and remains active under NDEBUG. Messages are optional since C++17. Prefer it when the fact is available at compile time; ordinary runtime parameters do not qualify.\n\nType-size checks such as sizeof(int) >= 4 enforce platform assumptions; sizeof(long) == 8 restricts supported implementations rather than expressing a universal fact. Predict the failure below, then change slots to 8 and compile again. Source: [LearnCpp 9.6, static_assert](https://www.learncpp.com/cpp-tutorial/assert-and-static_assert/#static_assert).",
+      "sourceExercise": "supplementary — static_assert type-size examples and notes; new deterministic failing compile prediction",
+      "code": "#define NDEBUG\n\nconstexpr int slots{6};\nstatic_assert(slots >= 1);\nstatic_assert(slots % 4 == 0, \"Slots must form complete groups of four\");\n\nint main()\n{\n    static_assert(sizeof(char) == 1, \"C++ counts object sizes in bytes\");\n    return 0;\n}\n",
+      "questions": [
+        {
+          "question": "What happens when compiling this C++20 program?",
+          "options": ["It compiles and returns 0 because NDEBUG removes every assertion.", "It compiles but aborts at the second static_assert during startup.", "Compilation fails at the groups-of-four requirement; NDEBUG does not affect it."],
+          "answer": 2,
+          "explanation": "6 % 4 is 2, so the constant condition is false. The message explains the rejected assumption without a runtime check."
+        },
+        {
+          "question": "After changing slots to 8, could int checked(int value) { static_assert(value > 0); return value; } check ordinary runtime inputs?",
+          "options": ["No: value is a runtime parameter, so this static_assert condition is not a constant expression.", "Yes: every assertion in a function waits until the call.", "Yes, but only if <cassert> is included."],
+          "answer": 0,
+          "explanation": "The location inside a function is allowed, but its condition still must be a constant expression. Use a runtime assertion for an internal runtime precondition, or ordinary error handling for expected bad input."
+        }
+      ]
+    },
+    {
+      "suffix": "code",
+      "kind": "code",
+      "title": "Apply both kinds of check to percentages",
+      "objective": "Complete the existing workspace's constexpr predicate and asserted internal helper.",
+      "explanation": "Open the [workspace notes](workspaces/09/09_06/lesson.md) and [main.cpp](workspaces/09/09_06/main.cpp). Implement pure constexpr validPercent(percent), true exactly for [0, 100], and checkedPercent(percent), which asserts that precondition and returns the unchanged value, never a failure sentinel. The predicate must support static_assert and runtime calls. Predict 0/100 as valid, -1/101 as invalid, and checkedPercent(45) as 45.\n\nRun the supplied Debug tests with assertions enabled; CMake also keeps them enabled. Invalid calls run in children requiring assertion abort. Keep the tests, add one meaningful case, explain why internal assertions cannot replace input validation, and submit with ./course check 9.6. This is the repository assignment, not a [LearnCpp exercise](https://www.learncpp.com/cpp-tutorial/assert-and-static_assert/).",
+      "sourceExercise": "supplementary — existing repository final workspace assignment from lessons/09_06.json and workspaces/09/09_06/lesson.md"
+    }
+  ]
+}

@@ -1,0 +1,78 @@
+{
+  "lessonId": "9.4",
+  "sourceUrl": "https://www.learncpp.com/cpp-tutorial/detecting-and-handling-errors/",
+  "coverage": [
+    {"concept": "Faulty assumptions about returned success, external input format/meaning, and function arguments; defensive programming and happy/sad paths", "steps": ["choose-an-owner"]},
+    {"concept": "Invalid arguments and internal failures; four context-dependent error handling strategies", "steps": ["choose-an-owner"]},
+    {"concept": "Local recovery through retry, cancellation, silent failure, and diagnostic output; required results and side effects constrain cancellation", "steps": ["choose-an-owner", "report-print-success"]},
+    {"concept": "Report errors to the caller with bool; separate calculation from user interaction and require callers to inspect failure", "steps": ["choose-an-owner", "report-print-success", "code"]},
+    {"concept": "Sentinel values, named constants, reciprocal demonstration, ambiguous full-range results, and optional/expected alternatives", "steps": ["guard-the-reciprocal", "code"]},
+    {"concept": "Fatal/non-recoverable errors, nonzero status from main, and halting from nested functions with std::exit", "steps": ["choose-an-owner"]},
+    {"concept": "Exceptions as a separate error channel; throw, catch, propagation up the call stack, resumed handling, and termination if unhandled", "steps": ["follow-the-exception"]},
+    {"concept": "Redirectable cout/cerr streams; interactive apps, non-interactive tools/services, user messages, diagnostics, and transactional logging", "steps": ["report-print-success"]},
+    {"concept": "Existing workspace: validate before remainder, unambiguous sentinel, no printing or halting, and boundary tests", "steps": ["code"]}
+  ],
+  "steps": [
+    {
+      "suffix": "choose-an-owner",
+      "kind": "quiz",
+      "title": "Choose who can handle the failure",
+      "objective": "Challenge assumptions and assign detection, recovery, and termination to the appropriate layer.",
+      "explanation": "Correct language use does not guarantee correct assumptions. Check whether called functions succeeded, user/file input has valid format and meaning, and arguments meet their contract. A grade lookup may face missing students, duplicate names, or a different grading system; even valid arguments cannot guarantee a file exists. Defensive programming anticipates user/developer misuse and tests sad paths as well as the happy path.\n\nChoose among four strategies according to context:\n- Recover locally: retry lost connectivity or invalid input when the function owns that interaction, or cancel the operation. Silent cancellation hides failure; a message helps but cannot replace a required result or side effect.\n- Report failure to a caller with enough context to decide what to do; reusable calculations should not unexpectedly prompt users.\n- Halt for a fatal, non-recoverable error: preferably return a nonzero status from main; use std::exit(status) from <cstdlib> when propagation from nested code is impractical.\n- Throw an exception, allowing a handler higher in the call stack to take responsibility.\n\nSource: [LearnCpp 9.4, introduction, Handling errors in functions, and Fatal errors](https://www.learncpp.com/cpp-tutorial/detecting-and-handling-errors/), by Alex (published October 22, 2007; updated January 17, 2025). The page has demonstrations but no quiz or coding assignment; these activities are supplementary.",
+      "sourceExercise": "supplementary — introduction, local recovery, caller responsibility, and Fatal errors; no source quiz or assignment",
+      "questions": [
+        {"question": "A division routine is used by both an interactive app and a background tool. It receives a zero divisor, and the caller knows the appropriate recovery policy. Which design best fits?", "options": ["Read a replacement divisor from std::cin inside the calculation.", "Always halt, regardless of the caller's needs.", "Detect the invalid argument and report failure for the caller to handle."], "answer": 2, "explanation": "The calculation detects the problem; its caller chooses retry, cancellation, or another policy suitable to the application."},
+        {"question": "A file contains -8 for a positive quantity, and the program's essential configuration file is missing with no recovery possible. Which response fits both failures?", "options": ["Accept -8 because it parsed, and continue without configuration.", "Let the input-owning layer reject -8 and retry; report the fatal configuration failure and return a nonzero status from main.", "Halt immediately for every invalid input, even when a retry is possible."], "answer": 1, "explanation": "Parsing does not establish semantic validity. A recoverable input error and an unrecoverable environment failure need different policies."}
+      ]
+    },
+    {
+      "suffix": "report-print-success",
+      "kind": "code",
+      "title": "Report success and route messages",
+      "objective": "Return a checked success flag and separate results, user messages, and diagnostics.",
+      "explanation": "A void-style operation can return bool to signal success. Implement printQuotient(value, divisor): for a zero divisor, print nothing and return false; otherwise print the integer quotient with no spaces or newline and return true. Both arguments are between -1000 and 1000, so valid division is representable. The caller must check the flag and owns any message or retry. Unlike the source's bool demonstration, this variation leaves diagnostics to the caller.\n\nChoose output by audience; cout and cerr normally reach the console but can be redirected independently:\n- Interactive apps: cout for conventional user-facing text, including ordinary input errors; cerr or a logfile for technical warnings, status, and progress.\n- Non-interactive tools produce a result and exit; services perform ongoing background work. Use cout for normal output and reserve cerr for errors so consumers can separate them.\n- Transactional apps of either type can log events for later review: files processed, timestamps, stages, progress, warnings, and errors.\n\nBased on [LearnCpp 9.4, Passing errors back to the caller and When to use std::cout vs std::cerr vs logging](https://www.learncpp.com/cpp-tutorial/detecting-and-handling-errors/).",
+      "sourceExercise": "supplementary — bool-returning printIntDivision demonstration and output/logging guidance; added implementation activity, not a source assignment",
+      "practice": {
+        "starter": "#include <iostream>\n\nbool printQuotient(int value, int divisor)\n{\n    (void)value;\n    (void)divisor;\n    return false; // TODO: validate, print on success, and report success.\n}\n\nint main()\n{\n    if (!printQuotient(12, 0)) std::cout << \"No quotient\\n\";\n    return 0;\n}\n",
+        "solution": "#include <iostream>\n\nbool printQuotient(int value, int divisor)\n{\n    if (divisor == 0) return false;\n    std::cout << value / divisor;\n    return true;\n}\n\nint main()\n{\n    if (!printQuotient(12, 0)) std::cout << \"No quotient\\n\";\n    return 0;\n}\n",
+        "tests": "#define main learner_main\n#include \"main.cpp\"\n#undef main\n#include <sstream>\n#include <string>\n\nint main()\n{\n    struct Case { int value; int divisor; bool success; const char* output; };\n    const Case cases[]{{12, 3, true, \"4\"}, {7, 2, true, \"3\"}, {-7, 2, true, \"-3\"}, {7, -2, true, \"-3\"}, {-7, -2, true, \"3\"}, {0, 4, true, \"0\"}, {12, 0, false, \"\"}, {0, 0, false, \"\"}};\n    int failures{};\n    for (const auto& c : cases)\n    {\n        std::ostringstream captured;\n        auto* old{std::cout.rdbuf(captured.rdbuf())};\n        const bool actual{printQuotient(c.value, c.divisor)};\n        std::cout.rdbuf(old);\n        if (actual != c.success || captured.str() != c.output)\n        {\n            std::cerr << \"Wrong flag or output for \" << c.value << \", \" << c.divisor << '\\n';\n            ++failures;\n        }\n    }\n    return failures == 0 ? 0 : 1;\n}\n",
+        "hints": ["Return false before division when divisor is zero.", "For valid arguments, print value / divisor, then return true.", "A valid quotient of zero is still success; do not use the quotient as your bool result."],
+        "examples": ["printQuotient(7, 2) prints 3 and returns true.", "printQuotient(0, 4) prints 0 and returns true.", "printQuotient(12, 0) prints nothing and returns false."]
+      }
+    },
+    {
+      "suffix": "guard-the-reciprocal",
+      "kind": "code",
+      "title": "Detect failure before calculating",
+      "objective": "Implement the source's reciprocal-sentinel idea within an explicit safe input domain.",
+      "explanation": "A sentinel reserves an otherwise unused result for failure; a named constant documents its meaning, and callers must check it before using the result. If the full result range is legitimate, a sentinel is ambiguous: prefer a separate representation such as std::optional (value or no value) or std::expected (value or error). These are later topics; expected requires C++23.\n\nImplement reciprocal(x) for finite inputs that are zero or have absolute value between 0.001 and 1000 inclusive. Return errorNoReciprocal (0.0) for zero before division; otherwise return 1.0 / x. Do not print, prompt, or halt. These bounds keep successful reciprocals finite and nonzero; underflow and non-finite inputs would require a stronger contract. The caller in main checks the sentinel.\n\nAdded practice based on [LearnCpp 9.4, reciprocal demonstration](https://www.learncpp.com/cpp-tutorial/detecting-and-handling-errors/), not a source assignment. See also the [later std::optional lesson](https://www.learncpp.com/cpp-tutorial/stdoptional/).",
+      "sourceExercise": "supplementary — reciprocal demonstration turned into practice with a bounded finite input contract",
+      "practice": {
+        "starter": "#include <iostream>\n\nconstexpr double errorNoReciprocal{0.0};\n\ndouble reciprocal(double x)\n{\n    (void)x;\n    return errorNoReciprocal; // TODO: distinguish invalid and valid input.\n}\n\nint main()\n{\n    const double result{reciprocal(4.0)};\n    if (result == errorNoReciprocal) std::cout << \"No reciprocal\\n\";\n    else std::cout << result << '\\n';\n    return 0;\n}\n",
+        "solution": "#include <iostream>\n\nconstexpr double errorNoReciprocal{0.0};\n\ndouble reciprocal(double x)\n{\n    if (x == 0.0) return errorNoReciprocal;\n    return 1.0 / x;\n}\n\nint main()\n{\n    const double result{reciprocal(4.0)};\n    if (result == errorNoReciprocal) std::cout << \"No reciprocal\\n\";\n    else std::cout << result << '\\n';\n    return 0;\n}\n",
+        "tests": "#define main learner_main\n#include \"main.cpp\"\n#undef main\n#include <cmath>\n#include <sstream>\n\nint main()\n{\n    struct Case { double input; double expected; };\n    const Case cases[]{{0.0, 0.0}, {-0.0, 0.0}, {1.0, 1.0}, {-1.0, -1.0}, {4.0, 0.25}, {-8.0, -0.125}, {0.001, 1000.0}, {-0.001, -1000.0}, {1000.0, 0.001}, {-1000.0, -0.001}};\n    int failures{};\n    for (const auto& c : cases)\n    {\n        std::ostringstream capturedOut;\n        std::ostringstream capturedErr;\n        auto* oldOut{std::cout.rdbuf(capturedOut.rdbuf())};\n        auto* oldErr{std::cerr.rdbuf(capturedErr.rdbuf())};\n        const double actual{reciprocal(c.input)};\n        std::cout.rdbuf(oldOut);\n        std::cerr.rdbuf(oldErr);\n        const bool correct{c.input == 0.0 ? actual == 0.0 : std::isfinite(actual) && actual != 0.0 && std::abs(actual - c.expected) <= 1e-12 * std::abs(c.expected)};\n        if (!correct || !capturedOut.str().empty() || !capturedErr.str().empty())\n        {\n            std::cerr << \"Wrong result or unexpected diagnostic for input \" << c.input << '\\n';\n            ++failures;\n        }\n    }\n    return failures == 0 ? 0 : 1;\n}\n",
+        "hints": ["Compare x with 0.0 before division; this also recognizes negative zero.", "Return the named sentinel in the invalid branch.", "Use 1.0 / x only in the valid branch; negative nonzero inputs are valid."],
+        "examples": ["reciprocal(4.0) -> 0.25", "reciprocal(-8.0) -> -0.125", "reciprocal(0.0) -> errorNoReciprocal (0.0)"]
+      }
+    },
+    {
+      "suffix": "follow-the-exception",
+      "kind": "quiz",
+      "title": "Follow an error up the call stack",
+      "objective": "Describe exception propagation without requiring exception syntax.",
+      "explanation": "Return-based error conventions can be awkward and inconsistent. Exceptions provide a separate channel: a function throws, and a suitable handler catches. Without a local handler, the caller gets a chance, then its caller, up the call stack.\n\nOnce caught and handled, execution can continue after handling, not resume the failed operation automatically. If no handler is found, including at main, the program terminates. This lesson introduces the model; syntax and detailed rules come later.\n\nSource: [LearnCpp 9.4, Exceptions](https://www.learncpp.com/cpp-tutorial/detecting-and-handling-errors/) and [LearnCpp chapter 27](https://www.learncpp.com/#Chapter27).",
+      "sourceExercise": "supplementary — Exceptions overview, kept at the source's conceptual level",
+      "questions": [
+        {"question": "main calls loadReport, which calls readRecord. readRecord throws; only main has a matching handler. Which outcome is correct, including if that handler is removed?", "options": ["readRecord returns zero in both versions.", "The error reaches main's handler and execution can continue afterward; without any handler, the program terminates.", "loadReport must catch the exception or main cannot handle it."], "answer": 1, "explanation": "Exceptions can pass through intermediate callers. Handling permits continuation; an unhandled exception terminates the program."}
+      ]
+    },
+    {
+      "suffix": "code",
+      "kind": "code",
+      "title": "Apply the policy to safe remainder",
+      "objective": "Implement the existing workspace contract with pre-operation validation and an unambiguous sentinel.",
+      "explanation": "Open the [lesson notes](workspaces/09/09_04/lesson.md) and [existing workspace](workspaces/09/09_04/main.cpp). Implement safeRemainder(value, divisor): for value >= 0 and divisor > 0, return value % divisor; otherwise return -1 without evaluating remainder. Do not print, prompt, or halt: the caller owns the response. Successful remainders are nonnegative, so -1 is distinct; zero would be ambiguous.\n\nPredict 17,5 -> 2; 0,5 -> 0; 4,0 -> -1; and -4,3 -> -1. Check negative divisors too. Keep supplied tests, add one boundary case, and explain why validation must precede %. Run the existing runner, then submit with ./course check 9.4.\n\nThis is the repository's application assignment, supplementing [LearnCpp 9.4](https://www.learncpp.com/cpp-tutorial/detecting-and-handling-errors/), not an exercise from that page.",
+      "sourceExercise": "supplementary — existing repository final workspace assignment from lessons/09_04.json and workspaces/09/09_04/lesson.md"
+    }
+  ]
+}

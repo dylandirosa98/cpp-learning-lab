@@ -1,0 +1,89 @@
+{
+  "lessonId": "9.1",
+  "sourceUrl": "https://www.learncpp.com/cpp-tutorial/introduction-to-testing-your-code/",
+  "coverage": [
+    {"concept": "Software validation, compilation versus correctness, and testing effort appropriate to program use", "steps": ["start-small"]},
+    {"concept": "Repeated use, input, control flow, reuse, distribution, scope creep, and cross-system behavior", "steps": ["start-small"]},
+    {"concept": "Test small well-defined units immediately, compile often, and localize faults before integration", "steps": ["start-small"]},
+    {"concept": "Combinatorial input explosion and representative comparison cases", "steps": ["start-small"]},
+    {"concept": "Informal manual testing of a lowercase-vowel function", "steps": ["automate-vowel-checks"]},
+    {"concept": "Preserved test functions and regression testing after changes", "steps": ["automate-vowel-checks"]},
+    {"concept": "Automated actual-versus-expected comparisons and failure identification", "steps": ["automate-vowel-checks"]},
+    {"concept": "Assertion-based tests, aborting on failure, and NDEBUG safeguards", "steps": ["test-evidence"]},
+    {"concept": "Unit testing frameworks and integration testing after isolated tests", "steps": ["test-evidence", "code"]},
+    {"concept": "Workspace application: independent expectations, leap-year categories, and a retained learner test", "steps": ["code"]}
+  ],
+  "steps": [
+    {
+      "suffix": "start-small",
+      "title": "Start small and choose useful cases",
+      "objective": "Choose when to begin testing and select representative inputs instead of exhaustive enumeration.",
+      "explanation": "Testing (software validation) compares behavior with requirements; compilation alone cannot establish correctness. One checked run may suffice for a disposable calculation or a no-input, straight-line program. Reuse, input, loops, decisions, distribution, and unplanned features (scope creep) demand broader checks. Cross-system runs can expose portability issues or undefined behavior, without proving either absent.\n\nBuild small, well-defined functions or classes, compile often, and test each meaningful unit immediately. Unit tests isolate particular behaviors, narrowing fault diagnosis to a small recent change. Manual input trials may suffice for a tiny program; larger programs benefit from isolated tests.\n\nInputs multiply quickly: two 32-bit integers allow 2^64 pairs. For a comparison, choose less-than, equal, and greater-than representatives instead of enumerating pairs; this gives evidence, not proof. [LearnCpp 9.1](https://www.learncpp.com/cpp-tutorial/introduction-to-testing-your-code/) supplies the testing discussion and Quiz #1 below.",
+      "kind": "quiz",
+      "sourceExercise": "Quiz time — Question #1: begin testing immediately after writing a non-trivial function; supplementary input-selection question based on The testing challenge comparison example",
+      "questions": [
+        {
+          "question": "You have just finished your first function with meaningful logic. At what point should its testing begin?",
+          "options": ["After the whole application has been assembled.", "Only after a user reports incorrect output.", "Now, while the function and the recent change are still small.", "Only after choosing a third-party testing framework."],
+          "answer": 2,
+          "explanation": "Start as soon as a non-trivial function exists. Early tests catch problems before other components depend on them and narrow the search when a failure appears."
+        },
+        {
+          "question": "Which set of integer pairs exercises less-than, equality, and greater-than comparison outcomes?",
+          "options": ["(1, 4), (2, 8), (-3, 0)", "(1, 4), (4, 4), (9, 4)", "(9, 4), (8, 2), (3, -1)"],
+          "answer": 1,
+          "explanation": "The middle choice deliberately selects less-than, equality, and greater-than categories. Merely changing the numbers can leave every call in the same category."
+        }
+      ]
+    },
+    {
+      "suffix": "automate-vowel-checks",
+      "title": "Make the comparison executable",
+      "objective": "Implement a lowercase-vowel predicate and a reusable actual-versus-expected check.",
+      "explanation": "Informal tests can print isLowerVowel('a') and isLowerVowel('q'): expect 1 and 0 with default Boolean formatting, then compare manually. Retain useful checks in a test function and rerun them after edits to catch regressions; merely keeping an uncalled function checks nothing.\n\nImplement isLowerVowel(char), true exactly for a, e, i, o, u; uppercase letters and y return false. Implement checkVowel(char, bool), returning 0 when the predicate matches the supplied expectation and 1 otherwise. Choose expectations from the contract, not the implementation's output.\n\nKeep testVowel(): it reports the first failed case as 1 or 2, or 0 when both pass. The driver also supplies wrong expectations to verify failure detection. This exercise automates the manual comparison in [LearnCpp's informal, preserved, and automated test examples](https://www.learncpp.com/cpp-tutorial/introduction-to-testing-your-code/).",
+      "kind": "code",
+      "sourceExercise": "supplementary — Informal testing, Preserving your tests, and Automating your test functions; new implementation task based on those demonstrations",
+      "practice": {
+        "starter": "#include <iostream>\n\nbool isLowerVowel(char c)\n{\n    (void)c;\n    return false; // TODO: implement the five-letter rule.\n}\n\nint checkVowel(char input, bool expected)\n{\n    (void)input;\n    (void)expected;\n    return 0; // TODO: compare actual behavior with expected.\n}\n\nint testVowel()\n{\n    if (checkVowel('a', true) != 0) return 1;\n    if (checkVowel('q', false) != 0) return 2;\n    return 0;\n}\n\nint main()\n{\n    const int failedCase{testVowel()};\n    if (failedCase == 0) std::cout << \"Vowel checks passed\\n\";\n    else std::cout << \"Failed vowel case \" << failedCase << '\\n';\n    return 0;\n}\n",
+        "solution": "#include <iostream>\n\nbool isLowerVowel(char c)\n{\n    return c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u';\n}\n\nint checkVowel(char input, bool expected)\n{\n    return isLowerVowel(input) == expected ? 0 : 1;\n}\n\nint testVowel()\n{\n    if (checkVowel('a', true) != 0) return 1;\n    if (checkVowel('q', false) != 0) return 2;\n    return 0;\n}\n\nint main()\n{\n    const int failedCase{testVowel()};\n    if (failedCase == 0) std::cout << \"Vowel checks passed\\n\";\n    else std::cout << \"Failed vowel case \" << failedCase << '\\n';\n    return 0;\n}\n",
+        "tests": "#define main learner_main\n#include \"main.cpp\"\n#undef main\n#include <iostream>\n\nint main()\n{\n    int failures{};\n    const char inputs[]{'a', 'e', 'i', 'o', 'u', 'b', 'q', 'y', 'z', 'A', 'E', 'I', 'O', 'U', '0', ' ', '\\n', '\\0'};\n    const bool expected[]{true, true, true, true, true, false, false, false, false, false, false, false, false, false, false, false, false, false};\n    for (unsigned i{}; i < sizeof(inputs) / sizeof(inputs[0]); ++i)\n    {\n        if (isLowerVowel(inputs[i]) != expected[i])\n        {\n            std::cerr << \"Wrong classification at case \" << i << '\\n';\n            ++failures;\n        }\n        if (checkVowel(inputs[i], expected[i]) != 0)\n        {\n            std::cerr << \"Matching expectation rejected at case \" << i << '\\n';\n            ++failures;\n        }\n        if (checkVowel(inputs[i], !expected[i]) != 1)\n        {\n            std::cerr << \"Mismatching expectation not reported at case \" << i << '\\n';\n            ++failures;\n        }\n    }\n    if (testVowel() != 0)\n    {\n        std::cerr << \"Retained smoke checks should pass for the correct predicate\\n\";\n        ++failures;\n    }\n    return failures == 0 ? 0 : 1;\n}\n",
+        "hints": [
+          "A switch with five accepted cases or a chain of equality comparisons can express the vowel rule.",
+          "Compare the bool returned by isLowerVowel(input) with expected; expected can deliberately be false or even wrong.",
+          "checkVowel reports agreement, not vowel membership: a consonant paired with false is a passing check."
+        ],
+        "examples": [
+          "isLowerVowel('u') -> true; isLowerVowel('U') -> false",
+          "checkVowel('a', true) -> 0; checkVowel('q', false) -> 0",
+          "checkVowel('a', false) -> 1; checkVowel('q', true) -> 1",
+          "With the correct predicate and checker, testVowel() -> 0."
+        ]
+      }
+    },
+    {
+      "suffix": "test-evidence",
+      "title": "Ask what the test run actually checked",
+      "objective": "Interpret assertion-based results and distinguish isolated checks from integration evidence.",
+      "explanation": "An enabled assert(condition) from <cassert> terminates execution with a diagnostic when false. Defining NDEBUG before including that header removes assertion checks. The source guards its assertion-based suite with a diagnostic and std::abort() from <cstdlib> when NDEBUG is defined, preventing an unchecked run from looking successful. Predict the unguarded snippet below.\n\nUnit testing frameworks help write, maintain, and run suites; they do not choose expectations or prove correctness. After isolated tests pass, integration tests check the connections: a correct calculator can still receive the wrong value from its caller. For now, run the assembled program with representative inputs and inspect its full behavior. These are the limits discussed in [LearnCpp's advanced assertion example, frameworks, and integration sections](https://www.learncpp.com/cpp-tutorial/introduction-to-testing-your-code/).",
+      "kind": "predict",
+      "sourceExercise": "supplementary — advanced-reader assertion demonstration and NDEBUG guard; Unit testing frameworks and Integration testing sections",
+      "code": "#define NDEBUG\n#include <cassert>\n#include <iostream>\nint main()\n{\n    assert(false);\n    std::cout << \"Reached the end\\n\";\n}",
+      "questions": [
+        {
+          "question": "What happens in this build, and what does it establish?",
+          "options": ["The program aborts, so the assertion was checked.", "It prints Reached the end, but the false assertion was not checked.", "It cannot compile because an assertion must be true."],
+          "answer": 1,
+          "explanation": "NDEBUG disables assert here. An assertion-based suite needs assertions enabled, or an explicit guard that rejects the disabled configuration."
+        }
+      ]
+    },
+    {
+      "suffix": "code",
+      "title": "Apply the testing habit to leap years",
+      "objective": "Predict the retained workspace tests, implement the calendar contract, and add one independent case.",
+      "explanation": "Open the [lesson notes](workspaces/09/09_01/lesson.md) and [existing assignment](workspaces/09/09_01/main.cpp). Implement isLeapYear(year): nonpositive years return false; positive years qualify when divisible by 400, or divisible by 4 but not by 100. Predict the visible tests from that rule before implementing.\n\nRun the starter, make a small change, and rerun the retained suite. Add one independent case without deleting supplied checks; explain its category (invalid, ordinary, divisible by four, century, or four-hundred-year exception). Also run the existing assembled program and check its displayed results, exercising the connection between the predicate and its caller.\n\nSubmit with ./course check 9.1 when ready. This repository assignment applies the testing habits from [LearnCpp 9.1](https://www.learncpp.com/cpp-tutorial/introduction-to-testing-your-code/); the source itself has no coding assignment.",
+      "kind": "code",
+      "sourceExercise": "supplementary — existing repository final workspace assignment from lessons/09_01.json and workspaces/09/09_01/lesson.md"
+    }
+  ]
+}

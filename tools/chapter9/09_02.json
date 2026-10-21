@@ -1,0 +1,89 @@
+{
+  "lessonId": "9.2",
+  "sourceUrl": "https://www.learncpp.com/cpp-tutorial/code-coverage/",
+  "coverage": [
+    {"concept": "Code coverage measures executed source code; statement coverage and its limits", "steps": ["coverage-cases"]},
+    {"concept": "Branch coverage counts true and false outcomes, including an implicit else; aim for full branch coverage", "steps": ["coverage-cases"]},
+    {"concept": "Chained comparisons require greater, less, and equal cases", "steps": ["coverage-cases"]},
+    {"concept": "Grouped switch labels share a body, but a returned Boolean parameter needs both values", "steps": ["coverage-cases"]},
+    {"concept": "Loop coverage uses zero, one, and two iterations; coverage is evidence rather than proof for larger counts", "steps": ["loop-counts"]},
+    {"concept": "Input categories: integer signs, zero, relevant overflow, and square-root domain", "steps": ["test-plan"]},
+    {"concept": "Floating-point representation issues, empty/alphanumeric/whitespace strings, and null pointers", "steps": ["test-plan"]},
+    {"concept": "Boundary probes and independent expected results reveal defects despite full branch coverage", "steps": ["test-plan", "code"]},
+    {"concept": "Workspace application: invalid/light/medium/heavy weights crossed with express choices and bracket boundaries", "steps": ["code"]}
+  ],
+  "steps": [
+    {
+      "suffix": "coverage-cases",
+      "kind": "quiz",
+      "title": "Choose tests for the outcomes, not just the statements",
+      "objective": "Distinguish statement and branch coverage, then select the source quiz's minimal vowel tests.",
+      "explanation": "Code coverage records executed code. Statement coverage counts statements reached; branch coverage counts decision outcomes, including an if's false path without an else. For int result{right}; if (left > right) result = left; return result;, inputs (8,3) reach every statement but only one of two outcomes: 50% branch coverage. Add (3,8) for both. Aim for 100% branch coverage; an if-greater / else-if-less / else chain needs greater, less, and equal inputs.\n\nIn the switch below, the five ordinary vowels share one body under the source's coverage model. A basic vowel/default switch needs two calls to reach both returns. Here y adds a parameter-dependent result: visiting its body once cannot validate both Boolean results. Coverage is evidence, not proof of correctness.\n\nAnswer both adapted exercises from [LearnCpp 9.2, Quiz time, Questions #1 and #2](https://www.learncpp.com/cpp-tutorial/code-coverage/), by Alex, updated December 23, 2024; the full page was revisited for this consolidation.",
+      "sourceExercise": "Quiz time — Questions #1 and #2: define branch coverage with true/false counted separately; minimally validate the vowel switch with four tests: shared vowels, default, y true, y false",
+      "code": "bool isLowerVowel(char letter, bool yIsVowel)\n{\n    switch (letter)\n    {\n    case 'a': case 'e': case 'i': case 'o': case 'u':\n        return true;\n    case 'y':\n        return yIsVowel;\n    default:\n        return false;\n    }\n}",
+      "questions": [
+        {
+          "question": "Which definition correctly describes branch coverage?",
+          "options": ["The fraction of source lines containing an if or switch.", "The fraction of decision outcomes exercised, with true and false counted separately.", "The fraction of calls that returned the expected answer.", "The fraction of all possible integer inputs tried."],
+          "answer": 1,
+          "explanation": "Coverage records which outcomes ran. Both outcomes of an if count, including the false path without an explicit else. Correctness comparisons and exhaustive input enumeration are different measures."
+        },
+        {
+          "question": "What is the smallest representative suite matching the source's validation goal? The listed values are expected results.",
+          "options": ["2 calls: ('a', false) -> true; ('q', false) -> false.", "3 calls: ('a', false) -> true; ('q', false) -> false; ('y', true) -> true.", "4 calls: ('a', false) -> true; ('q', false) -> false; ('y', true) -> true; ('y', false) -> false.", "5 calls, one per ordinary vowel; y and default add no distinct behavior."],
+          "answer": 2,
+          "explanation": "Four checks cover the shared vowel body, default body, and both outputs of the parameter-dependent y body. Three calls can visit every body yet miss a y implementation that always returns true. Testing all five ordinary vowels is additional confidence, not required for this minimal plan."
+        }
+      ]
+    },
+    {
+      "suffix": "loop-counts",
+      "kind": "code",
+      "title": "Make zero repetitions genuinely empty",
+      "objective": "Implement a loop and check its zero-, one-, and two-iteration behavior.",
+      "explanation": "Use the 0, 1, 2 test to probe loop entry, one iteration, and repetition. This is a useful starting heuristic, not proof for larger counts: later conditions or overflow can still cause failures.\n\nImplement repeatToken(int count): return \"go \" repeated count times for counts 0..100 inclusive. Zero returns an empty string. Predict the results for 0, 1, and 2, then run; main brackets each result to expose empty output and trailing spaces. This is a new task based on the demonstration in [LearnCpp 9.2, Loop coverage](https://www.learncpp.com/cpp-tutorial/code-coverage/), not a source assignment.",
+      "sourceExercise": "supplementary — Loop coverage and the 0, 1, 2 test; original task uses a returned string so independent tests can compare exact behavior",
+      "practice": {
+        "starter": "#include <iostream>\n#include <string>\n\nstd::string repeatToken(int count)\n{\n    (void)count;\n    return {}; // TODO: append one token for each requested repetition.\n}\n\nint main()\n{\n    for (int count{0}; count <= 2; ++count)\n        std::cout << '[' << repeatToken(count) << ']' << '\\n';\n    return 0;\n}\n",
+        "solution": "#include <iostream>\n#include <string>\n\nstd::string repeatToken(int count)\n{\n    std::string result;\n    for (int i{0}; i < count; ++i)\n        result += \"go \";\n    return result;\n}\n\nint main()\n{\n    for (int count{0}; count <= 2; ++count)\n        std::cout << '[' << repeatToken(count) << ']' << '\\n';\n    return 0;\n}\n",
+        "tests": "#define main learner_main\n#include \"main.cpp\"\n#undef main\n#include <iostream>\n#include <string>\n\nint main()\n{\n    int failures{};\n    for (int count{0}; count <= 100; ++count)\n    {\n        const std::string actual{repeatToken(count)};\n        const auto expectedSize{static_cast<std::string::size_type>(count) * 3};\n        bool correct{actual.size() == expectedSize};\n        for (std::string::size_type pos{0}; pos < actual.size(); ++pos)\n        {\n            const char expected{pos % 3 == 0 ? 'g' : pos % 3 == 1 ? 'o' : ' '};\n            if (actual[pos] != expected) correct = false;\n        }\n        if (!correct)\n        {\n            std::cerr << \"Wrong repetition string for count=\" << count\n                      << \" (expected size \" << expectedSize\n                      << \", got \" << actual.size() << \")\\n\";\n            ++failures;\n        }\n    }\n    if (repeatToken(2) != \"go go \" || !repeatToken(0).empty() || repeatToken(1) != \"go \")\n    {\n        std::cerr << \"Repeated calls must not retain text from earlier calls\\n\";\n        ++failures;\n    }\n    return failures == 0 ? 0 : 1;\n}\n",
+        "hints": [
+          "Start with an empty std::string and append with +=.",
+          "A counter starting at zero and continuing while it is less than count executes exactly count times.",
+          "The token includes a trailing space. Do not add an extra separator or remove the final space."
+        ],
+        "examples": [
+          "repeatToken(0) -> \"\"",
+          "repeatToken(1) -> \"go \"",
+          "repeatToken(2) -> \"go go \"",
+          "Calling repeatToken(0) after repeatToken(2) still returns an empty string."
+        ]
+      }
+    },
+    {
+      "suffix": "test-plan",
+      "kind": "predict",
+      "title": "Choose categories, then challenge their boundaries",
+      "objective": "Use input categories to plan tests and expose a threshold bug despite full branch coverage.",
+      "explanation": "Categories group inputs with relevant shared properties. For integers, consider negative, zero, positive, and overflow limits where relevant; square root needs a negative-input policy as well as zero and an ordinary positive case. For double, try 0.1, -0.1, 0.7, and -0.7: representation error can place values above or below the exact decimal. Derive expectations and any tolerance from the contract.\n\nFor strings, consider empty, alphanumeric, leading/trailing/internal whitespace, and all-whitespace inputs. For pointer parameters, consider nullptr according to the API's contract; pointers come later. These guidelines come from [LearnCpp 9.2, Testing different categories of input](https://www.learncpp.com/cpp-tutorial/code-coverage/).\n\nApply the [workspace boundary technique](workspaces/09/09_02/lesson.md): test just below, at, and just above a threshold. Below, positive weights 1..5 should cost 5 and larger weights 10. Existing checks at 2 and 10 pass and cover both branches. Predict what happens at 4, 5, and 6 to see what coverage missed.",
+      "sourceExercise": "supplementary — source input-category guidelines combined with the repository boundary-testing exercise; no corresponding source quiz assignment",
+      "code": "// Contract here: weight is positive. Weights 1..5 cost 5; larger weights cost 10.\nint baseFee(int weight)\n{\n    if (weight < 5)\n        return 5;\n    return 10;\n}",
+      "questions": [
+        {
+          "question": "For weights 4, 5, and 6, what does this implementation return, and what fails the contract?",
+          "options": ["5, 5, 10; nothing fails.", "5, 10, 10; weight 5 is wrong even though both branches were previously exercised.", "10, 10, 10; all three fail."],
+          "answer": 1,
+          "explanation": "The strict comparison excludes 5. Inputs 2 and 10 cover the outcomes but cannot distinguish < 5 from <= 5. The at-threshold test can."
+        }
+      ]
+    },
+    {
+      "suffix": "code",
+      "kind": "code",
+      "title": "Cover the shipping categories and their edges",
+      "objective": "Implement the existing shipping contract and explain how its tests cover categories, express choices, and boundaries.",
+      "explanation": "Open the [lesson notes](workspaces/09/09_02/lesson.md) and [workspace assignment](workspaces/09/09_02/main.cpp). Implement shippingFee(weight, express): weight <= 0 returns -1 even with express; weights 1..5 cost 5, 6..20 cost 10, and larger weights cost 20. Express adds 7 only to valid orders.\n\nPredict the visible tests, crossing invalid/light/medium/heavy categories with both express choices. Check 0/1, 4/5/6, and 19/20/21; derive expected results from the contract, not the implementation. Run, implement, and rerun. Keep supplied tests and add one independent case. Explain why invalid express orders must remain -1 and why full branch coverage can miss a wrong threshold.\n\nSubmit with ./course check 9.2 from the repository root. This is the repository's application task, supplementary to [LearnCpp 9.2](https://www.learncpp.com/cpp-tutorial/code-coverage/).",
+      "sourceExercise": "supplementary — existing repository final workspace assignment from lessons/09_02.json and workspaces/09/09_02/lesson.md"
+    }
+  ]
+}

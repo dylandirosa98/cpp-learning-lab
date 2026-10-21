@@ -449,7 +449,9 @@ progress::-moz-progress-bar {
   display: flex;
   flex-direction: column;
   min-width: 0;
+  min-height: 0;
   height: 100%;
+  overflow-y: auto;
   background: var(--bg);
 }
 
@@ -465,7 +467,8 @@ progress::-moz-progress-bar {
 .read-pane { padding: 32px; overflow-y: auto; flex: 1; }
 .read-pane article { max-width: 680px; margin: 0 auto; font-size: 16px; line-height: 1.9; color: #cad5e5; }
 .read-pane > .pill-btn, .read-pane > .practice-note { display: block; max-width: 680px; margin: 24px auto; }
-.question-context { color: var(--muted); font-size: 13px; line-height: 1.7; white-space: pre-line; }
+.question-context { color: var(--muted); font-size: 13px; line-height: 1.7; }
+.question-context p { margin: 0 0 12px; }
 .question-code { background: #0c111a; border: 1px solid var(--border-light); border-radius: 7px; padding: 16px; overflow: auto; font-size: 12px; line-height: 1.7; white-space: pre; }
 .repair-preview { border-color: #42785c; }
 .practice-note { color: var(--muted); font-size: 11px; line-height: 1.6; }
@@ -474,6 +477,7 @@ progress::-moz-progress-bar {
 /* Quiz Mode (Boot.dev Image 2 layout) */
 .quiz-pane {
   flex: 1;
+  min-height: 0;
   display: flex;
   align-items: flex-start;
   justify-content: center;
@@ -769,6 +773,16 @@ progress::-moz-progress-bar {
 .file-details summary {
   cursor: pointer;
 }
+
+.file-details[open] {
+  max-height: 30vh;
+  overflow-y: auto;
+}
+
+#practice-hints details { margin: 8px 0; }
+.examples-mini code { white-space: pre-wrap; overflow-wrap: anywhere; }
+.challenge-brief pre { overflow-x: auto; }
+.code-continuation { padding: 8px 14px; border-top: 1px solid var(--border); text-align: right; flex-shrink: 0; }
 
 .challenge-brief {
   color: var(--text);
